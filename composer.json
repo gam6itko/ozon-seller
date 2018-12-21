@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Gam6itko\\OzonSeller\\": "src/Gam6itko/OzonSeller"
+            "Gam6itko\\OzonSeller\\": "src/"
         }
     },
     "require": {
