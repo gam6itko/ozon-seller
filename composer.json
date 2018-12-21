@@ -16,6 +16,7 @@
     },
     "require": {
         "php": ">=7.0",
+        "ext-json": "*",
         "guzzlehttp/guzzle": "^6.3",
         "jms/serializer": "^1.13"
     },

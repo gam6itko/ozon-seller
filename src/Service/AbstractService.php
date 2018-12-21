@@ -58,14 +58,14 @@ abstract class AbstractService
      * @param string $method
      * @param string $uri
      * @param array $options
-     * @return mixed
+     * @return string|array
      * @throws \Exception
      */
-    protected function request(string $method, string $uri = '', array $options = []): array
+    protected function request(string $method, string $uri = '', array $options = [])
     {
         try {
             $response = $this->getClient()->request($method, $uri, $options);
-            return \GuzzleHttp\json_decode($response->getBody(), true)['result'];
+            return \GuzzleHttp\json_decode($response->getBody()->getContents(), true)['result'];
         } catch (BadResponseException $exc) {
             $this->adaptException($exc);
         }

@@ -1,5 +1,6 @@
 <?php
 
+use Gam6itko\OzonSeller\Enum\DeliverySchema;
 use Gam6itko\OzonSeller\Service\OrderService;
 
 /**
@@ -47,7 +48,7 @@ class OrderServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testListFbo()
     {
-        self::$svc->listFbo(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'));
+        self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::FBO);
     }
 
     /**
@@ -55,12 +56,12 @@ class OrderServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testListFbs()
     {
-        self::$svc->listFbs(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'));
+        self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::FBS);
     }
 
     public function testListCrossborder()
     {
-        self::$svc->listCrossborder(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'));
+        self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::CROSSBOARDER);
         self::assertTrue(true);
     }
 }

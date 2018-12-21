@@ -1,4 +1,5 @@
 <?php
+
 namespace Gam6itko\OzonSeller\Service;
 
 class ProductsService extends AbstractService
@@ -34,18 +35,20 @@ class ProductsService extends AbstractService
      * @param int $productId
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
-    public function activate(int $productId)
+    public function activate(int $productId): bool
     {
-        return $this->request('POST', "/v1/products/activate", ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+        $response = $this->request('POST', "/v1/products/activate", ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+        return 'success' === $response;
     }
 
     /**
      * @param int $productId
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
-    public function deactivate(int $productId)
+    public function deactivate(int $productId): bool
     {
-        return $this->request('POST', "/v1/products/deactivate", ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+        $response = $this->request('POST', "/v1/products/deactivate", ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+        return 'success' === $response;
     }
 
     /**

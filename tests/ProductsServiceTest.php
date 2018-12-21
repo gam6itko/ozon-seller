@@ -68,7 +68,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testInfo()
     {
-        $productInfo = self::$svc->info(182589);
+        $productInfo = self::$svc->info(507735);
         self::assertNotEmpty($productInfo);
         self::assertArrayHasKey('name', $productInfo);
     }
@@ -76,7 +76,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     public function testUpdate()
     {
         $arr = [
-            'product_id' => 182589,
+            'product_id' => 507735,
             'images'     => [
                 [
                     "file_name" => "https://images.freeimages.com/images/large-previews/4ad/snare-drum-second-take-1-1564542.jpg",
@@ -92,8 +92,8 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 
     public function testDeactivate()
     {
-        $result = self::$svc->deactivate(176497);
-        self::assertNotEmpty($result);
+        $result = self::$svc->deactivate(510216);
+        self::assertTrue($result);
     }
 
     /**
@@ -101,8 +101,8 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testActivate()
     {
-        $result = self::$svc->activate(176497);
-        self::assertNotEmpty($result);
+        $result = self::$svc->activate(510216);
+        self::assertTrue($result);
     }
 
     public function testUpdatePricesNotFound()
@@ -149,7 +149,7 @@ JSON;
         $expectedJson = <<<JSON
 [
     {
-        "product_id": 182589,
+        "product_id": 508756,
         "updated": true,
         "errors": []
     }
@@ -158,7 +158,7 @@ JSON;
 
         $arr = [
             [
-                'product_id' => 182589,
+                'product_id' => 508756,
                 'price'      => '45000',
                 'vat'        => '0.18'
             ]
@@ -173,18 +173,16 @@ JSON;
         $expectedJson = <<<JSON
 [
     {
-        "product_id": 182589,
-        "updated": false,
-        "errors": [
-            "FBO SKU not found"
-        ]
+        "product_id": 507735,
+        "updated": true,
+        "errors": []
     }
 ]
 JSON;
 
         $arr = [
             [
-                "product_id" => 182589,
+                "product_id" => 507735,
                 "stock"      => 20
             ]
         ];
