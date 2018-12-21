@@ -1,0 +1,25 @@
+{
+    "name": "gam6itko/ozon-seller",
+    "description": "Ozon Seller Api for transhore sales",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "gam6itko",
+            "email": "gam6itko@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Gam6itko\\OzonSeller\\": "src/Gam6itko/OzonSeller"
+        }
+    },
+    "require": {
+        "php": ">=7.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "jms/serializer": "^1.13"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.4"
+    }
+}

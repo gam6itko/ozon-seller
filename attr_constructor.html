@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Category attributes constructor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/5.26.0/jsoneditor.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/5.26.0/jsoneditor.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="form-inline">
+        <input class="form-control" type="number" name="client-id" value="41955" placeholder="ClientId">
+        <input class="form-control" type="text" name="api-key" value="9753260e-2324-fde7-97f1-7848ed7ed097" placeholder="ApiKey">
+        <button class="btn btn-primary" id="btnGo">Go</button>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h2>Category</h2>
+            <div id="treeCategory" style="height: 90vh; overflow-y: scroll"></div>
+        </div>
+        <div class="col">
+            <h2>Attributes congigurator</h2>
+            <div id="attributesControls" style="height: 90vh; overflow-y: scroll"></div>
+        </div>
+        <div class="col">
+            <h2>JSON Result</h2>
+            <div id="jsoneditor" style="height: 90vh; overflow-y: scroll"></div>
+        </div>
+    </div>
+</div>
+
+<script id="templateOptions" type="text/x-underscore-template">
+    <h2><%= obj.categoryId %></h2>
+    <% for (let attr of obj.data.result) { %>
+    <div>
+        <strong>[<%= attr.id %>] <%= attr.name %></strong>
+        <small class="badge badge-success"><%= attr.type %></small>
+        <% if (attr.is_collection) { %>
+        <small class="badge badge-info">is_collection</small>
+        <% } %>
+        <% if (attr.required) { %>
+        <small class="badge badge-danger">required</small>
+        <% } %>
+        <% if (attr.description) { %><p><%= attr.description %></p><% } %>
+
+        <div class="form-group">
+            <% if ('option' === attr.type) { %>
+                <select class="form-control form-control-sm" name="<%= attr.id %>">
+                    <% for (let o of attr.option) { %>
+                    <option value="<%= o.id %>"><%= o.value %></option>
+                    <% } %>
+                </select>
+            <% } else if ('text' === attr.type) { %>
+                <input class="form-control form-control-sm" name="<%= attr.id %>" type="text">
+            <% } %>
+        </div>
+
+        <% if (attr.child && attr.child.length > 0) { %>
+            <% for (let c of attr.child) { %>
+                <div class="form-group">
+                    [<%= c.id %>] <%= c.name %>
+                    <small class="badge badge-success"><%= c.type %></small>
+                    <input class="form-control form-control-sm" name="<%= c.id %>" data-parent="<%= attr.id %>">
+                </div>
+            <% } %>
+        <% } %>
+        <button class="btn btn-sm _btn_add" data-attr-id="<%= attr.id %>">Add</button>
+        <button class="btn btn-sm _btn_clear" data-attr-id="<%= attr.id %>">Dispose</button>
+    </div>
+    <hr>
+    <% } %>
+</script>
+
+<script>
+    var ATTRIBUTES = [];
+
+    $(function() {
+        // create the editor
+
+        var EDITOR = new JSONEditor(document.getElementById("jsoneditor"), {mode: 'code'});
+
+        $.ajax({
+            url: 'http://cb-api.test.ozon.ru/v1/categories/tree/',
+            method: 'GET',
+            headers: {
+                'Client-Id': $('[name="client-id"]').val(),
+                'Api-Key': $('[name="api-key"]').val(),
+            },
+            success: function(data) {
+                let end = data.result.splice(0, 1);
+                data.result.push(end[0]);
+                let html = buildNodes(data.result);
+                $('#treeCategory').html(`<ul>${html}</ul>`);
+            }
+        });
+
+        $(document).on('click', 'a.cn', function() {
+            $('#attributesControls').html('');
+            let id = location.hash.replace('#', '');
+            $.ajax({
+                url: `http://cb-api.test.ozon.ru/v1/categories/${id}/attributes`,
+                method: 'GET',
+                headers: {
+                    'Client-Id': $('[name="client-id"]').val(),
+                    'Api-Key': $('[name="api-key"]').val(),
+                },
+                success: function(data) {
+                    ATTRIBUTES = data.result;
+                    drawAttributeInfo(id, data);
+                }
+            });
+        });
+
+        function getComplexValue (attrId) {
+            let result = [];
+            $(`[data-parent=${attrId}]`).each(function() {
+                let $input = $(this);
+                result.push({
+                    id: $input.attr('name'),
+                    value: $input.val()
+                })
+            });
+            return result;
+        }
+
+        $(document).on('click', '._btn_add', function() {
+            let attrId = $(this).data('attrId');
+            let attrObj = findAttrById(attrId);
+
+            if (null === attrObj) {
+                //console.warn('not found');
+                return;
+            }
+
+            let currentJson = EDITOR.get();
+            if (!currentJson.attributes) {
+                currentJson.attributes = [];
+            }
+
+            let attrValNew = {
+                id: attrId
+            };
+            // ищем текущее
+            let replaceIndex = findAttrValueIndex(currentJson, attrId);
+            if (-1 !== replaceIndex) {
+                attrValNew = currentJson.attributes[replaceIndex];
+            }
+
+            let token = attrObj.type + (attrObj.is_collection ? '_collection' : '');
+            switch (token) {
+                case 'child':
+                    attrValNew.complex = getComplexValue(attrId);
+                    break;
+
+                case 'child_collection':
+                    if (!attrValNew.complex_collection) {
+                        attrValNew.complex_collection = [];
+                    }
+                    let complex = getComplexValue(attrId);
+                    attrValNew.complex_collection.push(complex);
+                    break;
+
+                default:
+                    let $input = $(`[name="${attrId}"]`);
+                    if (!$input.val()) {
+                        return;
+                    }
+
+                    switch (token) {
+                        case 'option':
+                        case 'text':
+                            attrValNew.value = $input.val();
+                            break;
+
+                        case 'option_collection':
+                        case 'text_collection':
+                            if (!attrValNew.collection) {
+                                attrValNew.collection = [];
+                            }
+                            if (attrValNew.collection.indexOf($input.val()) === -1) {
+                                attrValNew.collection.push($input.val());
+                                attrValNew.collection.sort();
+                            }
+                            break;
+                    }
+
+//                    $input.val('');
+                    break;
+            }
+
+            if (-1 === replaceIndex) {
+                currentJson.attributes.push(attrValNew);
+            } else {
+                currentJson.attributes[replaceIndex] = attrValNew;
+            }
+
+            EDITOR.set(currentJson);
+        });
+
+        $(document).on('click', '._btn_clear', function() {
+            let attrId = $(this).data('attrId');
+            let attrObj = findAttrById(attrId);
+            let currentJson = EDITOR.get();
+            if (!currentJson.attributes) {
+                currentJson.attributes = [];
+            }
+            let replaceIndex = findAttrValueIndex(currentJson, attrId);
+            if (-1 === replaceIndex) {
+                return;
+            }
+            currentJson.attributes.splice(replaceIndex, 1);
+            EDITOR.set(currentJson);
+        });
+    });
+
+    function buildNodes (children) {
+        let html = '';
+        for (var i in children) {
+            let nodeHtml = `${children[i]['category_id']} <a class="cn" href="#${children[i]['category_id']}">${children[i]['title']}</a>`;
+            let innerNodes = '';
+            if (children[i]['children']) {
+                innerNodes = buildNodes(children[i]['children']);
+                innerNodes = `<ul>${innerNodes}</ul>`;
+            }
+            html += `<li>${nodeHtml}${innerNodes}</li>`;
+        }
+        return html;
+    }
+
+    function drawAttributeInfo (id, data) {
+//        $('#jsonAttributes').html(JSON.stringify(data, null, 2));
+        let t = $('#templateOptions').html().trim();
+        let compiled = _.template(t);
+        $('#attributesControls').html(compiled({categoryId: id, data: data}));
+    }
+
+    function findAttrById (id) {
+        for (let a of ATTRIBUTES) {
+            if (a.id === id) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    function findAttrValueIndex (currentJson, attrId) {
+        for (let i in currentJson.attributes) {
+            let cAttr = currentJson.attributes[i];
+            if (cAttr.id === attrId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+</script>
+</body>
+</html>

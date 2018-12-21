@@ -1,0 +1,12 @@
+<phpunit bootstrap="vendor/autoload.php">
+    <php>
+        <server name="CLIENT_ID" value="41955"/>
+        <server name="API_KEY" value="9753260e-2324-fde7-97f1-7848ed7ed097"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="ozon-seller">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
