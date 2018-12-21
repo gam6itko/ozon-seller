@@ -35,8 +35,8 @@ class OrderService extends AbstractService
     public function list(\DateTime $since, \DateTime $to, string $deliverySchema = DeliverySchema::CROSSBOARDER): array
     {
         $arr = [
-            'since'           => $since->format('Y-m-d'),
-            'to'              => $to->format('Y-m-d'),
+            'since'           => $since->format(DATE_RFC3339),
+            'to'              => $to->format(DATE_RFC3339),
             'delivery_schema' => $deliverySchema
         ];
         return $this->request('GET', "/v1/orders/list", ['body' => \GuzzleHttp\json_encode($arr)]);
