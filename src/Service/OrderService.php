@@ -24,7 +24,7 @@ class OrderService extends AbstractService
             'delivery_schema' => $deliverySchema
         ], $query);
 
-        return $this->request('GET', "/v1/orders/list", ['body' => \GuzzleHttp\json_encode($arr)]);
+        return $this->request('GET', "/v1/order/list", ['body' => \GuzzleHttp\json_encode($arr)]);
     }
 
     /**
