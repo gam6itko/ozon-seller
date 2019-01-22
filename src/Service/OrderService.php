@@ -6,18 +6,31 @@ use Gam6itko\OzonSeller\Enum\DeliverySchema;
 class OrderService extends AbstractService
 {
     /**
-     * @param $data
+     * @param \DateTime $since
+     * @param \DateTime $to
+     * @param string $deliverySchema
+     * @param array $query
      * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @see http://cb-api.test.ozon.ru/apiref/ru/#t-title_post_order_ship
+     * @throws \Exception
      */
-    public function ship($data)
+    public function list(\DateTime $since, \DateTime $to, string $deliverySchema = DeliverySchema::CROSSBOARDER, array $query = []): array
     {
-        return $this->request('POST', "/v1/order/ship", ['body' => \GuzzleHttp\json_encode($data)]);
+        $whitelist = ['page', 'page_size'];
+        $query = array_intersect_key($query, array_flip($whitelist));
+
+        $arr = array_merge([
+            'since'           => $since->format(DATE_RFC3339),
+            'to'              => $to->format(DATE_RFC3339),
+            'delivery_schema' => $deliverySchema
+        ], $query);
+
+        return $this->request('GET', "/v1/orders/list", ['body' => \GuzzleHttp\json_encode($arr)]);
     }
 
     /**
      * @param int $orderId
      * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @see http://cb-api.test.ozon.ru/apiref/ru/#t-title_get_order
      */
     public function info(int $orderId)
     {
@@ -25,20 +38,15 @@ class OrderService extends AbstractService
     }
 
     /**
-     * @param \DateTime $since
-     * @param \DateTime $to
-     * @param string $deliverySchema
+     * @param $data
      * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
+     * @see http://cb-api.test.ozon.ru/apiref/ru/#t-title_post_order_ship_cb
      */
-    public function list(\DateTime $since, \DateTime $to, string $deliverySchema = DeliverySchema::CROSSBOARDER): array
+    public function ship($data)
     {
-        $arr = [
-            'since'           => $since->format(DATE_RFC3339),
-            'to'              => $to->format(DATE_RFC3339),
-            'delivery_schema' => $deliverySchema
-        ];
-        return $this->request('GET', "/v1/orders/list", ['body' => \GuzzleHttp\json_encode($arr)]);
+        $whitelist = ['order_id', 'tracking_number', 'shipping_provider_id', 'items'];
+        $data = array_intersect_key($data, array_flip($whitelist));
+        return $this->request('POST', "/v1/order/ship/crossborder", ['body' => \GuzzleHttp\json_encode($data)]);
     }
 
     /**
