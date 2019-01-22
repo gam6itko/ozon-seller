@@ -1,4 +1,5 @@
 <?php
+
 namespace Gam6itko\OzonSeller\Service;
 
 use Gam6itko\OzonSeller\Exception\BadRequestException;
@@ -78,6 +79,10 @@ abstract class AbstractService
             $errorData = \GuzzleHttp\json_decode($body, true)['error'];
         } catch (\InvalidArgumentException $exc) {
             throw $clientException;
+        }
+
+        if (!isset($errorData['data'])) {
+            $errorData['data'] = [];
         }
 
         switch ($errorData['code']) {
