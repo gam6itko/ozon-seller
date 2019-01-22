@@ -1,5 +1,4 @@
 <?php
-
 namespace Gam6itko\OzonSeller\Service;
 
 class ProductsService extends AbstractService

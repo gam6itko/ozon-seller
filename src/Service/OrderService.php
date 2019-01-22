@@ -1,5 +1,4 @@
 <?php
-
 namespace Gam6itko\OzonSeller\Service;
 
 use Gam6itko\OzonSeller\Enum\DeliverySchema;

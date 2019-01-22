@@ -28,7 +28,7 @@ abstract class AbstractService
      * @param int $clientId
      * @param string $apiKey
      */
-    public function __construct(int $clientId, string $apiKey, string $host = 'http://cb-api.test.ozon.ru')
+    public function __construct(int $clientId, string $apiKey, string $host = 'https://api-seller.ozon.ru/')
     {
         $this->clientId = $clientId;
         $this->apiKey = $apiKey;
