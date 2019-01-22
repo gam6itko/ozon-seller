@@ -15,7 +15,7 @@ class OrderService extends AbstractService
      */
     public function list(\DateTimeInterface $since, \DateTimeInterface $to, string $deliverySchema = DeliverySchema::CROSSBOARDER, array $query = []): array
     {
-        $whitelist = ['page', 'page_size'];
+        $whitelist = ['page', 'page_size', 'status'];
         $query = array_intersect_key($query, array_flip($whitelist));
 
         $arr = array_merge([

@@ -10,4 +10,16 @@ final class Status
     const Delivering = 'delivering';
     const Delivered = 'delivered';
     const Cancelled = 'cancelled';
+
+    public static function getList()
+    {
+        return [
+            self::AwaitingApprove,
+            self::AwaitingPackaging,
+            self::AwaitingDeliver,
+            self::Delivering,
+            self::Delivered,
+            self::Cancelled,
+        ];
+    }
 }
