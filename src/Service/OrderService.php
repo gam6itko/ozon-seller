@@ -6,14 +6,14 @@ use Gam6itko\OzonSeller\Enum\DeliverySchema;
 class OrderService extends AbstractService
 {
     /**
-     * @param \DateTime $since
-     * @param \DateTime $to
+     * @param \DateTimeInterface $since
+     * @param \DateTimeInterface $to
      * @param string $deliverySchema
      * @param array $query
      * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function list(\DateTime $since, \DateTime $to, string $deliverySchema = DeliverySchema::CROSSBOARDER, array $query = []): array
+    public function list(\DateTimeInterface $since, \DateTimeInterface $to, string $deliverySchema = DeliverySchema::CROSSBOARDER, array $query = []): array
     {
         $whitelist = ['page', 'page_size'];
         $query = array_intersect_key($query, array_flip($whitelist));
