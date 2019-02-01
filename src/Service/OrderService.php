@@ -18,7 +18,7 @@ class OrderService extends AbstractService
     {
         $query = $this->faceControl($query, ['translit']);
 
-        return $this->request('POST', "/v1/order/{$orderId}", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('GET', "/v1/order/{$orderId}", ['query' => $query]);
     }
 
     /**
