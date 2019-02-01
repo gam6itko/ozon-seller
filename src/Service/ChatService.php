@@ -12,10 +12,14 @@ class ChatService extends AbstractService
      */
     public function list(array $query = [])
     {
-        $whitelist = ['chat_id_list', 'page', 'page_size'];
-        $query = array_intersect_key($query, array_flip($whitelist));
+        $query = $this->faceControl($query, ['chat_id_list', 'page', 'page_size']);
 
-        return $this->request('POST', "/v1/chat/list", ['body' => \GuzzleHttp\json_encode($query)])['result'];
+        $options = [];
+        if ($query) {
+            $options['body'] = \GuzzleHttp\json_encode($query);
+        }
+
+        return $this->request('POST', "/v1/chat/list", $options)['result'];
     }
 
     /**
@@ -27,8 +31,7 @@ class ChatService extends AbstractService
      */
     public function history(string $chatId, array $query = [])
     {
-        $whitelist = ['from_message_id', 'limit'];
-        $query = array_intersect_key($query, array_flip($whitelist));
+        $query = $this->faceControl($query, ['from_message_id', 'limit']);
 
         $query['chat_id'] = $chatId;
 

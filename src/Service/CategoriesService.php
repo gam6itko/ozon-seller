@@ -1,9 +1,12 @@
 <?php
+
 namespace Gam6itko\OzonSeller\Service;
 
 class CategoriesService extends AbstractService
 {
     /**
+     * Receive the list of all available item categories.
+     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_categories_tree
      * @param int $categoryId
      * @return array
      */
@@ -13,11 +16,17 @@ class CategoriesService extends AbstractService
     }
 
     /**
+     * Receive the attributes list from the product page for a specified category.
+     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_categories_attributes
      * @param int $categoryId
+     * @param array $query
      * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \Exception
      */
-    public function attributes(int $categoryId)
+    public function attributes(int $categoryId, array $query = [])
     {
-        return $this->request('GET', "/v1/categories/{$categoryId}/attributes");
+        $query = $this->faceControl($query, ['attribute_type']);
+
+        return $this->request('GET', "/v1/categories/{$categoryId}/attributes", ['query' => $query]);
     }
 }

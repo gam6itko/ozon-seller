@@ -2,6 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Service;
 
+use Gam6itko\OzonSeller\Exception\AccessDeniedException;
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Exception\InternalException;
 use Gam6itko\OzonSeller\Exception\NotFoundException;
@@ -55,6 +56,12 @@ abstract class AbstractService
         return $this->client;
     }
 
+    protected function faceControl(array $query, array $whitelist): array
+    {
+        $whitelist = ['page', 'page_size'];
+        return array_intersect_key($query, array_flip($whitelist));
+    }
+
     /**
      * @param string $method
      * @param string $uri
@@ -85,7 +92,9 @@ abstract class AbstractService
             $errorData['data'] = [];
         }
 
-        switch ($errorData['code']) {
+        switch (strtolower($errorData['code'])) {
+            case "access_denied":
+                throw new AccessDeniedException();
             case 'internal_error':
                 throw new InternalException($errorData['message']);
             case 'bad_request':

@@ -13,9 +13,36 @@ class OrderServiceTest extends \PHPUnit\Framework\TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$svc = new OrderService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], 'http://cb-api.test.ozon.ru/');
+        self::$svc = new OrderService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, 'http://cb-api.test.ozon.ru/'*/);
     }
 
+    public function testListCrossborder()
+    {
+        $response = self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::CROSSBOARDER);
+        self::assertNotEmpty($response);
+    }
+
+    /**
+     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
+     */
+    public function testListFbo()
+    {
+        $response = self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::FBO);
+        self::assertNotEmpty($response);
+    }
+
+    /**
+     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
+     */
+    public function testListFbs()
+    {
+        $response = self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::FBS);
+        self::assertNotEmpty($response);
+    }
+
+    /**
+     * @covers OrderService::itemsCancelReasons
+     */
     public function testItemsCancelReasons()
     {
         $result = self::$svc->itemsCancelReasons();
@@ -43,25 +70,4 @@ class OrderServiceTest extends \PHPUnit\Framework\TestCase
         self::assertTrue(true);
     }
 
-    /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
-     */
-    public function testListFbo()
-    {
-        self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::FBO);
-    }
-
-    /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
-     */
-    public function testListFbs()
-    {
-        self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::FBS);
-    }
-
-    public function testListCrossborder()
-    {
-        self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::CROSSBOARDER);
-        self::assertTrue(true);
-    }
 }

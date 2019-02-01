@@ -1,7 +1,7 @@
 <?php
 namespace Gam6itko\OzonSeller\Exception;
 
-class BadRequestException extends \Exception
+class BadRequestException extends AbstractOzonSellerException
 {
     /** @var array */
     protected $data;
