@@ -4,7 +4,7 @@ namespace Gam6itko\OzonSeller\Service;
 
 use Gam6itko\OzonSeller\Exception\AccessDeniedException;
 use Gam6itko\OzonSeller\Exception\BadRequestException;
-use Gam6itko\OzonSeller\Exception\InternalException;
+use Gam6itko\OzonSeller\Exception\InternalErrorException;
 use Gam6itko\OzonSeller\Exception\NotFoundException;
 use Gam6itko\OzonSeller\Exception\ValidationException;
 use GuzzleHttp\Client;
@@ -88,23 +88,28 @@ abstract class AbstractService
             throw $clientException;
         }
 
-        if (!isset($errorData['data'])) {
-            $errorData['data'] = [];
-        }
+        $className = $this->getExceptionClassByName($errorData['code']);
+        $errorData = array_merge([
+            'message' => '',
+            'data'    => []
+        ], $errorData);
 
-        switch (strtolower($errorData['code'])) {
-            case "access_denied":
-                throw new AccessDeniedException();
-            case 'internal_error':
-                throw new InternalException($errorData['message']);
-            case 'bad_request':
-                throw new BadRequestException($errorData['message'], $errorData['data']);
-            case 'not_found':
-                throw new NotFoundException($errorData['message']);
-            case 'validation':
-                throw new ValidationException($errorData['message'], $errorData['data']);
-            default:
-                throw $clientException;
+        try {
+            $refClass = new \ReflectionClass($className);
+            /** @var \Throwable $instance */
+            $instance = $refClass->newInstance($errorData['message'], $errorData['data']);
+            throw $instance;
+        } catch (\ReflectionException $re){
+            throw $clientException;
         }
+    }
+
+    private function getExceptionClassByName(string $code): string
+    {
+        $parts = explode('_', strtolower($code));
+        $parts = array_map('ucfirst', $parts);
+        $name = implode('', $parts);
+
+        return "Gam6itko\\OzonSeller\\Exception\\{$name}Exception";
     }
 }
