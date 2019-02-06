@@ -13,7 +13,7 @@ class OrderServiceTest extends \PHPUnit\Framework\TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$svc = new OrderService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, 'http://cb-api.test.ozon.ru/'*/);
+        self::$svc = new OrderService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
     }
 
     public function testListCrossborder()

@@ -6,18 +6,16 @@ class ChatService extends AbstractService
 {
     /**
      * Retrieves a list of chats in which a seller participates
-     * @param array $query
+     * @param array $query ['chat_id_list', 'page', 'page_size']
      * @return mixed
      * @throws \Exception
      */
     public function list(array $query = [])
     {
         $query = $this->faceControl($query, ['chat_id_list', 'page', 'page_size']);
-
-        $options = [];
-        if ($query) {
-            $options['body'] = \GuzzleHttp\json_encode($query);
-        }
+        $options = [
+            'body' => $query ? \GuzzleHttp\json_encode($query) : '{}'
+        ];
 
         return $this->request('POST', "/v1/chat/list", $options);
     }
@@ -78,14 +76,14 @@ class ChatService extends AbstractService
      * Creates a new chat with a customer related to a specific order.
      * For example, if a seller has some questions regarding delivery address, he can simply contact a buyer via new chat
      * @param int $orderId
-     * @return bool
+     * @return string Chat ID
      * @throws \Exception
      */
-    public function start(int $orderId)
+    public function start(int $orderId): string
     {
         $arr = [
             'order_id' => $orderId
         ];
-        return $this->request('POST', "/v1/chat/start", ['body' => \GuzzleHttp\json_encode($arr)]);
+        return $this->request('POST', "/v1/chat/start", ['body' => \GuzzleHttp\json_encode($arr)])['chat_id'];
     }
 }

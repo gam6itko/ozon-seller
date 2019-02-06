@@ -2,11 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Service;
 
-use Gam6itko\OzonSeller\Exception\AccessDeniedException;
-use Gam6itko\OzonSeller\Exception\BadRequestException;
-use Gam6itko\OzonSeller\Exception\InternalErrorException;
-use Gam6itko\OzonSeller\Exception\NotFoundException;
-use Gam6itko\OzonSeller\Exception\ValidationException;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 
@@ -34,7 +30,7 @@ abstract class AbstractService
     {
         $this->clientId = $clientId;
         $this->apiKey = $apiKey;
-        $this->host = $host;
+        $this->host = trim($host, '/') . '/';
     }
 
     /**
@@ -99,7 +95,7 @@ abstract class AbstractService
             /** @var \Throwable $instance */
             $instance = $refClass->newInstance($errorData['message'], $errorData['data']);
             throw $instance;
-        } catch (\ReflectionException $re){
+        } catch (\ReflectionException $re) {
             throw $clientException;
         }
     }
