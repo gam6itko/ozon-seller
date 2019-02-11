@@ -73,12 +73,21 @@ class OrderService extends AbstractService
     /**
      * Create a package, mark it as dispatched and provide a tracking number.
      * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_order_ship_cb
-     * @param $query ['order_id', 'tracking_number', 'shipping_provider_id', 'items']
+     * @param int $orderId Order ID
+     * @param string $track Shipment tracking number
+     * @param int $shippingProviderId Shipping company (provider) ID
+     * @param array $items Order items array
      * @return array|string
+     * @throws \Exception
      */
-    public function shipCrossboarder(array $query)
+    public function shipCrossboarder(int $orderId, string $track, int $shippingProviderId, array $items)
     {
-        $query = $this->faceControl($query, ['order_id', 'tracking_number', 'shipping_provider_id', 'items']);
+        $query = [
+            'order_id'             => $orderId,
+            'tracking_number'      => $track,
+            'shipping_provider_id' => $shippingProviderId,
+            'items'                => $items
+        ];
 
         return $this->request('POST', "/v1/order/ship/crossborder", ['body' => \GuzzleHttp\json_encode($query)]);
     }
