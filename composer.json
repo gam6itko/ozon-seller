@@ -17,8 +17,7 @@
     "require": {
         "php": ">=7.1",
         "ext-json": "*",
-        "guzzlehttp/guzzle": "^6.3",
-        "jms/serializer": "^1.13"
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.4"

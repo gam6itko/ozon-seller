@@ -76,7 +76,7 @@ class OrderService extends AbstractService
      * @param int $orderId Order ID
      * @param string $track Shipment tracking number
      * @param int $shippingProviderId Shipping company (provider) ID
-     * @param array $items Order items array
+     * @param array $items Order items array [['item_id', 'quantity']]
      * @return array|string
      * @throws \Exception
      */
