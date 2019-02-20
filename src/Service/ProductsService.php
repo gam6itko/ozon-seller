@@ -104,6 +104,11 @@ class ProductsService extends AbstractService
      */
     public function updateStocks(array $stocks)
     {
+        if (array_key_exists('stocks', $stocks)) {
+            trigger_error('You should pass stoks arg without stocks key', E_USER_NOTICE);
+            $stocks = $stocks['stocks'];
+        }
+
         foreach ($stocks as &$s) {
             $s = $this->faceControl($s, ['product_id', 'stock']);
         }
