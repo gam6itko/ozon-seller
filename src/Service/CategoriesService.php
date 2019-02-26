@@ -2,6 +2,8 @@
 
 namespace Gam6itko\OzonSeller\Service;
 
+use Gam6itko\OzonSeller\TypeCaster;
+
 class CategoriesService extends AbstractService
 {
     /**
@@ -26,6 +28,7 @@ class CategoriesService extends AbstractService
     public function attributes(int $categoryId, array $query = [])
     {
         $query = $this->faceControl($query, ['attribute_type']);
+        $query = TypeCaster::castArr($query, ['attribute_type' => 'str']);
 
         return $this->request('GET', "/v1/categories/{$categoryId}/attributes", ['query' => $query]);
     }

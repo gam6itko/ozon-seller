@@ -52,9 +52,14 @@ abstract class AbstractService
         return $this->client;
     }
 
+    /**
+     * Filters unexpected array keys
+     * @param array $query
+     * @param array $whitelist
+     * @return array
+     */
     protected function faceControl(array $query, array $whitelist): array
     {
-        $whitelist = ['page', 'page_size'];
         return array_intersect_key($query, array_flip($whitelist));
     }
 

@@ -2,6 +2,8 @@
 
 namespace Gam6itko\OzonSeller\Service;
 
+use Gam6itko\OzonSeller\TypeCaster;
+
 class ProductsService extends AbstractService
 {
     /**
@@ -42,9 +44,8 @@ class ProductsService extends AbstractService
      */
     public function info(int $productId)
     {
-        $query = [
-            'product_id' => $productId
-        ];
+        $query = ['product_id' => $productId];
+        $query = TypeCaster::castArr($query, ['product_id' => 'int']);
 
         return $this->request('POST', "/v1/product/info", ['body' => \GuzzleHttp\json_encode($query)]);
     }
@@ -59,6 +60,7 @@ class ProductsService extends AbstractService
     public function infoBy(array $query)
     {
         $query = $this->faceControl($query, ['product_id', 'sku', 'offer_id']);
+        $query = TypeCaster::castArr($query, ['product_id' => 'int', 'sku' => 'int', 'offer_id' => 'str']);
         return $this->request('POST', "/v1/product/info", ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
