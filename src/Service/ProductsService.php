@@ -46,7 +46,7 @@ class ProductsService extends AbstractService
             'product_id' => $productId
         ];
 
-        return $this->request('POST', "/v1/products/info", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', "/v1/product/info", ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
@@ -59,7 +59,7 @@ class ProductsService extends AbstractService
     public function infoBy(array $query)
     {
         $query = $this->faceControl($query, ['product_id', 'sku', 'offer_id']);
-        return $this->request('POST', "/v1/products/info", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', "/v1/product/info", ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
