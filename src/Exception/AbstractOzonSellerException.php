@@ -16,4 +16,9 @@ class AbstractOzonSellerException extends \Exception
         parent::__construct($messages);
         $this->data = $data;
     }
+
+    public function __toString()
+    {
+        return parent::__toString() . PHP_EOL . 'Data: ' . json_encode($this->data);
+    }
 }
