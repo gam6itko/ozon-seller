@@ -117,7 +117,7 @@ class OrderService extends AbstractService
      * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function itemsCancelCrossboarder(int $orderId, int $reasonCode, array $itemsIds)
+    public function itemsCancelCrossboarder(int $orderId, int $reasonCode, array $itemsIds): bool
     {
         $query = [
             'order_id'    => $orderId,
@@ -125,7 +125,8 @@ class OrderService extends AbstractService
             'item_ids'    => $itemsIds
         ];
 
-        return $this->request('POST', "/v1/order/items/cancel/crossborder", ['body' => \GuzzleHttp\json_encode($query)]);
+        $response = $this->request('POST', "/v1/order/items/cancel/crossborder", ['body' => \GuzzleHttp\json_encode($query)]);
+        return 'success' === $response;
     }
 
     /**
@@ -136,14 +137,15 @@ class OrderService extends AbstractService
      * @return array|string
      * @throws \Exception
      */
-    public function itemsCancelFbs(int $orderId, int $reasonCode)
+    public function itemsCancelFbs(int $orderId, int $reasonCode): bool
     {
         $query = [
             'order_id'         => $orderId,
             'cancel_reason_id' => $reasonCode,
         ];
 
-        return $this->request('POST', "/v1/order/cancel/fbs", ['body' => \GuzzleHttp\json_encode($query)]);
+        $response = $this->request('POST', "/v1/order/cancel/fbs", ['body' => \GuzzleHttp\json_encode($query)]);
+        return 'success' === $response;
     }
 
     /**
