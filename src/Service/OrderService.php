@@ -180,6 +180,6 @@ class OrderService extends AbstractService
      */
     public function itemsCancelReasons()
     {
-        return $this->request('POST', "/v1/order/cancel-reason/list");
+        return $this->request('POST', "/v1/order/cancel-reason/list", ['body' => '{}']);
     }
 }
