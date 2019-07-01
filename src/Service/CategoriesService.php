@@ -20,7 +20,7 @@ class CategoriesService extends AbstractService
             "category_id" => $categoryId,
             "language"    => strtoupper($language)
         ]);
-        return $this->request('POST', "/v1/category/tree/{$categoryId}", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', "/v1/category/tree", ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
