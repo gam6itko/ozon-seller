@@ -8,7 +8,7 @@ class OrderService extends AbstractService
 {
     /**
      * Receive order info.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_order
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_order
      * @param int $orderId
      * @param array $query ['translit']
      * @return mixed|\Psr\Http\Message\ResponseInterface
@@ -23,7 +23,7 @@ class OrderService extends AbstractService
 
     /**
      * Receive the list of orders.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_order_list_all
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_list_all
      * @param \DateTimeInterface $since
      * @param \DateTimeInterface $to
      * @param string $deliverySchema
@@ -49,7 +49,7 @@ class OrderService extends AbstractService
      * @param int $orderId Order ID
      * @param array $itemIds List of unique item IDs in the order
      * @return bool
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_order_crossborder
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_crossborder
      */
     public function itemsApprove(int $orderId, array $itemIds)
     {
@@ -72,7 +72,7 @@ class OrderService extends AbstractService
 
     /**
      * Create a package, mark it as dispatched and provide a tracking number.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_order_ship_cb
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_ship_cb
      * @param int $orderId Order ID
      * @param string $track Shipment tracking number
      * @param int $shippingProviderId Shipping company (provider) ID
@@ -94,7 +94,7 @@ class OrderService extends AbstractService
 
     /**
      * Create a package, mark it as dispatched and provide a tracking number.  Only for Fulfilled by Seller (FBS).
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_order_ship_fbs
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_ship_fbs
      * @param int $orderId Order ID
      * @return array|string
      * @throws \Exception
@@ -110,7 +110,7 @@ class OrderService extends AbstractService
 
     /**
      * Will cancel an item in the order, requires cancellation reason to be provided.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_order_item_crossborder
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_item_crossborder
      * @param int $orderId Order ID
      * @param int $reasonCode Cancellation reason code
      * @param array $itemsIds List of unique item IDs in the order
@@ -131,7 +131,7 @@ class OrderService extends AbstractService
 
     /**
      * Will cancel an order, requires cancellation reason to be provided.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_order_item_fbs
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_item_fbs
      * @param int $orderId Order ID
      * @param int $reasonCode Cancellation reason code
      * @return array|string
@@ -150,7 +150,7 @@ class OrderService extends AbstractService
 
     /**
      * Receive the list of unfulfilled orders, within the specified order date and time.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_order_unfulfilled
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_order_unfulfilled
      * @param array $query ['page', 'page_size']
      * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
@@ -164,7 +164,7 @@ class OrderService extends AbstractService
 
     /**
      * Receive the list of canceled orders.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_order_canceled
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_order_canceled
      * @param array $query ['page', 'page_size']
      * @return array|string
      * @throws \Exception
@@ -178,7 +178,7 @@ class OrderService extends AbstractService
 
     /**
      * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_order_canceled
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_order_canceled
      */
     public function itemsCancelReasons()
     {

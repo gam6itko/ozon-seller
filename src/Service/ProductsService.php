@@ -8,7 +8,7 @@ class ProductsService extends AbstractService
 {
     /**
      * Automatically determines a product category for a product
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_product_classifier
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_product_classifier
      * @param array $products
      * @return array|string
      * @throws \Exception
@@ -27,7 +27,7 @@ class ProductsService extends AbstractService
 
     /**
      * Creates product page in our system
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_products_create
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create
      * @param $product
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
@@ -38,7 +38,7 @@ class ProductsService extends AbstractService
 
     /**
      * Receive product info.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_products_info
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
      * @param int $productId
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
@@ -52,7 +52,7 @@ class ProductsService extends AbstractService
 
     /**
      * Receive product info.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_products_info
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
      * @param array $query ['product_id', 'sku', 'offer_id']
      * @return array|string
      * @throws \Exception
@@ -66,7 +66,7 @@ class ProductsService extends AbstractService
 
     /**
      * Receive the list of products.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_products_list
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
      * @param array $filter
      * @param array $pagination
      * @return mixed|\Psr\Http\Message\ResponseInterface
@@ -84,7 +84,7 @@ class ProductsService extends AbstractService
 
     /**
      * Update the price for one or multiple products.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_products_prices
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
      * @param $prices
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
@@ -100,7 +100,7 @@ class ProductsService extends AbstractService
 
     /**
      * Update product stocks.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_products_stocks
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_stocks
      * @param $stocks
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
@@ -121,7 +121,7 @@ class ProductsService extends AbstractService
 
     /**
      * Change the product info. Please note, that you cannot update price and stocks.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_products_prices
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
      * @param $product
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
@@ -132,7 +132,7 @@ class ProductsService extends AbstractService
 
     /**
      * Mark the product as in stock.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_products_activate
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_activate
      * @param int $productId
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
@@ -144,7 +144,7 @@ class ProductsService extends AbstractService
 
     /**
      * Mark the product as not in stock.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_post_products_deactivate
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_deactivate
      * @param int $productId
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */

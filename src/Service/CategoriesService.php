@@ -8,7 +8,7 @@ class CategoriesService extends AbstractService
 {
     /**
      * Receive the list of all available item categories.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_categories_tree
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_categories_tree
      * @param int $categoryId
      * @param string $language [EN, RU]
      * @return array
@@ -25,7 +25,7 @@ class CategoriesService extends AbstractService
 
     /**
      * Receive the attributes list from the product page for a specified category.
-     * @see http://cb-api.test.ozon.ru/apiref/en/#t-title_get_categories_attributes
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_categories_attributes
      * @param int $categoryId
      * @param string $language [EN, RU]
      * @param array $query
