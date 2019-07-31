@@ -3,7 +3,7 @@ namespace Gam6itko\OzonSeller\Exception;
 
 class AbstractOzonSellerException extends \Exception
 {
-    /** @var array */
+    /** @var array|null */
     protected $data;
 
     /**
@@ -20,5 +20,13 @@ class AbstractOzonSellerException extends \Exception
     public function __toString()
     {
         return parent::__toString() . PHP_EOL . 'Data: ' . json_encode($this->data);
+    }
+
+    /**
+     * @return array
+     */
+    public function getData(): ?array
+    {
+        return $this->data;
     }
 }
