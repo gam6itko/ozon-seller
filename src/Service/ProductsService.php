@@ -79,7 +79,7 @@ class ProductsService extends AbstractService
 
         $query = array_filter(array_merge($pagination, ['filter' => $filter]));
 
-        return $this->request('POST', "/v1/products/list", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', "/v1/product/list", ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
@@ -95,7 +95,7 @@ class ProductsService extends AbstractService
         }
 
         $arr = ['prices' => $prices];
-        return $this->request('POST', "/v1/products/prices", ['body' => \GuzzleHttp\json_encode($arr)]);
+        return $this->request('POST', "/v1/product/import/prices", ['body' => \GuzzleHttp\json_encode($arr)]);
     }
 
     /**
@@ -116,7 +116,7 @@ class ProductsService extends AbstractService
         }
 
         $arr = ['stocks' => $stocks];
-        return $this->request('POST', "/v1/products/stocks", ['body' => \GuzzleHttp\json_encode($arr)]);
+        return $this->request('POST', "/v1/product/import/stocks", ['body' => \GuzzleHttp\json_encode($arr)]);
     }
 
     /**
@@ -138,7 +138,7 @@ class ProductsService extends AbstractService
      */
     public function activate(int $productId): bool
     {
-        $response = $this->request('POST', "/v1/products/activate", ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+        $response = $this->request('POST', "/v1/product/activate", ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
         return 'success' === $response;
     }
 
@@ -150,7 +150,7 @@ class ProductsService extends AbstractService
      */
     public function deactivate(int $productId): bool
     {
-        $response = $this->request('POST', "/v1/products/deactivate", ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+        $response = $this->request('POST', "/v1/product/deactivate", ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
         return 'success' === $response;
     }
 }
