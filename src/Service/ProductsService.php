@@ -28,12 +28,15 @@ class ProductsService extends AbstractService
     /**
      * Creates product page in our system
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create
-     * @param $product
+     * @param $income
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
-    public function create(array $product)
+    public function create(array $income)
     {
-        return $this->request('POST', "/v1/product/import", ['body' => \GuzzleHttp\json_encode($product)]);
+        if (!array_key_exists('items', $income)) {
+            throw new \LogicException('Income array should contains `items` key');
+        }
+        return $this->request('POST', "/v1/product/import", ['body' => \GuzzleHttp\json_encode($income)]);
     }
 
     /**
