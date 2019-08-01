@@ -6,9 +6,10 @@ class TypeCaster
     /**
      * @param array $data Array with cast types
      * @param array $config ['float_key' => 'float', 'str_key' => 'string', 'int_key' => 'int']
+     * @param bool $force
      * @return array Modified data
      */
-    public static function castArr(array $data, array $config)
+    public static function castArr(array $data, array $config, bool $force = true)
     {
         foreach ($data as $key => &$val) {
             if (array_key_exists($key, $config)) {
@@ -28,7 +29,9 @@ class TypeCaster
                         $val = (float)$val;
                         break;
                     default:
-                        throw new \LogicException("Unsupported type: {$config[$key]}");
+                        if ($force) {
+                            throw new \LogicException("Unsupported type: {$config[$key]}");
+                        }
                 }
             }
         }

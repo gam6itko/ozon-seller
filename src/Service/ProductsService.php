@@ -2,7 +2,9 @@
 
 namespace Gam6itko\OzonSeller\Service;
 
+use Gam6itko\OzonSeller\ProductValidator;
 use Gam6itko\OzonSeller\TypeCaster;
+use Prophecy\Exception\Exception;
 
 class ProductsService extends AbstractService
 {
@@ -36,6 +38,12 @@ class ProductsService extends AbstractService
         if (!array_key_exists('items', $income)) {
             throw new \LogicException('Income array should contains `items` key');
         }
+
+        $pv = new ProductValidator();
+        foreach ($income['items'] as &$item) {
+            $item = $pv->validateItem($item);
+        }
+
         return $this->request('POST', "/v1/product/import", ['body' => \GuzzleHttp\json_encode($income)]);
     }
 
