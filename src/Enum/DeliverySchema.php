@@ -2,7 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Enum;
 
-class DeliverySchema
+final class DeliverySchema
 {
     /** @var string Fulfilled by Seller */
     const FBS = "fbs";
