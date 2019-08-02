@@ -1,6 +1,8 @@
 <?php
 namespace Gam6itko\OzonSeller;
 
+use Gam6itko\OzonSeller\Exception\ProductValidatorException;
+
 class ProductValidator
 {
     private const MAX_IMAGES_COUNT = 10;
@@ -64,13 +66,13 @@ class ProductValidator
     {
         foreach ($this->requiredKeys as $key) {
             if (!array_key_exists($key, $item)) {
-                throw new \LogicException("Required property not defined: $key");
+                throw new ProductValidatorException("Required property not defined: $key", $item);
             }
         }
 
         foreach ($this->optProps as $key => $options) {
             if (isset($item[$key]) && !in_array($item[$key], $options)) {
-                throw new \LogicException("Incorrect property value '{$item[$key]}' for `$key` key");
+                throw new ProductValidatorException("Incorrect property value '{$item[$key]}' for `$key` key");
             }
         }
 

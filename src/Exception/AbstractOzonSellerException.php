@@ -11,7 +11,7 @@ class AbstractOzonSellerException extends \Exception
      * @param string $messages
      * @param array $data
      */
-    public function __construct(string $messages, array $data)
+    public function __construct(string $messages, array $data = [])
     {
         parent::__construct($messages);
         $this->data = $data;
