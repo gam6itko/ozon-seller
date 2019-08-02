@@ -113,4 +113,10 @@ abstract class AbstractService
 
         return "Gam6itko\\OzonSeller\\Exception\\{$name}Exception";
     }
+
+    protected function ensureCollection(array $arr)
+    {
+        $isAssoc = array_keys($arr) !== range(0, count($arr) - 1);
+        return $isAssoc ? [$arr] : $arr;
+    }
 }

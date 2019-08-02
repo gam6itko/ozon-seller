@@ -17,7 +17,8 @@ class ProductsService extends AbstractService
      */
     public function classify(array $income)
     {
-        if (!array_key_exists('products', $income) && count($income) > 1) {
+        if (!array_key_exists('products', $income)) {
+            $income = $this->ensureCollection($income);
             $income = ['products' => $income];
         }
 
@@ -40,7 +41,8 @@ class ProductsService extends AbstractService
      */
     public function create(array $income)
     {
-        if (!array_key_exists('items', $income) && count($income) > 1) {
+        if (!array_key_exists('items', $income)) {
+            $income = $this->ensureCollection($income);
             $income = ['items' => $income];
         }
 
