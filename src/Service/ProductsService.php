@@ -11,20 +11,25 @@ class ProductsService extends AbstractService
     /**
      * Automatically determines a product category for a product
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_product_classifier
-     * @param array $products
+     * @param array $income
      * @return array|string
      * @throws \Exception
      */
-    public function classify(array $products)
+    public function classify(array $income)
     {
-        foreach ($products as &$p) {
+        if (!array_key_exists('products', $income) && count($income) > 1) {
+            $income = ['products' => $income];
+        }
+
+        $income = $this->faceControl($income, ['products']);
+        foreach ($income['products'] as &$p) {
             $p = $this->faceControl($p, [
                 "offer_id", "shop_category_full_path", "shop_category", "shop_category_id", "vendor", "model", "name",
                 "price", "offer_url", "img_url", "vendor_code", "barcode"
             ]);
         }
 
-        return $this->request('POST', "/v1/product/classify", ['body' => \GuzzleHttp\json_encode($products)]);
+        return $this->request('POST', "/v1/product/classify", ['body' => \GuzzleHttp\json_encode($income)]);
     }
 
     /**
@@ -35,9 +40,11 @@ class ProductsService extends AbstractService
      */
     public function create(array $income)
     {
-        if (!array_key_exists('items', $income)) {
-            throw new \LogicException('Income array should contains `items` key');
+        if (!array_key_exists('items', $income) && count($income) > 1) {
+            $income = ['items' => $income];
         }
+
+        $income = $this->faceControl($income, ['items']);
 
         $pv = new ProductValidator();
         foreach ($income['items'] as &$item) {
