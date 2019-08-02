@@ -36,10 +36,12 @@ class ProductsService extends AbstractService
     /**
      * Creates product page in our system
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create
-     * @param $income
+     * @param array $income
+     * @param bool $validate
      * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \Exception
      */
-    public function create(array $income)
+    public function create(array $income, bool $validate = true)
     {
         if (!array_key_exists('items', $income)) {
             $income = $this->ensureCollection($income);
@@ -48,9 +50,11 @@ class ProductsService extends AbstractService
 
         $income = $this->faceControl($income, ['items']);
 
-        $pv = new ProductValidator();
-        foreach ($income['items'] as &$item) {
-            $item = $pv->validateItem($item);
+        if ($validate) {
+            $pv = new ProductValidator('create');
+            foreach ($income['items'] as &$item) {
+                $item = $pv->validateItem($item);
+            }
         }
 
         return $this->request('POST', "/v1/product/import", ['body' => \GuzzleHttp\json_encode($income)]);
@@ -142,11 +146,18 @@ class ProductsService extends AbstractService
     /**
      * Change the product info. Please note, that you cannot update price and stocks.
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
-     * @param $product
+     * @param array $product
+     * @param bool $validate
      * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \Exception
      */
-    public function update(array $product)
+    public function update(array $product, bool $validate = true)
     {
+        if ($validate) {
+            $pv = new ProductValidator('create');
+            $product = $pv->validateItem($product);
+        }
+
         return $this->request('POST', "/v1/products/update", ['body' => \GuzzleHttp\json_encode($product)]);
     }
 

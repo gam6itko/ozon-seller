@@ -16,23 +16,23 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\ValidationException
+     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      */
     public function testCreateException()
     {
-        $result = self::$svc->create([]);
+        $result = self::$svc->create([], false);
         self::assertNotEmpty($result);
     }
 
     /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\ValidationException
+     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      * @dataProvider dataCreate
      * @param string $jsonFile
      */
     public function testCreate(string $jsonFile)
     {
         $product = json_decode(file_get_contents($jsonFile), true);
-        $result = self::$svc->create($product);
+        $result = self::$svc->create($product, false);
         self::assertNotEmpty($result);
         self::assertArrayHasKey('product_id', $result);
         self::assertArrayHasKey('state', $result);
@@ -47,7 +47,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 
     public function testList()
     {
-        $result = self::$svc->list(0, 10);
+        $result = self::$svc->list([], ['page' => 0, 'page_size' => 10]);
         self::assertNotEmpty($result);
         self::assertCount(10, $result);
         self::assertArrayHasKey('product_id', $result[0]);
@@ -59,7 +59,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testUpdateException()
     {
-        $result = self::$svc->update([]);
+        $result = self::$svc->update([], false);
         self::assertNotEmpty($result);
     }
 
@@ -84,7 +84,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
                 ]
             ]
         ];
-        $result = self::$svc->update($arr);
+        $result = self::$svc->update($arr, false);
         self::assertNotEmpty($result);
         self::assertArrayHasKey('updated', $result);
         self::assertTrue($result['updated']);

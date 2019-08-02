@@ -20,7 +20,7 @@ class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testTreeException()
     {
-        $res = self::$svc->tree(1);
+        $res = self::$svc->tree();
         self::assertNotEmpty($res);
     }
 

@@ -15,7 +15,8 @@
 <div class="container-fluid">
     <div class="form-inline">
         <input class="form-control" type="number" name="client-id" value="41955" placeholder="ClientId">
-        <input class="form-control" type="text" name="api-key" value="9753260e-2324-fde7-97f1-7848ed7ed097" placeholder="ApiKey">
+        <input class="form-control" type="text" name="api-key" value="9753260e-2324-fde7-97f1-7848ed7ed097"
+               placeholder="ApiKey">
         <button class="btn btn-primary" id="btnGo">Go</button>
     </div>
     <div class="row">
@@ -50,24 +51,24 @@
 
         <div class="form-group">
             <% if ('option' === attr.type) { %>
-                <select class="form-control form-control-sm" name="<%= attr.id %>">
-                    <% for (let o of attr.option) { %>
-                    <option value="<%= o.id %>"><%= o.value %></option>
-                    <% } %>
-                </select>
+            <select class="form-control form-control-sm" name="<%= attr.id %>">
+                <% for (let o of attr.option) { %>
+                <option value="<%= o.id %>"><%= o.value %></option>
+                <% } %>
+            </select>
             <% } else if ('text' === attr.type) { %>
-                <input class="form-control form-control-sm" name="<%= attr.id %>" type="text">
+            <input class="form-control form-control-sm" name="<%= attr.id %>" type="text">
             <% } %>
         </div>
 
         <% if (attr.child && attr.child.length > 0) { %>
-            <% for (let c of attr.child) { %>
-                <div class="form-group">
-                    [<%= c.id %>] <%= c.name %>
-                    <small class="badge badge-success"><%= c.type %></small>
-                    <input class="form-control form-control-sm" name="<%= c.id %>" data-parent="<%= attr.id %>">
-                </div>
-            <% } %>
+        <% for (let c of attr.child) { %>
+        <div class="form-group">
+            [<%= c.id %>] <%= c.name %>
+            <small class="badge badge-success"><%= c.type %></small>
+            <input class="form-control form-control-sm" name="<%= c.id %>" data-parent="<%= attr.id %>">
+        </div>
+        <% } %>
         <% } %>
         <button class="btn btn-sm _btn_add" data-attr-id="<%= attr.id %>">Add</button>
         <button class="btn btn-sm _btn_clear" data-attr-id="<%= attr.id %>">Dispose</button>
@@ -77,39 +78,30 @@
 </script>
 
 <script>
+    var HOST = 'http://cb-api.ozonru.me';
     var ATTRIBUTES = [];
 
-    $(function() {
+    $(function () {
         // create the editor
 
         var EDITOR = new JSONEditor(document.getElementById("jsoneditor"), {mode: 'code'});
 
-        $.ajax({
-            url: 'http://cb-api.test.ozon.ru/v1/categories/tree/',
-            method: 'GET',
-            headers: {
-                'Client-Id': $('[name="client-id"]').val(),
-                'Api-Key': $('[name="api-key"]').val(),
-            },
-            success: function(data) {
-                let end = data.result.splice(0, 1);
-                data.result.push(end[0]);
-                let html = buildNodes(data.result);
-                $('#treeCategory').html(`<ul>${html}</ul>`);
-            }
-        });
+        $('#btnGo').click(loadCategories);
 
-        $(document).on('click', 'a.cn', function() {
+        loadCategories();
+
+        $(document).on('click', 'a.cn', function () {
             $('#attributesControls').html('');
             let id = location.hash.replace('#', '');
             $.ajax({
-                url: `http://cb-api.test.ozon.ru/v1/categories/${id}/attributes`,
+                url: `${HOST}/v1/categories/${id}/attributes`,
                 method: 'GET',
                 headers: {
                     'Client-Id': $('[name="client-id"]').val(),
                     'Api-Key': $('[name="api-key"]').val(),
+                    'Content-Type': 'application/json'
                 },
-                success: function(data) {
+                success: function (data) {
                     ATTRIBUTES = data.result;
                     drawAttributeInfo(id, data);
                 }
@@ -118,7 +110,7 @@
 
         function getComplexValue (attrId) {
             let result = [];
-            $(`[data-parent=${attrId}]`).each(function() {
+            $(`[data-parent=${attrId}]`).each(function () {
                 let $input = $(this);
                 result.push({
                     id: $input.attr('name'),
@@ -128,7 +120,7 @@
             return result;
         }
 
-        $(document).on('click', '._btn_add', function() {
+        $(document).on('click', '._btn_add', function () {
             let attrId = $(this).data('attrId');
             let attrObj = findAttrById(attrId);
 
@@ -202,7 +194,7 @@
             EDITOR.set(currentJson);
         });
 
-        $(document).on('click', '._btn_clear', function() {
+        $(document).on('click', '._btn_clear', function () {
             let attrId = $(this).data('attrId');
             let attrObj = findAttrById(attrId);
             let currentJson = EDITOR.get();
@@ -217,6 +209,25 @@
             EDITOR.set(currentJson);
         });
     });
+
+    function loadCategories () {
+        $.ajax({
+            url: `${HOST}/v1/category/tree`,
+            method: 'POST',
+            headers: {
+                'Client-Id': $('[name="client-id"]').val(),
+                'Api-Key': $('[name="api-key"]').val(),
+                'Content-Type': 'application/json'
+            },
+            data: '{}',
+            success: function (data) {
+                let end = data.result.splice(0, 1);
+                data.result.push(end[0]);
+                let html = buildNodes(data.result);
+                $('#treeCategory').html(`<ul>${html}</ul>`);
+            }
+        });
+    }
 
     function buildNodes (children) {
         let html = '';
@@ -257,6 +268,7 @@
         }
         return -1;
     }
+
 </script>
 </body>
 </html>

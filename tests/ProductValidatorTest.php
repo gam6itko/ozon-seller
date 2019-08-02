@@ -6,17 +6,17 @@ use PHPUnit\Framework\TestCase;
 class ProductValidatorTest extends TestCase
 {
     /**
-     * @dataProvider dataValid
+     * @dataProvider dataValidCreate
      * @param string $json
      */
-    public function testValid(string $json)
+    public function testValidCreate(string $json)
     {
         $pv = new ProductValidator();
         $pv->validateItem(json_decode($json, true));
         self::assertTrue(true);
     }
 
-    public function dataValid()
+    public function dataValidCreate()
     {
         return [
             ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"PRAGA – элегантное поло","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"cm","weight":0.146,"weight_unit":"kg","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}']
@@ -40,6 +40,48 @@ class ProductValidatorTest extends TestCase
         return [
             ['{"offer_id":"1563"}'],
             ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"PRAGA – элегантное поло","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"m","weight":0.146,"weight_unit":"ton","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}']
+        ];
+    }
+
+    /**
+     * @dataProvider dataValidUpdate
+     * @param string $json
+     */
+    public function testValidUpdate(string $json)
+    {
+        $pv = new ProductValidator('update');
+        $pv->validateItem(json_decode($json, true));
+        self::assertTrue(true);
+    }
+
+    /**
+     * @return array
+     */
+    public function dataValidUpdate()
+    {
+        return [
+            ['{"product_id":"123", "name": "name"}']
+        ];
+    }
+
+    /**
+     * @dataProvider dataValidUpdate
+     * @param string $json
+     */
+    public function testInvalidUpdate(string $json)
+    {
+        $pv = new ProductValidator('update');
+        $pv->validateItem(json_decode($json, true));
+        self::assertTrue(true);
+    }
+
+    /**
+     * @return array
+     */
+    public function dataInvalidUpdate()
+    {
+        return [
+            ['{"name": "name"}']
         ];
     }
 }
