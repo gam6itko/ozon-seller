@@ -154,7 +154,7 @@ class ProductsService extends AbstractService
     public function update(array $product, bool $validate = true)
     {
         if ($validate) {
-            $pv = new ProductValidator('create');
+            $pv = new ProductValidator('update');
             $product = $pv->validateItem($product);
         }
 
