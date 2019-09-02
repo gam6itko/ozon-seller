@@ -1,3 +1,3 @@
 # Documentation
 
-http://cb-api.test.ozon.ru/apiref/
+https://cb-api.ozonru.me/apiref/

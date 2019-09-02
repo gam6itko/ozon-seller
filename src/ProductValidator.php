@@ -77,7 +77,7 @@ class ProductValidator
         }
 
         if (isset($item['images']) && count($item['images']) > self::MAX_IMAGES_COUNT) {
-            array_splice($item['images'], 0, self::MAX_IMAGES_COUNT);
+            array_splice($item['images'], self::MAX_IMAGES_COUNT);
         }
 
         return TypeCaster::castArr($item, $this->typeCast, false);
