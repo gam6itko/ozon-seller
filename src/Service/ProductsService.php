@@ -37,11 +37,11 @@ class ProductsService extends AbstractService
      * Creates product page in our system
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create
      * @param array $income
-     * @param bool $validate
+     * @param bool $validateBeforeSend
      * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function create(array $income, bool $validate = true)
+    public function create(array $income, bool $validateBeforeSend = true)
     {
         if (!array_key_exists('items', $income)) {
             $income = $this->ensureCollection($income);
@@ -50,7 +50,7 @@ class ProductsService extends AbstractService
 
         $income = $this->faceControl($income, ['items']);
 
-        if ($validate) {
+        if ($validateBeforeSend) {
             $pv = new ProductValidator('create');
             foreach ($income['items'] as &$item) {
                 $item = $pv->validateItem($item);

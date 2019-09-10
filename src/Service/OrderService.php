@@ -47,17 +47,15 @@ class OrderService extends AbstractService
     /**
      * Approve items in the order. Changes approval status for specific items in the order.
      * @param int $orderId Order ID
-     * @param array $itemIds List of unique item IDs in the order
      * @return bool
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_crossborder
      */
-    public function itemsApprove(int $orderId, array $itemIds)
+    public function approve(int $orderId)
     {
         $arr = [
             "order_id" => $orderId,
-            "item_ids" => $itemIds
         ];
-        return $this->request('POST', "/v1/order/items/approve/crossborder", ['body' => \GuzzleHttp\json_encode($arr)]);
+        return $this->request('POST', "/v1/order/approve/crossborder", ['body' => \GuzzleHttp\json_encode($arr)]);
     }
 
     /**
