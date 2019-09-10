@@ -27,13 +27,13 @@ class OrderService extends AbstractService
      * @param \DateTimeInterface $since
      * @param \DateTimeInterface $to
      * @param string $deliverySchema
-     * @param array $query ['page', 'page_size', 'status']
+     * @param array $query ['page', 'page_size', 'statuses']
      * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function list(\DateTimeInterface $since, \DateTimeInterface $to, string $deliverySchema = DeliverySchema::CROSSBOARDER, array $query = []): array
     {
-        $query = $this->faceControl($query, ['page', 'page_size', 'status']);
+        $query = $this->faceControl($query, ['page', 'page_size', 'statuses']);
 
         $arr = array_merge([
             'since'           => $since->format(DATE_RFC3339),
@@ -94,16 +94,18 @@ class OrderService extends AbstractService
      * Create a package, mark it as dispatched and provide a tracking number.  Only for Fulfilled by Seller (FBS).
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_ship_fbs
      * @param int $orderId Order ID
+     * @param int $packages [{"items": [{"item_id": 123, "quantity": 1}]}]
      * @return array|string
      * @throws \Exception
      */
-    public function shipFbs(int $orderId)
+    public function shipFbs(int $orderId, array $packages)
     {
         $query = [
-            'order_id' => $orderId
+            'order_id' => $orderId,
+            'packages' => $packages
         ];
 
-        return $this->request('POST', "/v1/order/ship/crossborder", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', "/v1/order/ship/fbs", ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
@@ -161,20 +163,6 @@ class OrderService extends AbstractService
     }
 
     /**
-     * Receive the list of canceled orders.
-     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_order_canceled
-     * @param array $query ['page', 'page_size']
-     * @return array|string
-     * @throws \Exception
-     */
-    public function canceled(array $query = [])
-    {
-        $query = $this->faceControl($query, ['page', 'page_size']);
-
-        return $this->request('POST', "/v1/order/canceled", ['body' => \GuzzleHttp\json_encode($query)]);
-    }
-
-    /**
      * @return mixed|\Psr\Http\Message\ResponseInterface
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_order_canceled
      */
@@ -182,4 +170,7 @@ class OrderService extends AbstractService
     {
         return $this->request('POST', "/v1/order/cancel-reason/list", ['body' => '{}']);
     }
+    
+    //todo https://cb-api.ozonru.me/apiref/ru/#t-title_post_order_packagalabel_fbs
+    //todo https://cb-api.ozonru.me/apiref/ru/#t-title_post_order_acceptancedocs_fbs
 }
