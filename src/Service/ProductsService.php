@@ -1,10 +1,8 @@
 <?php
-
 namespace Gam6itko\OzonSeller\Service;
 
 use Gam6itko\OzonSeller\ProductValidator;
 use Gam6itko\OzonSeller\TypeCaster;
-use Prophecy\Exception\Exception;
 
 class ProductsService extends AbstractService
 {
@@ -12,8 +10,7 @@ class ProductsService extends AbstractService
      * Automatically determines a product category for a product
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_product_classifier
      * @param array $income
-     * @return array|string
-     * @throws \Exception
+     * @return array
      */
     public function classify(array $income)
     {
@@ -25,12 +22,12 @@ class ProductsService extends AbstractService
         $income = $this->faceControl($income, ['products']);
         foreach ($income['products'] as &$p) {
             $p = $this->faceControl($p, [
-                "offer_id", "shop_category_full_path", "shop_category", "shop_category_id", "vendor", "model", "name",
-                "price", "offer_url", "img_url", "vendor_code", "barcode"
+                'offer_id', 'shop_category_full_path', 'shop_category', 'shop_category_id', 'vendor', 'model', 'name',
+                'price', 'offer_url', 'img_url', 'vendor_code', 'barcode'
             ]);
         }
 
-        return $this->request('POST', "/v1/product/classify", ['body' => \GuzzleHttp\json_encode($income)]);
+        return $this->request('POST', '/v1/product/classify', ['body' => \GuzzleHttp\json_encode($income)]);
     }
 
     /**
@@ -38,8 +35,7 @@ class ProductsService extends AbstractService
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create
      * @param array $income
      * @param bool $validateBeforeSend
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
+     * @return array
      */
     public function create(array $income, bool $validateBeforeSend = true)
     {
@@ -57,44 +53,77 @@ class ProductsService extends AbstractService
             }
         }
 
-        return $this->request('POST', "/v1/product/import", ['body' => \GuzzleHttp\json_encode($income)]);
+        return $this->request('POST', '/v1/product/import', ['body' => \GuzzleHttp\json_encode($income)]);
+    }
+
+    /**
+     * Product creation status
+     * @param int $taskId Product import task id
+     * @return array
+     */
+    public function creationStatus(int $taskId)
+    {
+        $query = ['task_id' => $taskId];
+        return $this->request('POST', '/v1/product/import/info', ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
      * Receive product info.
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
      * @param int $productId
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return array
      */
     public function info(int $productId)
     {
         $query = ['product_id' => $productId];
         $query = TypeCaster::castArr($query, ['product_id' => 'int']);
 
-        return $this->request('POST', "/v1/product/info", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/product/info', ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
      * Receive product info.
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
      * @param array $query ['product_id', 'sku', 'offer_id']
-     * @return array|string
-     * @throws \Exception
+     * @return array
      */
     public function infoBy(array $query)
     {
         $query = $this->faceControl($query, ['product_id', 'sku', 'offer_id']);
         $query = TypeCaster::castArr($query, ['product_id' => 'int', 'sku' => 'int', 'offer_id' => 'str']);
-        return $this->request('POST', "/v1/product/info", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/product/info', ['body' => \GuzzleHttp\json_encode($query)]);
+    }
+
+    /**
+     * Receive products stocks info
+     * @see https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_stocks
+     * @param array $pagination ['page', 'page_size']
+     * @return array
+     */
+    public function stockInfo(array $pagination = [])
+    {
+        $pagination = $this->faceControl($pagination, ['page', 'page_size']);
+        return $this->request('POST', '/v1/product/info/stocks', ['body' => \GuzzleHttp\json_encode($pagination)]);
+    }
+
+    /**
+     * Receive products prices info
+     * @see https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_prices
+     * @param array $pagination
+     * @return array
+     */
+    public function pricesInfo(array $pagination = [])
+    {
+        $pagination = $this->faceControl($pagination, ['page', 'page_size']);
+        return $this->request('POST', '/v1/product/info/prices', ['body' => \GuzzleHttp\json_encode($pagination)]);
     }
 
     /**
      * Receive the list of products.
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
-     * @param array $filter
-     * @param array $pagination
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
+     * @param array $filter ['offer_id', 'product_id', 'visibility']
+     * @param array $pagination ['page', 'page_size']
+     * @return array
      */
     public function list(array $filter = [], array $pagination = [])
     {
@@ -103,14 +132,14 @@ class ProductsService extends AbstractService
 
         $query = array_filter(array_merge($pagination, ['filter' => $filter]));
 
-        return $this->request('POST', "/v1/product/list", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/product/list', ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
      * Update the price for one or multiple products.
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
      * @param $prices
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return array
      */
     public function updatePrices(array $prices)
     {
@@ -119,14 +148,14 @@ class ProductsService extends AbstractService
         }
 
         $arr = ['prices' => $prices];
-        return $this->request('POST', "/v1/product/import/prices", ['body' => \GuzzleHttp\json_encode($arr)]);
+        return $this->request('POST', '/v1/product/import/prices', ['body' => \GuzzleHttp\json_encode($arr)]);
     }
 
     /**
      * Update product stocks.
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_stocks
      * @param $stocks
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return array
      */
     public function updateStocks(array $stocks)
     {
@@ -140,7 +169,7 @@ class ProductsService extends AbstractService
         }
 
         $arr = ['stocks' => $stocks];
-        return $this->request('POST', "/v1/product/import/stocks", ['body' => \GuzzleHttp\json_encode($arr)]);
+        return $this->request('POST', '/v1/product/import/stocks', ['body' => \GuzzleHttp\json_encode($arr)]);
     }
 
     /**
@@ -148,8 +177,7 @@ class ProductsService extends AbstractService
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
      * @param array $product
      * @param bool $validate
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
+     * @return array
      */
     public function update(array $product, bool $validate = true)
     {
@@ -158,18 +186,18 @@ class ProductsService extends AbstractService
             $product = $pv->validateItem($product);
         }
 
-        return $this->request('POST', "/v1/products/update", ['body' => \GuzzleHttp\json_encode($product)]);
+        return $this->request('POST', '/v1/products/update', ['body' => \GuzzleHttp\json_encode($product)]);
     }
 
     /**
      * Mark the product as in stock.
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_activate
      * @param int $productId
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return bool success
      */
     public function activate(int $productId): bool
     {
-        $response = $this->request('POST', "/v1/product/activate", ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+        $response = $this->request('POST', '/v1/product/activate', ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
         return 'success' === $response;
     }
 
@@ -177,11 +205,27 @@ class ProductsService extends AbstractService
      * Mark the product as not in stock.
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_deactivate
      * @param int $productId
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return bool success
      */
     public function deactivate(int $productId): bool
     {
-        $response = $this->request('POST', "/v1/product/deactivate", ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+        $response = $this->request('POST', '/v1/product/deactivate', ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
         return 'success' === $response;
+    }
+
+    /**
+     * This method allows you to remove product in some cases: [product must not have active stocks, product should not have any sales]
+     * @param int $productId
+     * @param string|null $offerId
+     * @return bool deleted
+     */
+    public function delete(int $productId, string $offerId = null)
+    {
+        $query = array_filter([
+            'product_id' => $productId,
+            'offer_id'   => $offerId,
+        ]);
+        $response = $this->request('POST', '/v1/product/delete', ['body' => \GuzzleHttp\json_encode($query)]);
+        return 'deleted' === $response;
     }
 }

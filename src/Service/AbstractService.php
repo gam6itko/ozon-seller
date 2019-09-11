@@ -1,7 +1,5 @@
 <?php
-
 namespace Gam6itko\OzonSeller\Service;
-
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
@@ -68,7 +66,6 @@ abstract class AbstractService
      * @param string $uri
      * @param array $options
      * @return string|array
-     * @throws \Exception
      */
     protected function request(string $method, string $uri = '', array $options = [])
     {

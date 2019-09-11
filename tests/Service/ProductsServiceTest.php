@@ -3,7 +3,7 @@
 use Gam6itko\OzonSeller\Service\ProductsService;
 
 /**
- * @covers ProductsService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\ProductsService
  */
 class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 {
@@ -25,6 +25,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @covers ::create
      * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      * @dataProvider dataCreate
      * @param string $jsonFile
@@ -45,9 +46,43 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
+    /**
+     * @covers ::creationStatus
+     * @depends testCreate
+     */
+    public function testCreationStatus()
+    {
+        $status = self::$svc->creationStatus(33919);
+        self::assertNotEmpty($status);
+        self::assertArrayHasKey('items', $status);
+        self::assertArrayHasKey('total', $status);
+    }
+
+    /**
+     * @covers ::stockInfo
+     */
+    public function testStockInfo()
+    {
+        $status = self::$svc->stockInfo();
+        self::assertNotEmpty($status);
+    }
+
+    /**
+     * @covers ::pricesInfo
+     */
+    public function testPricesInfo()
+    {
+        $status = self::$svc->pricesInfo();
+        self::assertNotEmpty($status);
+    }
+
+    /**
+     * @covers ::list
+     * @throws Exception
+     */
     public function testList()
     {
-        $result = self::$svc->list([], ['page' => 0, 'page_size' => 10]);
+        $result = self::$svc->list([], ['page' => 1, 'page_size' => 10]);
         self::assertNotEmpty($result);
         self::assertCount(10, $result);
         self::assertArrayHasKey('product_id', $result[0]);
@@ -55,6 +90,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @covers ::update
      * @expectedException \Gam6itko\OzonSeller\Exception\ValidationException
      */
     public function testUpdateException()
@@ -64,6 +100,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @covers ::info
      * @depends testUpdate
      */
     public function testInfo()
@@ -73,6 +110,10 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
         self::assertArrayHasKey('name', $productInfo);
     }
 
+    /**
+     * @covers ::update
+     * @throws Exception
+     */
     public function testUpdate()
     {
         $arr = [
@@ -90,6 +131,9 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
         self::assertTrue($result['updated']);
     }
 
+    /**
+     * @covers ::deactivate
+     */
     public function testDeactivate()
     {
         $result = self::$svc->deactivate(510216);
@@ -97,12 +141,23 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @covers ::deactivate
      * @depends testDeactivate
      */
     public function testActivate()
     {
         $result = self::$svc->activate(510216);
         self::assertTrue($result);
+    }
+
+    /**
+     * @covers ::delete
+     * @depends testCreate
+     */
+    public function testDelete()
+    {
+        $status = self::$svc->delete(510216);
+        self::assertNotEmpty($status);
     }
 
     public function testUpdatePricesNotFound()
@@ -144,6 +199,9 @@ JSON;
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
     }
 
+    /**
+     * @covers ::updatePrices
+     */
     public function testUpdatePrices()
     {
         $expectedJson = <<<JSON
@@ -168,6 +226,9 @@ JSON;
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
     }
 
+    /**
+     * @covers ::updateStocks
+     */
     public function testUpdateStocks()
     {
         $expectedJson = <<<JSON

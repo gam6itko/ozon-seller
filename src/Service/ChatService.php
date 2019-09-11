@@ -1,5 +1,4 @@
 <?php
-
 namespace Gam6itko\OzonSeller\Service;
 
 class ChatService extends AbstractService
@@ -7,8 +6,7 @@ class ChatService extends AbstractService
     /**
      * Retrieves a list of chats in which a seller participates
      * @param array $query ['chat_id_list', 'page', 'page_size']
-     * @return mixed
-     * @throws \Exception
+     * @return array
      */
     public function list(array $query = [])
     {
@@ -17,15 +15,14 @@ class ChatService extends AbstractService
             'body' => $query ? \GuzzleHttp\json_encode($query) : '{}'
         ];
 
-        return $this->request('POST', "/v1/chat/list", $options);
+        return $this->request('POST', '/v1/chat/list', $options);
     }
 
     /**
      * Retreives message history in a chat.
      * @param string $chatId
      * @param array $query
-     * @return mixed
-     * @throws \Exception
+     * @return array
      */
     public function history(string $chatId, array $query = [])
     {
@@ -33,15 +30,14 @@ class ChatService extends AbstractService
 
         $query['chat_id'] = $chatId;
 
-        return $this->request('POST', "/v1/chat/history", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/chat/history', ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
      * Sends a message in an existing chat with a customer
      * @param string $chatId
      * @param string $text
-     * @return mixed
-     * @throws \Exception
+     * @return array
      */
     public function sendMessage(string $chatId, string $text): bool
     {
@@ -50,7 +46,7 @@ class ChatService extends AbstractService
             'text'    => $text
         ];
 
-        $response = $this->request('POST', "/v1/chat/send/message", ['body' => \GuzzleHttp\json_encode($arr)]);
+        $response = $this->request('POST', '/v1/chat/send/message', ['body' => \GuzzleHttp\json_encode($arr)]);
         return 'success' === $response;
     }
 
@@ -68,7 +64,7 @@ class ChatService extends AbstractService
             'chat_id'        => $chatId,
             'name'           => $name
         ];
-        $response = $this->request('POST', "/v1/chat/send/file", ['body' => \GuzzleHttp\json_encode($arr)]);
+        $response = $this->request('POST', '/v1/chat/send/file', ['body' => \GuzzleHttp\json_encode($arr)]);
         return 'success' === $response;
     }
 
@@ -77,13 +73,12 @@ class ChatService extends AbstractService
      * For example, if a seller has some questions regarding delivery address, he can simply contact a buyer via new chat
      * @param int $orderId
      * @return string Chat ID
-     * @throws \Exception
      */
     public function start(int $orderId): string
     {
         $arr = [
             'order_id' => $orderId
         ];
-        return $this->request('POST', "/v1/chat/start", ['body' => \GuzzleHttp\json_encode($arr)])['chat_id'];
+        return $this->request('POST', '/v1/chat/start', ['body' => \GuzzleHttp\json_encode($arr)])['chat_id'];
     }
 }
