@@ -5,7 +5,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "gam6itko",
+            "name": "Alexander Strizhak",
             "email": "gam6itko@gmail.com"
         }
     ],
@@ -28,5 +28,8 @@
         "branch-alias": {
             "dev-master": "0.1.x-dev"
         }
+    },
+    "archive": {
+        "exclude": ["tests"]
     }
 }
