@@ -71,7 +71,7 @@ class OrderService extends AbstractService
      * @param string $track Shipment tracking number
      * @param int $shippingProviderId Shipping company (provider) ID
      * @param array $items Order items array [['item_id', 'quantity']]
-     * @return bool
+     * @return array
      */
     public function shipCrossboarder(int $orderId, string $track, int $shippingProviderId, array $items)
     {
@@ -82,8 +82,7 @@ class OrderService extends AbstractService
             'items'                => $items
         ];
 
-        $response = $this->request('POST', '/v1/order/ship/crossborder', ['body' => \GuzzleHttp\json_encode($query)]);
-        return 'success' === $response;
+        return $this->request('POST', '/v1/order/ship/crossborder', ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
