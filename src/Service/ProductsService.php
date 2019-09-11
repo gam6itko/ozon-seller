@@ -186,7 +186,7 @@ class ProductsService extends AbstractService
             $product = $pv->validateItem($product);
         }
 
-        return $this->request('POST', '/v1/products/update', ['body' => \GuzzleHttp\json_encode($product)]);
+        return $this->request('POST', '/v1/product/update', ['body' => \GuzzleHttp\json_encode($product)]);
     }
 
     /**
