@@ -1,4 +1,2 @@
 services:
-    phpcsfixer:
-        version:        latest
-        config_path:      ~
+    phpcsfixer: true
