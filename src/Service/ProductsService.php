@@ -1,4 +1,5 @@
 <?php
+
 namespace Gam6itko\OzonSeller\Service;
 
 use Gam6itko\OzonSeller\ProductValidator;
@@ -7,9 +8,12 @@ use Gam6itko\OzonSeller\TypeCaster;
 class ProductsService extends AbstractService
 {
     /**
-     * Automatically determines a product category for a product
+     * Automatically determines a product category for a product.
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_product_classifier
+     *
      * @param array $income
+     *
      * @return array
      */
     public function classify(array $income)
@@ -23,7 +27,7 @@ class ProductsService extends AbstractService
         foreach ($income['products'] as &$p) {
             $p = $this->faceControl($p, [
                 'offer_id', 'shop_category_full_path', 'shop_category', 'shop_category_id', 'vendor', 'model', 'name',
-                'price', 'offer_url', 'img_url', 'vendor_code', 'barcode'
+                'price', 'offer_url', 'img_url', 'vendor_code', 'barcode',
             ]);
         }
 
@@ -31,10 +35,13 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * Creates product page in our system
+     * Creates product page in our system.
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create
+     *
      * @param array $income
-     * @param bool $validateBeforeSend
+     * @param bool  $validateBeforeSend
+     *
      * @return array
      */
     public function create(array $income, bool $validateBeforeSend = true)
@@ -57,20 +64,26 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * Product creation status
+     * Product creation status.
+     *
      * @param int $taskId Product import task id
+     *
      * @return array
      */
     public function creationStatus(int $taskId)
     {
         $query = ['task_id' => $taskId];
+
         return $this->request('POST', '/v1/product/import/info', ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
      * Receive product info.
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
+     *
      * @param int $productId
+     *
      * @return array
      */
     public function info(int $productId)
@@ -83,46 +96,61 @@ class ProductsService extends AbstractService
 
     /**
      * Receive product info.
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
+     *
      * @param array $query ['product_id', 'sku', 'offer_id']
+     *
      * @return array
      */
     public function infoBy(array $query)
     {
         $query = $this->faceControl($query, ['product_id', 'sku', 'offer_id']);
         $query = TypeCaster::castArr($query, ['product_id' => 'int', 'sku' => 'int', 'offer_id' => 'str']);
+
         return $this->request('POST', '/v1/product/info', ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**
-     * Receive products stocks info
+     * Receive products stocks info.
+     *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_stocks
+     *
      * @param array $pagination ['page', 'page_size']
+     *
      * @return array
      */
     public function stockInfo(array $pagination = [])
     {
         $pagination = $this->faceControl($pagination, ['page', 'page_size']);
+
         return $this->request('POST', '/v1/product/info/stocks', ['body' => \GuzzleHttp\json_encode($pagination)]);
     }
 
     /**
-     * Receive products prices info
+     * Receive products prices info.
+     *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_prices
+     *
      * @param array $pagination
+     *
      * @return array
      */
     public function pricesInfo(array $pagination = [])
     {
         $pagination = $this->faceControl($pagination, ['page', 'page_size']);
+
         return $this->request('POST', '/v1/product/info/prices', ['body' => \GuzzleHttp\json_encode($pagination)]);
     }
 
     /**
      * Receive the list of products.
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
-     * @param array $filter ['offer_id', 'product_id', 'visibility']
+     *
+     * @param array $filter     ['offer_id', 'product_id', 'visibility']
      * @param array $pagination ['page', 'page_size']
+     *
      * @return array
      */
     public function list(array $filter = [], array $pagination = [])
@@ -137,8 +165,11 @@ class ProductsService extends AbstractService
 
     /**
      * Update the price for one or multiple products.
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
+     *
      * @param $prices
+     *
      * @return array
      */
     public function updatePrices(array $prices)
@@ -148,13 +179,17 @@ class ProductsService extends AbstractService
         }
 
         $arr = ['prices' => $prices];
+
         return $this->request('POST', '/v1/product/import/prices', ['body' => \GuzzleHttp\json_encode($arr)]);
     }
 
     /**
      * Update product stocks.
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_stocks
+     *
      * @param $stocks
+     *
      * @return array
      */
     public function updateStocks(array $stocks)
@@ -169,14 +204,18 @@ class ProductsService extends AbstractService
         }
 
         $arr = ['stocks' => $stocks];
+
         return $this->request('POST', '/v1/product/import/stocks', ['body' => \GuzzleHttp\json_encode($arr)]);
     }
 
     /**
      * Change the product info. Please note, that you cannot update price and stocks.
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
+     *
      * @param array $product
-     * @param bool $validate
+     * @param bool  $validate
+     *
      * @return array
      */
     public function update(array $product, bool $validate = true)
@@ -191,41 +230,52 @@ class ProductsService extends AbstractService
 
     /**
      * Mark the product as in stock.
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_activate
+     *
      * @param int $productId
+     *
      * @return bool success
      */
     public function activate(int $productId): bool
     {
         $response = $this->request('POST', '/v1/product/activate', ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+
         return 'success' === $response;
     }
 
     /**
      * Mark the product as not in stock.
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_deactivate
+     *
      * @param int $productId
+     *
      * @return bool success
      */
     public function deactivate(int $productId): bool
     {
         $response = $this->request('POST', '/v1/product/deactivate', ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+
         return 'success' === $response;
     }
 
     /**
-     * This method allows you to remove product in some cases: [product must not have active stocks, product should not have any sales]
-     * @param int $productId
+     * This method allows you to remove product in some cases: [product must not have active stocks, product should not have any sales].
+     *
+     * @param int         $productId
      * @param string|null $offerId
+     *
      * @return bool deleted
      */
     public function delete(int $productId, string $offerId = null)
     {
         $query = array_filter([
             'product_id' => $productId,
-            'offer_id'   => $offerId,
+            'offer_id' => $offerId,
         ]);
         $response = $this->request('POST', '/v1/product/delete', ['body' => \GuzzleHttp\json_encode($query)]);
+
         return 'deleted' === $response;
     }
 }

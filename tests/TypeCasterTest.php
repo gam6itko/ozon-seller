@@ -41,7 +41,7 @@ class TypeCasterTest extends \PHPUnit\Framework\TestCase
                 ['product_id' => 'must be 0', 'sku' => '1234', 'offer_id' => 1234141, 'bool_key' => 1, 'false_bool' => 0],
                 ['product_id' => 'int', 'sku' => 'int', 'offer_id' => 'str', 'bool_key' => 'bool', 'false_bool' => 'bool'],
                 ['product_id' => 0, 'sku' => 1234, 'offer_id' => '1234141', 'bool_key' => true, 'false_bool' => false],
-            ]
+            ],
         ];
     }
 }

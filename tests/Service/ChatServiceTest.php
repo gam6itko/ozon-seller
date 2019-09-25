@@ -4,7 +4,7 @@ use Gam6itko\OzonSeller\Service\ChatService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers ChatService
+ * @covers \ChatService
  */
 class ChatServiceTest extends TestCase
 {

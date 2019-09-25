@@ -1,4 +1,5 @@
 <?php
+
 namespace Gam6itko\OzonSeller;
 
 use Gam6itko\OzonSeller\Exception\ProductValidatorException;
@@ -8,26 +9,26 @@ class ProductValidator
     private const MAX_IMAGES_COUNT = 10;
 
     public const PROPERTIES = [
-        'product_id'     => ['type' => 'int', 'requiredCreate' => false, 'requiredUpdate' => true],
-        'barcode'        => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'description'    => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'category_id'    => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'name'           => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'offer_id'       => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'price'          => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'old_price'      => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'premium_price'  => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'vat'            => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'vendor'         => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'vendor_code'    => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'attributes'     => ['type' => 'array', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'images'         => ['type' => 'array', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'height'         => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'depth'          => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'width'          => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'product_id' => ['type' => 'int', 'requiredCreate' => false, 'requiredUpdate' => true],
+        'barcode' => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
+        'description' => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'category_id' => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'name' => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'offer_id' => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'price' => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'old_price' => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
+        'premium_price' => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
+        'vat' => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'vendor' => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
+        'vendor_code' => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
+        'attributes' => ['type' => 'array', 'requiredCreate' => false, 'requiredUpdate' => false],
+        'images' => ['type' => 'array', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'height' => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'depth' => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'width' => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
         'dimension_unit' => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false, 'options' => ['mm', 'cm', 'in']],
-        'weight'         => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'weight_unit'    => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false, 'options' => ['g', 'kg', 'lb']],
+        'weight' => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
+        'weight_unit' => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false, 'options' => ['g', 'kg', 'lb']],
     ];
 
     /** @var array */
@@ -41,6 +42,7 @@ class ProductValidator
 
     /**
      * ProductValidator constructor.
+     *
      * @param string $mode
      */
     public function __construct(string $mode = 'create')
@@ -50,7 +52,7 @@ class ProductValidator
         }
 
         $this->requiredKeys = array_keys(array_filter(array_map(function ($arr) use ($mode) {
-            return $arr['required' . ucfirst($mode)] ?? false;
+            return $arr['required'.ucfirst($mode)] ?? false;
         }, self::PROPERTIES)));
 
         $this->optProps = array_filter(array_map(function ($arr) {

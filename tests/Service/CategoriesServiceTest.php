@@ -3,7 +3,7 @@
 use Gam6itko\OzonSeller\Service\CategoriesService;
 
 /**
- * @covers CategoriesService
+ * @covers \CategoriesService
  */
 class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
 {
@@ -33,7 +33,8 @@ class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider dataTree
-     * @param int $id
+     *
+     * @param int    $id
      * @param string $title
      */
     public function testTree(int $id, string $title)
@@ -55,6 +56,7 @@ class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider dataAttributes
+     *
      * @param int $id
      */
     public function testAttributes(int $id)

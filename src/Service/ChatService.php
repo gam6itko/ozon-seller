@@ -1,18 +1,21 @@
 <?php
+
 namespace Gam6itko\OzonSeller\Service;
 
 class ChatService extends AbstractService
 {
     /**
-     * Retrieves a list of chats in which a seller participates
+     * Retrieves a list of chats in which a seller participates.
+     *
      * @param array $query ['chat_id_list', 'page', 'page_size']
+     *
      * @return array
      */
     public function list(array $query = [])
     {
         $query = $this->faceControl($query, ['chat_id_list', 'page', 'page_size']);
         $options = [
-            'body' => $query ? \GuzzleHttp\json_encode($query) : '{}'
+            'body' => $query ? \GuzzleHttp\json_encode($query) : '{}',
         ];
 
         return $this->request('POST', '/v1/chat/list', $options);
@@ -20,8 +23,10 @@ class ChatService extends AbstractService
 
     /**
      * Retreives message history in a chat.
+     *
      * @param string $chatId
-     * @param array $query
+     * @param array  $query
+     *
      * @return array
      */
     public function history(string $chatId, array $query = [])
@@ -34,51 +39,60 @@ class ChatService extends AbstractService
     }
 
     /**
-     * Sends a message in an existing chat with a customer
+     * Sends a message in an existing chat with a customer.
+     *
      * @param string $chatId
      * @param string $text
+     *
      * @return array
      */
     public function sendMessage(string $chatId, string $text): bool
     {
         $arr = [
             'chat_id' => $chatId,
-            'text'    => $text
+            'text' => $text,
         ];
 
         $response = $this->request('POST', '/v1/chat/send/message', ['body' => \GuzzleHttp\json_encode($arr)]);
+
         return 'success' === $response;
     }
 
     /**
-     * Sends a file in an existing chat with a customer
+     * Sends a file in an existing chat with a customer.
+     *
      * @param string $base64Content File encoded in base64 string
-     * @param string $chatId Unique chat ID
-     * @param string $name File name with extension
+     * @param string $chatId        Unique chat ID
+     * @param string $name          File name with extension
+     *
      * @return array|string
      */
     public function sendFile(string $base64Content, string $chatId, string $name)
     {
         $arr = [
             'base64_content' => $base64Content,
-            'chat_id'        => $chatId,
-            'name'           => $name
+            'chat_id' => $chatId,
+            'name' => $name,
         ];
         $response = $this->request('POST', '/v1/chat/send/file', ['body' => \GuzzleHttp\json_encode($arr)]);
+
         return 'success' === $response;
     }
 
     /**
      * Creates a new chat with a customer related to a specific order.
-     * For example, if a seller has some questions regarding delivery address, he can simply contact a buyer via new chat
+     * For example, if a seller has some questions regarding delivery address, he can simply contact a buyer via new chat.
+     *
      * @param int $orderId
+     *
      * @return string Chat ID
      */
     public function start(int $orderId): string
     {
         $arr = [
-            'order_id' => $orderId
+            'order_id' => $orderId,
         ];
+
         return $this->request('POST', '/v1/chat/start', ['body' => \GuzzleHttp\json_encode($arr)])['chat_id'];
     }
 }

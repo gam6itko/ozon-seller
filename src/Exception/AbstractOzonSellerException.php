@@ -1,4 +1,5 @@
 <?php
+
 namespace Gam6itko\OzonSeller\Exception;
 
 class AbstractOzonSellerException extends \Exception
@@ -8,8 +9,9 @@ class AbstractOzonSellerException extends \Exception
 
     /**
      * ValidationException constructor.
+     *
      * @param string $messages
-     * @param array $data
+     * @param array  $data
      */
     public function __construct(string $messages, array $data = [])
     {
@@ -19,7 +21,7 @@ class AbstractOzonSellerException extends \Exception
 
     public function __toString()
     {
-        return parent::__toString() . PHP_EOL . 'Data: ' . json_encode($this->data);
+        return parent::__toString().PHP_EOL.'Data: '.json_encode($this->data);
     }
 
     /**

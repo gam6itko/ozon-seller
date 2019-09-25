@@ -28,6 +28,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      * @covers ::create
      * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      * @dataProvider dataCreate
+     *
      * @param string $jsonFile
      */
     public function testCreate(string $jsonFile)
@@ -42,7 +43,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     public function dataCreate()
     {
         return [
-            [__DIR__ . '/Resources/Products/create.0.request.json']
+            [__DIR__.'/Resources/Products/create.0.request.json'],
         ];
     }
 
@@ -78,6 +79,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers ::list
+     *
      * @throws Exception
      */
     public function testList()
@@ -112,18 +114,19 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers ::update
+     *
      * @throws Exception
      */
     public function testUpdate()
     {
         $arr = [
             'product_id' => 507735,
-            'images'     => [
+            'images' => [
                 [
-                    "file_name" => "https://images.freeimages.com/images/large-previews/4ad/snare-drum-second-take-1-1564542.jpg",
-                    "default"   => true
-                ]
-            ]
+                    'file_name' => 'https://images.freeimages.com/images/large-previews/4ad/snare-drum-second-take-1-1564542.jpg',
+                    'default' => true,
+                ],
+            ],
         ];
         $result = self::$svc->update($arr, false);
         self::assertNotEmpty($result);
@@ -182,17 +185,17 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 JSON;
         $arr = [
             [
-                "product_id" => 120000,
-                "price"      => "79990",
-                "old_price"  => "89990",
-                "vat"        => "0.10"
+                'product_id' => 120000,
+                'price' => '79990',
+                'old_price' => '89990',
+                'vat' => '0.10',
             ],
             [
-                "product_id" => 124100,
-                "price"      => "79990",
-                "old_price"  => "89990",
-                "vat"        => "0.18"
-            ]
+                'product_id' => 124100,
+                'price' => '79990',
+                'old_price' => '89990',
+                'vat' => '0.18',
+            ],
         ];
         $result = self::$svc->updatePrices($arr);
         self::assertNotEmpty($result);
@@ -217,9 +220,9 @@ JSON;
         $arr = [
             [
                 'product_id' => 508756,
-                'price'      => '45000',
-                'vat'        => '0.18'
-            ]
+                'price' => '45000',
+                'vat' => '0.18',
+            ],
         ];
         $result = self::$svc->updatePrices($arr);
         self::assertNotEmpty($result);
@@ -243,9 +246,9 @@ JSON;
 
         $arr = [
             [
-                "product_id" => 507735,
-                "stock"      => 20
-            ]
+                'product_id' => 507735,
+                'stock' => 20,
+            ],
         ];
         $result = self::$svc->updateStocks($arr);
         self::assertNotEmpty($result);

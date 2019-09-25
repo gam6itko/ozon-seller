@@ -5,11 +5,11 @@ use PHPHtmlParser\Dom;
 class ApiReferenceTest extends \PHPUnit\Framework\TestCase
 {
     const MAPPING = [
-        '/v1/order/123456?translit=true' => '/v1/order/{$orderId}'
+        '/v1/order/123456?translit=true' => '/v1/order/{$orderId}',
     ];
 
     /**
-     * Check for new api methods
+     * Check for new api methods.
      */
     public function testActualRealization()
     {
@@ -46,7 +46,7 @@ class ApiReferenceTest extends \PHPUnit\Framework\TestCase
     {
         $finder = new \Symfony\Component\Finder\Finder();
 
-        $dir = realpath(__DIR__ . '/../src/Service');
+        $dir = realpath(__DIR__.'/../src/Service');
         self::assertDirectoryExists($dir);
         $finder->files()->in($dir)->name('*.php');
 
@@ -58,6 +58,7 @@ class ApiReferenceTest extends \PHPUnit\Framework\TestCase
         }
 
         asort($result);
+
         return array_values(array_unique($result));
     }
 }

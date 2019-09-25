@@ -1,4 +1,5 @@
 <?php
+
 namespace Gam6itko\OzonSeller\Enum;
 
 final class ProductState

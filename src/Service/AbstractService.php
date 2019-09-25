@@ -1,4 +1,5 @@
 <?php
+
 namespace Gam6itko\OzonSeller\Service;
 
 use GuzzleHttp\Client;
@@ -20,15 +21,16 @@ abstract class AbstractService
 
     /**
      * CategoriesService constructor.
+     *
      * @param string $host
-     * @param int $clientId
+     * @param int    $clientId
      * @param string $apiKey
      */
     public function __construct(int $clientId, string $apiKey, string $host = 'https://api-seller.ozon.ru/')
     {
         $this->clientId = $clientId;
         $this->apiKey = $apiKey;
-        $this->host = trim($host, '/') . '/';
+        $this->host = trim($host, '/').'/';
     }
 
     /**
@@ -39,21 +41,23 @@ abstract class AbstractService
         if (null === $this->client) {
             $this->client = new Client([
                 'base_uri' => $this->host,
-                'headers'  => [
-                    'Client-Id'    => $this->clientId,
-                    'Api-Key'      => $this->apiKey,
+                'headers' => [
+                    'Client-Id' => $this->clientId,
+                    'Api-Key' => $this->apiKey,
                     'Content-Type' => 'application/json',
-
-                ]
+                ],
             ]);
         }
+
         return $this->client;
     }
 
     /**
-     * Filters unexpected array keys
+     * Filters unexpected array keys.
+     *
      * @param array $query
      * @param array $whitelist
+     *
      * @return array
      */
     protected function faceControl(array $query, array $whitelist): array
@@ -64,13 +68,15 @@ abstract class AbstractService
     /**
      * @param string $method
      * @param string $uri
-     * @param array $options
+     * @param array  $options
+     *
      * @return string|array
      */
     protected function request(string $method, string $uri = '', array $options = [])
     {
         try {
             $response = $this->getClient()->request($method, $uri, $options);
+
             return \GuzzleHttp\json_decode($response->getBody()->getContents(), true)['result'];
         } catch (BadResponseException $exc) {
             $this->adaptException($exc);
@@ -89,7 +95,7 @@ abstract class AbstractService
         $className = $this->getExceptionClassByName($errorData['code']);
         $errorData = array_merge([
             'message' => '',
-            'data'    => []
+            'data' => [],
         ], $errorData);
 
         try {
@@ -114,6 +120,7 @@ abstract class AbstractService
     protected function ensureCollection(array $arr)
     {
         $isAssoc = array_keys($arr) !== range(0, count($arr) - 1);
+
         return $isAssoc ? [$arr] : $arr;
     }
 }

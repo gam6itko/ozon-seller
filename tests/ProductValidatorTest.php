@@ -7,6 +7,7 @@ class ProductValidatorTest extends TestCase
 {
     /**
      * @dataProvider dataValidCreate
+     *
      * @param string $json
      */
     public function testValidCreate(string $json)
@@ -19,13 +20,14 @@ class ProductValidatorTest extends TestCase
     public function dataValidCreate()
     {
         return [
-            ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"PRAGA – элегантное поло","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"cm","weight":0.146,"weight_unit":"kg","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}']
+            ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"PRAGA – элегантное поло","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"cm","weight":0.146,"weight_unit":"kg","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}'],
         ];
     }
 
     /**
      * @dataProvider dataInvalid
      * @expectedException \LogicException
+     *
      * @param string $json
      */
     public function testInvalid(string $json)
@@ -39,12 +41,13 @@ class ProductValidatorTest extends TestCase
     {
         return [
             ['{"offer_id":"1563"}'],
-            ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"PRAGA – элегантное поло","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"m","weight":0.146,"weight_unit":"ton","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}']
+            ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"PRAGA – элегантное поло","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"m","weight":0.146,"weight_unit":"ton","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}'],
         ];
     }
 
     /**
      * @dataProvider dataValidUpdate
+     *
      * @param string $json
      */
     public function testValidUpdate(string $json)
@@ -60,12 +63,13 @@ class ProductValidatorTest extends TestCase
     public function dataValidUpdate()
     {
         return [
-            ['{"product_id":"123", "name": "name"}']
+            ['{"product_id":"123", "name": "name"}'],
         ];
     }
 
     /**
      * @dataProvider dataValidUpdate
+     *
      * @param string $json
      */
     public function testInvalidUpdate(string $json)
@@ -81,12 +85,13 @@ class ProductValidatorTest extends TestCase
     public function dataInvalidUpdate()
     {
         return [
-            ['{"name": "name"}']
+            ['{"name": "name"}'],
         ];
     }
 
     /**
      * @dataProvider dataImages
+     *
      * @param string $json
      */
     public function testImages(string $json)
@@ -206,7 +211,7 @@ class ProductValidatorTest extends TestCase
       "default": false
     }
   ]
-}']
+}'],
         ];
     }
 }

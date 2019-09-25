@@ -4,7 +4,7 @@ use Gam6itko\OzonSeller\Enum\DeliverySchema;
 use Gam6itko\OzonSeller\Service\OrderService;
 
 /**
- * @covers OrderService
+ * @covers \OrderService
  */
 class OrderServiceTest extends \PHPUnit\Framework\TestCase
 {
@@ -41,7 +41,7 @@ class OrderServiceTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers OrderService::itemsCancelReasons
+     * @covers \OrderService::itemsCancelReasons
      */
     public function testItemsCancelReasons()
     {
@@ -69,5 +69,4 @@ class OrderServiceTest extends \PHPUnit\Framework\TestCase
         $result = self::$svc->shippingProviders();
         self::assertTrue(true);
     }
-
 }
