@@ -10,15 +10,40 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     /** @var ProductsService */
     private static $svc;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$svc = new ProductsService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
     }
 
     /**
+     * @covers ::create
+     * @dataProvider dataCreate
+     * @expectedException \Gam6itko\OzonSeller\Exception\ProductValidatorException
+     *
+     * @param string $jsonFile
+     */
+    public function testCreate(string $jsonFile): void
+    {
+        $input = json_decode(file_get_contents($jsonFile), true);
+        $result = self::$svc->create($input, true);
+        self::assertNotEmpty($result);
+        self::assertArrayHasKey('product_id', $result);
+        self::assertArrayHasKey('state', $result);
+    }
+
+    public function dataCreate(): array
+    {
+        return [
+            [__DIR__.'/../Resources/Products/create.invalid.0.request.json'],
+            [__DIR__.'/../Resources/Products/create.invalid.1.request.json'],
+        ];
+    }
+
+    /**
+     * @covers ::create
      * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      */
-    public function testCreateException()
+    public function testCreateException(): void
     {
         $result = self::$svc->create([], false);
         self::assertNotEmpty($result);
@@ -27,23 +52,25 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ::create
      * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
-     * @dataProvider dataCreate
+     * @dataProvider dataCreateFail
      *
      * @param string $jsonFile
      */
-    public function testCreate(string $jsonFile)
+    public function testCreateFail(string $jsonFile): void
     {
-        $product = json_decode(file_get_contents($jsonFile), true);
-        $result = self::$svc->create($product, false);
+        $input = json_decode(file_get_contents($jsonFile), true);
+        $result = self::$svc->create($input, false);
         self::assertNotEmpty($result);
         self::assertArrayHasKey('product_id', $result);
         self::assertArrayHasKey('state', $result);
     }
 
-    public function dataCreate()
+    public function dataCreateFail(): array
     {
         return [
-            [__DIR__.'/Resources/Products/create.0.request.json'],
+            [__DIR__.'/../Resources/Products/create.fail.0.request.json'],
+            [__DIR__.'/../Resources/Products/create.invalid.1.request.json'],
+            [__DIR__.'/../Resources/Products/create.invalid.0.request.json'],
         ];
     }
 
@@ -51,7 +78,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      * @covers ::creationStatus
      * @depends testCreate
      */
-    public function testCreationStatus()
+    public function testCreationStatus(): void
     {
         $status = self::$svc->creationStatus(33919);
         self::assertNotEmpty($status);
@@ -62,7 +89,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ::stockInfo
      */
-    public function testStockInfo()
+    public function testStockInfo(): void
     {
         $status = self::$svc->stockInfo();
         self::assertNotEmpty($status);
@@ -71,7 +98,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ::pricesInfo
      */
-    public function testPricesInfo()
+    public function testPricesInfo(): void
     {
         $status = self::$svc->pricesInfo();
         self::assertNotEmpty($status);
@@ -82,7 +109,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      *
      * @throws Exception
      */
-    public function testList()
+    public function testList(): void
     {
         $result = self::$svc->list([], ['page' => 1, 'page_size' => 10]);
         self::assertNotEmpty($result);
@@ -95,7 +122,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      * @covers ::update
      * @expectedException \Gam6itko\OzonSeller\Exception\ValidationException
      */
-    public function testUpdateException()
+    public function testUpdateException(): void
     {
         $result = self::$svc->update([], false);
         self::assertNotEmpty($result);
@@ -105,7 +132,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      * @covers ::info
      * @depends testUpdate
      */
-    public function testInfo()
+    public function testInfo(): void
     {
         $productInfo = self::$svc->info(507735);
         self::assertNotEmpty($productInfo);
@@ -117,14 +144,14 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      *
      * @throws Exception
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $arr = [
             'product_id' => 507735,
-            'images' => [
+            'images'     => [
                 [
                     'file_name' => 'https://images.freeimages.com/images/large-previews/4ad/snare-drum-second-take-1-1564542.jpg',
-                    'default' => true,
+                    'default'   => true,
                 ],
             ],
         ];
@@ -137,7 +164,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ::deactivate
      */
-    public function testDeactivate()
+    public function testDeactivate(): void
     {
         $result = self::$svc->deactivate(510216);
         self::assertTrue($result);
@@ -147,7 +174,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      * @covers ::deactivate
      * @depends testDeactivate
      */
-    public function testActivate()
+    public function testActivate(): void
     {
         $result = self::$svc->activate(510216);
         self::assertTrue($result);
@@ -157,13 +184,13 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      * @covers ::delete
      * @depends testCreate
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $status = self::$svc->delete(510216);
         self::assertNotEmpty($status);
     }
 
-    public function testUpdatePricesNotFound()
+    public function testUpdatePricesNotFound(): void
     {
         $expectedJson = <<<JSON
 [
@@ -186,15 +213,15 @@ JSON;
         $arr = [
             [
                 'product_id' => 120000,
-                'price' => '79990',
-                'old_price' => '89990',
-                'vat' => '0.10',
+                'price'      => '79990',
+                'old_price'  => '89990',
+                'vat'        => '0.10',
             ],
             [
                 'product_id' => 124100,
-                'price' => '79990',
-                'old_price' => '89990',
-                'vat' => '0.18',
+                'price'      => '79990',
+                'old_price'  => '89990',
+                'vat'        => '0.18',
             ],
         ];
         $result = self::$svc->updatePrices($arr);
@@ -205,7 +232,7 @@ JSON;
     /**
      * @covers ::updatePrices
      */
-    public function testUpdatePrices()
+    public function testUpdatePrices(): void
     {
         $expectedJson = <<<JSON
 [
@@ -220,8 +247,8 @@ JSON;
         $arr = [
             [
                 'product_id' => 508756,
-                'price' => '45000',
-                'vat' => '0.18',
+                'price'      => '45000',
+                'vat'        => '0.18',
             ],
         ];
         $result = self::$svc->updatePrices($arr);
@@ -232,7 +259,7 @@ JSON;
     /**
      * @covers ::updateStocks
      */
-    public function testUpdateStocks()
+    public function testUpdateStocks(): void
     {
         $expectedJson = <<<JSON
 [
@@ -247,7 +274,7 @@ JSON;
         $arr = [
             [
                 'product_id' => 507735,
-                'stock' => 20,
+                'stock'      => 20,
             ],
         ];
         $result = self::$svc->updateStocks($arr);
