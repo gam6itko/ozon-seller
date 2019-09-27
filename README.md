@@ -233,5 +233,6 @@ $svcProduct->create($product);
 // or
 $svcProduct->create([$product, $product1, $product2, ...]);
 // or
-$svcProduct->create(['items' => [$product, $product1, $product2, ...] ]);
+$res = $svcProduct->create(['items' => [$product, $product1, $product2, ...] ]);
+echo $res['task_id']; // save it for checking with
 ```

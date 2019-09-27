@@ -15,20 +15,18 @@ class TypeCaster
     {
         foreach ($data as $key => &$val) {
             if (array_key_exists($key, $config)) {
-                switch ($config[$key]) {
-                    case 'bool':
-                        $val = (bool) $val;
+                switch (self::normalizeType($config[$key])) {
+                    case 'boolean':
+                        $val = (bool)$val;
                         break;
-                    case 'str':
                     case 'string':
-                        $val = (string) $val;
+                        $val = (string)$val;
                         break;
-                    case 'int':
                     case 'integer':
-                        $val = (int) $val;
+                        $val = (int)$val;
                         break;
                     case 'float':
-                        $val = (float) $val;
+                        $val = (float)$val;
                         break;
                     default:
                         if ($force) {
@@ -39,5 +37,28 @@ class TypeCaster
         }
 
         return $data;
+    }
+
+    public static function normalizeType(string $type): string
+    {
+        switch ($type) {
+            case 'arr':
+            case 'array':
+                return 'array';
+            case 'bool':
+            case 'boolean':
+                return 'boolean';
+            case 'str':
+            case 'string':
+                return 'string';
+            case 'int':
+            case 'integer':
+                return 'integer';
+            case 'float':
+            case 'double':
+                return 'float';
+            default:
+                throw new \LogicException("Unsupported type: $type");
+        }
     }
 }

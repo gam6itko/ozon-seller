@@ -26,8 +26,18 @@ class ProductsService extends AbstractService
         $income = $this->faceControl($income, ['products']);
         foreach ($income['products'] as &$p) {
             $p = $this->faceControl($p, [
-                'offer_id', 'shop_category_full_path', 'shop_category', 'shop_category_id', 'vendor', 'model', 'name',
-                'price', 'offer_url', 'img_url', 'vendor_code', 'barcode',
+                'offer_id',
+                'shop_category_full_path',
+                'shop_category',
+                'shop_category_id',
+                'vendor',
+                'model',
+                'name',
+                'price',
+                'offer_url',
+                'img_url',
+                'vendor_code',
+                'barcode',
             ]);
         }
 
@@ -65,6 +75,8 @@ class ProductsService extends AbstractService
 
     /**
      * Product creation status.
+     *
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create_status
      *
      * @param int $taskId Product import task id
      *
@@ -148,7 +160,7 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
      *
-     * @param array $filter     ['offer_id', 'product_id', 'visibility']
+     * @param array $filter ['offer_id', 'product_id', 'visibility']
      * @param array $pagination ['page', 'page_size']
      *
      * @return array

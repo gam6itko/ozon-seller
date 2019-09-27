@@ -9,12 +9,9 @@ use Gam6itko\OzonSeller\Service\ProductsService;
  */
 class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var ProductsService */
-    private static $svc;
-
-    public static function setUpBeforeClass(): void
+    public function getSvc(): ProductsService
     {
-        self::$svc = new ProductsService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
+        return new ProductsService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
     }
 
     /**
@@ -26,7 +23,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     public function testCreate(string $jsonFile): void
     {
         $input = json_decode(file_get_contents($jsonFile), true);
-        $result = self::$svc->create($input, true);
+        $result = $this->getSvc()->create($input, true);
         self::assertNotEmpty($result);
         self::assertArrayHasKey('task_id', $result);
     }
@@ -48,7 +45,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     public function testCreateInvalid(string $jsonFile): void
     {
         $input = json_decode(file_get_contents($jsonFile), true);
-        $result = self::$svc->create($input, true);
+        $result = $this->getSvc()->create($input, true);
         self::assertNotEmpty($result);
         self::assertArrayHasKey('product_id', $result);
         self::assertArrayHasKey('state', $result);
@@ -68,7 +65,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreateException(): void
     {
-        $result = self::$svc->create([], false);
+        $result = $this->getSvc()->create([], false);
         self::assertNotEmpty($result);
     }
 
@@ -82,7 +79,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     public function testCreateFail(string $jsonFile): void
     {
         $input = json_decode(file_get_contents($jsonFile), true);
-        $result = self::$svc->create($input, false);
+        $result = $this->getSvc()->create($input, false);
         self::assertNotEmpty($result);
         self::assertArrayHasKey('product_id', $result);
         self::assertArrayHasKey('state', $result);
@@ -103,10 +100,14 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreationStatus(): void
     {
-        $status = self::$svc->creationStatus(33919);
+        $status = $this->getSvc()->creationStatus(1914378);
         self::assertNotEmpty($status);
-        self::assertArrayHasKey('items', $status);
         self::assertArrayHasKey('total', $status);
+        self::assertArrayHasKey('items', $status);
+        self::assertCount(1, $status['items']);
+        self::assertArrayHasKey('offer_id', $status['items'][0]);
+        self::assertArrayHasKey('product_id', $status['items'][0]);
+        self::assertArrayHasKey('status', $status['items'][0]);
     }
 
     /**
@@ -114,7 +115,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testStockInfo(): void
     {
-        $status = self::$svc->stockInfo();
+        $status = $this->getSvc()->stockInfo();
         self::assertNotEmpty($status);
     }
 
@@ -123,18 +124,18 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testPricesInfo(): void
     {
-        $status = self::$svc->pricesInfo();
+        $status = $this->getSvc()->pricesInfo();
         self::assertNotEmpty($status);
     }
 
     /**
      * @covers ::list
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testList(): void
     {
-        $result = self::$svc->list([], ['page' => 1, 'page_size' => 10]);
+        $result = $this->getSvc()->list([], ['page' => 1, 'page_size' => 10]);
         self::assertNotEmpty($result);
         self::assertCount(10, $result);
         self::assertArrayHasKey('product_id', $result[0]);
@@ -147,7 +148,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testUpdateException(): void
     {
-        $result = self::$svc->update([], false);
+        $result = $this->getSvc()->update([], false);
         self::assertNotEmpty($result);
     }
 
@@ -157,7 +158,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testInfo(): void
     {
-        $productInfo = self::$svc->info(507735);
+        $productInfo = $this->getSvc()->info(507735);
         self::assertNotEmpty($productInfo);
         self::assertArrayHasKey('name', $productInfo);
     }
@@ -165,7 +166,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ::update
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testUpdate(): void
     {
@@ -178,7 +179,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
                 ],
             ],
         ];
-        $result = self::$svc->update($arr, false);
+        $result = $this->getSvc()->update($arr, false);
         self::assertNotEmpty($result);
         self::assertArrayHasKey('updated', $result);
         self::assertTrue($result['updated']);
@@ -189,7 +190,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testDeactivate(): void
     {
-        $result = self::$svc->deactivate(510216);
+        $result = $this->getSvc()->deactivate(510216);
         self::assertTrue($result);
     }
 
@@ -199,7 +200,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testActivate(): void
     {
-        $result = self::$svc->activate(510216);
+        $result = $this->getSvc()->activate(510216);
         self::assertTrue($result);
     }
 
@@ -209,7 +210,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testDelete(): void
     {
-        $status = self::$svc->delete(510216);
+        $status = $this->getSvc()->delete(510216);
         self::assertNotEmpty($status);
     }
 
@@ -247,7 +248,7 @@ JSON;
                 'vat'        => '0.18',
             ],
         ];
-        $result = self::$svc->updatePrices($arr);
+        $result = $this->getSvc()->updatePrices($arr);
         self::assertNotEmpty($result);
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
     }
@@ -274,7 +275,7 @@ JSON;
                 'vat'        => '0.18',
             ],
         ];
-        $result = self::$svc->updatePrices($arr);
+        $result = $this->getSvc()->updatePrices($arr);
         self::assertNotEmpty($result);
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
     }
@@ -300,7 +301,7 @@ JSON;
                 'stock'      => 20,
             ],
         ];
-        $result = self::$svc->updateStocks($arr);
+        $result = $this->getSvc()->updateStocks($arr);
         self::assertNotEmpty($result);
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
     }

@@ -70,6 +70,9 @@ class ProductValidator
             if (!array_key_exists($key, $item)) {
                 throw new ProductValidatorException("Required property not defined: $key", $item);
             }
+            if ('string' === TypeCaster::normalizeType(self::PROPERTIES[$key]['type']) && '' === $item[$key]) {
+                throw new ProductValidatorException("Empty value for property: $key", $item);
+            }
         }
 
         foreach ($this->optProps as $key => $options) {
