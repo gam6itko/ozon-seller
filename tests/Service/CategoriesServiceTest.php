@@ -28,7 +28,11 @@ class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
     {
         $res = self::$svc->tree();
         self::assertNotEmpty($res);
-        self::assertCount(19, $res);
+        self::assertIsArray($res);
+        self::assertArrayHasKey('category_id', $res[0]);
+        self::assertArrayHasKey('title', $res[0]);
+        self::assertArrayHasKey('children', $res[0]);
+        self::assertCount(21, $res);
     }
 
     /**

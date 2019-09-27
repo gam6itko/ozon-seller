@@ -26,7 +26,7 @@ class ProductValidatorTest extends TestCase
 
     /**
      * @dataProvider dataInvalid
-     * @expectedException \LogicException
+     * @expectedException \Gam6itko\OzonSeller\Exception\ProductValidatorException
      *
      * @param string $json
      */
