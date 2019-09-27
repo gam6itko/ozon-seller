@@ -109,7 +109,8 @@ class ProductValidatorTest extends TestCase
     public function dataImages()
     {
         return [
-            ['{
+            [
+                '{
   "product_id": 15728170,
   "description": "description",
   "category_id": 35853052,
@@ -211,7 +212,8 @@ class ProductValidatorTest extends TestCase
       "default": false
     }
   ]
-}'],
+}',
+            ],
         ];
     }
 }

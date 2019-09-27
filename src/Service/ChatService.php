@@ -50,7 +50,7 @@ class ChatService extends AbstractService
     {
         $arr = [
             'chat_id' => $chatId,
-            'text' => $text,
+            'text'    => $text,
         ];
 
         $response = $this->request('POST', '/v1/chat/send/message', ['body' => \GuzzleHttp\json_encode($arr)]);
@@ -71,8 +71,8 @@ class ChatService extends AbstractService
     {
         $arr = [
             'base64_content' => $base64Content,
-            'chat_id' => $chatId,
-            'name' => $name,
+            'chat_id'        => $chatId,
+            'name'           => $name,
         ];
         $response = $this->request('POST', '/v1/chat/send/file', ['body' => \GuzzleHttp\json_encode($arr)]);
 

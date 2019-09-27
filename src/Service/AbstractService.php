@@ -41,9 +41,9 @@ abstract class AbstractService
         if (null === $this->client) {
             $this->client = new Client([
                 'base_uri' => $this->host,
-                'headers' => [
-                    'Client-Id' => $this->clientId,
-                    'Api-Key' => $this->apiKey,
+                'headers'  => [
+                    'Client-Id'    => $this->clientId,
+                    'Api-Key'      => $this->apiKey,
                     'Content-Type' => 'application/json',
                 ],
             ]);
@@ -95,7 +95,7 @@ abstract class AbstractService
         $className = $this->getExceptionClassByName($errorData['code']);
         $errorData = array_merge([
             'message' => '',
-            'data' => [],
+            'data'    => [],
         ], $errorData);
 
         try {

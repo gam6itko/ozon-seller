@@ -75,9 +75,9 @@ class ReportService extends AbstractService
     public function transaction(\DateTimeInterface $dateFrom, \DateTimeInterface $dateTo, string $search = null, string $transactionType = TransactionType::ALL)
     {
         $query = array_filter([
-            'date_from' => $dateFrom->format('Y-m-d'),
-            'date_to' => $dateTo->format('Y-m-d'),
-            'search' => $search,
+            'date_from'        => $dateFrom->format('Y-m-d'),
+            'date_to'          => $dateTo->format('Y-m-d'),
+            'search'           => $search,
             'transaction_type' => $transactionType,
         ]);
 

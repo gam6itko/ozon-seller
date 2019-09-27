@@ -20,7 +20,7 @@ class CategoriesService extends AbstractService
     {
         $query = array_filter([
             'category_id' => $categoryId,
-            'language' => strtoupper($language),
+            'language'    => strtoupper($language),
         ]);
 
         return $this->request('POST', '/v1/category/tree', ['body' => \GuzzleHttp\json_encode($query)]);
@@ -43,7 +43,7 @@ class CategoriesService extends AbstractService
         $query = TypeCaster::castArr($query, ['attribute_type' => 'str']);
         $query = array_merge([
             'category_id' => $categoryId,
-            'language' => strtoupper($language),
+            'language'    => strtoupper($language),
         ], $query);
 
         return $this->request('POST', '/v1/category/attribute', ['body' => \GuzzleHttp\json_encode($query)]);

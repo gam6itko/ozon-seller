@@ -272,7 +272,7 @@ class ProductsService extends AbstractService
     {
         $query = array_filter([
             'product_id' => $productId,
-            'offer_id' => $offerId,
+            'offer_id'   => $offerId,
         ]);
         $response = $this->request('POST', '/v1/product/delete', ['body' => \GuzzleHttp\json_encode($query)]);
 

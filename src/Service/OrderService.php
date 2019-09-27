@@ -40,8 +40,8 @@ class OrderService extends AbstractService
         $query = $this->faceControl($query, ['page', 'page_size', 'statuses']);
 
         $arr = array_merge([
-            'since' => $since->format(DATE_RFC3339),
-            'to' => $to->format(DATE_RFC3339),
+            'since'           => $since->format(DATE_RFC3339),
+            'to'              => $to->format(DATE_RFC3339),
             'delivery_schema' => $deliverySchema,
         ], $query);
 
@@ -91,10 +91,10 @@ class OrderService extends AbstractService
     public function shipCrossboarder(int $orderId, string $track, int $shippingProviderId, array $items)
     {
         $query = [
-            'order_id' => $orderId,
-            'tracking_number' => $track,
+            'order_id'             => $orderId,
+            'tracking_number'      => $track,
             'shipping_provider_id' => $shippingProviderId,
-            'items' => $items,
+            'items'                => $items,
         ];
 
         return $this->request('POST', '/v1/order/ship/crossborder', ['body' => \GuzzleHttp\json_encode($query)]);
@@ -164,9 +164,9 @@ class OrderService extends AbstractService
     public function itemsCancelCrossboarder(int $orderId, int $reasonCode, array $itemsIds): bool
     {
         $query = [
-            'order_id' => $orderId,
+            'order_id'    => $orderId,
             'reason_code' => $reasonCode,
-            'item_ids' => $itemsIds,
+            'item_ids'    => $itemsIds,
         ];
 
         $response = $this->request('POST', '/v1/order/items/cancel/crossborder', ['body' => \GuzzleHttp\json_encode($query)]);
@@ -187,7 +187,7 @@ class OrderService extends AbstractService
     public function itemsCancelFbs(int $orderId, int $reasonCode): bool
     {
         $query = [
-            'order_id' => $orderId,
+            'order_id'         => $orderId,
             'cancel_reason_id' => $reasonCode,
         ];
 
