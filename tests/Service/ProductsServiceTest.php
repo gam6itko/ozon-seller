@@ -19,6 +19,27 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers ::create
+     * @dataProvider dataCreate
+     *
+     * @param string $jsonFile
+     */
+    public function testCreate(string $jsonFile): void
+    {
+        $input = json_decode(file_get_contents($jsonFile), true);
+        $result = self::$svc->create($input, true);
+        self::assertNotEmpty($result);
+        self::assertArrayHasKey('task_id', $result);
+    }
+
+    public function dataCreate(): array
+    {
+        return [
+            [__DIR__.'/../Resources/Products/create.0.request.json'],
+        ];
+    }
+
+    /**
+     * @covers ::create
      * @dataProvider dataCreateInvalid
      * @expectedException \Gam6itko\OzonSeller\Exception\ProductValidatorException
      *
