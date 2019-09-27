@@ -148,10 +148,10 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     {
         $arr = [
             'product_id' => 507735,
-            'images'     => [
+            'images' => [
                 [
                     'file_name' => 'https://images.freeimages.com/images/large-previews/4ad/snare-drum-second-take-1-1564542.jpg',
-                    'default'   => true,
+                    'default' => true,
                 ],
             ],
         ];
@@ -213,15 +213,15 @@ JSON;
         $arr = [
             [
                 'product_id' => 120000,
-                'price'      => '79990',
-                'old_price'  => '89990',
-                'vat'        => '0.10',
+                'price' => '79990',
+                'old_price' => '89990',
+                'vat' => '0.10',
             ],
             [
                 'product_id' => 124100,
-                'price'      => '79990',
-                'old_price'  => '89990',
-                'vat'        => '0.18',
+                'price' => '79990',
+                'old_price' => '89990',
+                'vat' => '0.18',
             ],
         ];
         $result = self::$svc->updatePrices($arr);
@@ -247,8 +247,8 @@ JSON;
         $arr = [
             [
                 'product_id' => 508756,
-                'price'      => '45000',
-                'vat'        => '0.18',
+                'price' => '45000',
+                'vat' => '0.18',
             ],
         ];
         $result = self::$svc->updatePrices($arr);
@@ -274,7 +274,7 @@ JSON;
         $arr = [
             [
                 'product_id' => 507735,
-                'stock'      => 20,
+                'stock' => 20,
             ],
         ];
         $result = self::$svc->updateStocks($arr);
