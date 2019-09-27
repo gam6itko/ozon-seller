@@ -19,6 +19,11 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "^6.3"
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Gam6itko\\OzonSeller\\Tests": "tests/"
+        }
+    },
     "require-dev": {
         "phpunit/phpunit": "^7.4",
         "paquettg/php-html-parser": "^2.1",

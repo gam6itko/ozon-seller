@@ -1,5 +1,7 @@
 <?php
 
+namespace Gam6itko\OzonSeller\Tests\Service;
+
 use Gam6itko\OzonSeller\Service\ChatService;
 use PHPUnit\Framework\TestCase;
 

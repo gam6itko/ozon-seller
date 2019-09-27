@@ -1,5 +1,7 @@
 <?php
 
+namespace Gam6itko\OzonSeller\Tests\Service;
+
 use Gam6itko\OzonSeller\Service\ProductsService;
 
 /**
@@ -17,12 +19,12 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers ::create
-     * @dataProvider dataCreate
+     * @dataProvider dataCreateInvalid
      * @expectedException \Gam6itko\OzonSeller\Exception\ProductValidatorException
      *
      * @param string $jsonFile
      */
-    public function testCreate(string $jsonFile): void
+    public function testCreateInvalid(string $jsonFile): void
     {
         $input = json_decode(file_get_contents($jsonFile), true);
         $result = self::$svc->create($input, true);
@@ -31,7 +33,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
         self::assertArrayHasKey('state', $result);
     }
 
-    public function dataCreate(): array
+    public function dataCreateInvalid(): array
     {
         return [
             [__DIR__.'/../Resources/Products/create.invalid.0.request.json'],

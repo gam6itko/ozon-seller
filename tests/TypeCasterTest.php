@@ -1,5 +1,7 @@
 <?php
 
+namespace Gam6itko\OzonSeller\Tests;
+
 class TypeCasterTest extends \PHPUnit\Framework\TestCase
 {
     /**

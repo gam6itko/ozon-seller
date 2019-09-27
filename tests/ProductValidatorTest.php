@@ -1,5 +1,7 @@
 <?php
 
+namespace Gam6itko\OzonSeller\Tests;
+
 use Gam6itko\OzonSeller\ProductValidator;
 use PHPUnit\Framework\TestCase;
 

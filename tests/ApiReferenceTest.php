@@ -1,5 +1,7 @@
 <?php
 
+namespace Gam6itko\OzonSeller\Tests;
+
 use PHPHtmlParser\Dom;
 
 class ApiReferenceTest extends \PHPUnit\Framework\TestCase
