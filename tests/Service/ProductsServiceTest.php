@@ -11,7 +11,29 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 {
     public function getSvc(): ProductsService
     {
-        return new ProductsService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
+        return new ProductsService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);
+    }
+
+    /**
+     * @covers ::classify
+     * @dataProvider dataClassify
+     *
+     * @param string $jsonFile
+     * @param string $responseFile
+     */
+    public function testClassify(string $jsonFile, string $responseFile): void
+    {
+        $input = json_decode(file_get_contents($jsonFile), true);
+        $result = $this->getSvc()->classify($input);
+        self::assertNotEmpty($result);
+        self::assertJsonStringEqualsJsonFile($responseFile, json_encode($result));
+    }
+
+    public function dataClassify(): array
+    {
+        return [
+            [__DIR__.'/../Resources/Products/classify.0.request.json', __DIR__.'/../Resources/Products/classify.0.response.json'],
+        ];
     }
 
     /**

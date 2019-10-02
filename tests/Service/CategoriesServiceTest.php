@@ -5,7 +5,7 @@ namespace Gam6itko\OzonSeller\Tests\Service;
 use Gam6itko\OzonSeller\Service\CategoriesService;
 
 /**
- * @covers \CategoriesService
+ * @coversDefaultClass  \Gam6itko\OzonSeller\Service\CategoriesService
  */
 class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
 {
@@ -18,6 +18,7 @@ class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @covers ::tree
      * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testTreeException()
@@ -26,6 +27,9 @@ class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
         self::assertNotEmpty($res);
     }
 
+    /**
+     * @covers ::tree
+     */
     public function testTreeRoot()
     {
         $res = self::$svc->tree();
@@ -38,6 +42,7 @@ class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @covers ::attributes
      * @dataProvider dataTree
      *
      * @param int    $id
@@ -61,6 +66,7 @@ class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @covers ::attributes
      * @dataProvider dataAttributes
      *
      * @param int $id
