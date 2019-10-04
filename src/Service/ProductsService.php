@@ -189,7 +189,9 @@ class ProductsService extends AbstractService
     {
         $filter = $this->faceControl($filter, ['offer_id', 'product_id', 'visibility']);
         $pagination = $this->faceControl($pagination, ['page', 'page_size']);
-
+        if (empty($pagination)) {
+            $pagination = ['page' => 1, 'page_size' => 10];
+        }
         $query = array_filter(array_merge($pagination, ['filter' => $filter]));
 
         return $this->request('POST', '/v1/product/list', ['body' => \GuzzleHttp\json_encode($query)]);

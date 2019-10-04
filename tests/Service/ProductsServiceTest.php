@@ -179,11 +179,15 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testList(): void
     {
-        $result = $this->getSvc()->list([], ['page' => 1, 'page_size' => 10]);
+        $result = $this->getSvc()->list();
         self::assertNotEmpty($result);
-        self::assertCount(10, $result);
-        self::assertArrayHasKey('product_id', $result[0]);
-        self::assertArrayHasKey('offer_id', $result[0]);
+        self::assertCount(2, $result);
+        self::assertArrayHasKey('items', $result);
+        self::assertArrayHasKey('total', $result);
+        $items = $result['items'];
+        self::assertCount(10, $items);
+        self::assertArrayHasKey('product_id', $items[0]);
+        self::assertArrayHasKey('offer_id', $items[0]);
     }
 
     /**
