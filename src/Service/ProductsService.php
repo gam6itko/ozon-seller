@@ -74,6 +74,26 @@ class ProductsService extends AbstractService
     }
 
     /**
+     * @param array $income
+     *
+     * @return array|string
+     */
+    public function createBySku(array $income)
+    {
+        if (!array_key_exists('items', $income)) {
+            $income = $this->ensureCollection($income);
+            $income = ['items' => $income];
+        }
+
+        $income = $this->faceControl($income, ['items']);
+        foreach ($income['items'] as &$item) {
+            $item = $this->faceControl($item, ['sku', 'name', 'offer_id', 'price', 'old_price', 'premium_price', 'vat']);
+        }
+
+        return $this->request('POST', '/v1/product/import-by-sku', ['body' => \GuzzleHttp\json_encode($income)]);
+    }
+
+    /**
      * Product creation status.
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create_status
@@ -160,7 +180,7 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
      *
-     * @param array $filter ['offer_id', 'product_id', 'visibility']
+     * @param array $filter     ['offer_id', 'product_id', 'visibility']
      * @param array $pagination ['page', 'page_size']
      *
      * @return array

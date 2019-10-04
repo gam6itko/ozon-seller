@@ -117,6 +117,28 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @covers ::createBySku
+     * @dataProvider dataCreateBySku
+     *
+     * @param string $jsonFileIncome
+     */
+    public function testCreateBySku(string $jsonFileIncome):void
+    {
+        $input = json_decode(file_get_contents($jsonFileIncome), true);
+        $result = $this->getSvc()->createBySku($input);
+        self::assertNotEmpty($result);
+        self::assertArrayHasKey('task_id', $result);
+        self::assertArrayHasKey('unmatched_sku_list', $result);
+    }
+
+    public function dataCreateBySku(string $jsonFileIncome)
+    {
+        return [
+            [__DIR__.'/../Resources/Products/create-by-sku.fail.0.request.json']
+        ];
+    }
+
+    /**
      * @covers ::creationStatus
      * @depends testCreate
      */

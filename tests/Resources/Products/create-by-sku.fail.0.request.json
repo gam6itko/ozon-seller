@@ -1,0 +1,22 @@
+{
+    "items": [
+        {
+            "sku": 1445625485,
+            "name": "Nice boots 1",
+            "offer_id": "RED-SHOES-MODEL-1-38-39",
+            "price": "7999",
+            "old_price": "8999",
+            "premium_price": "7555",
+            "vat": "0"
+        },
+        {
+            "sku": 1445625485,
+            "name": "Nice boots 2",
+            "offer_id": "RED-SHOES-MODEL-1-38-39",
+            "price": "7999",
+            "old_price": "8999",
+            "premium_price": "7555",
+            "vat": "0"
+        }
+    ]
+}
