@@ -45,6 +45,20 @@ class ProductsService extends AbstractService
     }
 
     /**
+     * @param array $income
+     * @param bool  $validateBeforeSend
+     *
+     * @return array
+     * @deprecated v0.2 use import
+     */
+    public function create(array $income, bool $validateBeforeSend = true)
+    {
+        @trigger_error('Merhod `create` deprecated. Use importBySku', E_USER_DEPRECATED);
+
+        return $this->import($income, $validateBeforeSend);
+    }
+
+    /**
      * Creates product page in our system.
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create
@@ -54,7 +68,7 @@ class ProductsService extends AbstractService
      *
      * @return array
      */
-    public function create(array $income, bool $validateBeforeSend = true)
+    public function import(array $income, bool $validateBeforeSend = true)
     {
         if (!array_key_exists('items', $income)) {
             $income = $this->ensureCollection($income);
@@ -77,8 +91,21 @@ class ProductsService extends AbstractService
      * @param array $income
      *
      * @return array|string
+     * @deprecated v0.2 use importBySku
      */
     public function createBySku(array $income)
+    {
+        @trigger_error('Merhod `createBySku` deprecated. Use importBySku', E_USER_DEPRECATED);
+
+        return $this->importBySku($income);
+    }
+
+    /**
+     * @param array $income
+     *
+     * @return array|string
+     */
+    public function importBySku(array $income)
     {
         if (!array_key_exists('items', $income)) {
             $income = $this->ensureCollection($income);
@@ -180,7 +207,7 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
      *
-     * @param array $filter     ['offer_id', 'product_id', 'visibility']
+     * @param array $filter ['offer_id', 'product_id', 'visibility']
      * @param array $pagination ['page', 'page_size']
      *
      * @return array
