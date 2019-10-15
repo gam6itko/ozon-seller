@@ -53,7 +53,7 @@ class ProductsService extends AbstractService
      */
     public function create(array $income, bool $validateBeforeSend = true)
     {
-        @trigger_error('Merhod `create` deprecated. Use importBySku', E_USER_DEPRECATED);
+        @trigger_error('Merhod `create` deprecated. Use import', E_USER_DEPRECATED);
 
         return $this->import($income, $validateBeforeSend);
     }
@@ -114,7 +114,16 @@ class ProductsService extends AbstractService
 
         $income = $this->faceControl($income, ['items']);
         foreach ($income['items'] as &$item) {
-            $item = $this->faceControl($item, ['sku', 'name', 'offer_id', 'price', 'old_price', 'premium_price', 'vat']);
+            $item = TypeCaster::castArr(
+                $this->faceControl($item, ['sku', 'name', 'offer_id', 'price', 'old_price', 'premium_price', 'vat']),
+                [
+                    'offer_id'      => 'str',
+                    'price'         => 'str',
+                    'old_price'     => 'str',
+                    'premium_price' => 'str',
+                    'vat'           => 'str',
+                ]
+            );
         }
 
         return $this->request('POST', '/v1/product/import-by-sku', ['body' => \GuzzleHttp\json_encode($income)]);
