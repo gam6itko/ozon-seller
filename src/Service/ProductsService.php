@@ -49,6 +49,7 @@ class ProductsService extends AbstractService
      * @param bool  $validateBeforeSend
      *
      * @return array
+     *
      * @deprecated v0.2 use import
      */
     public function create(array $income, bool $validateBeforeSend = true)
@@ -91,6 +92,7 @@ class ProductsService extends AbstractService
      * @param array $income
      *
      * @return array|string
+     *
      * @deprecated v0.2 use importBySku
      */
     public function createBySku(array $income)
@@ -216,7 +218,7 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
      *
-     * @param array $filter ['offer_id', 'product_id', 'visibility']
+     * @param array $filter     ['offer_id', 'product_id', 'visibility']
      * @param array $pagination ['page', 'page_size']
      *
      * @return array

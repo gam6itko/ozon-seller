@@ -122,7 +122,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      *
      * @param string $jsonFileIncome
      */
-    public function testCreateBySku(string $jsonFileIncome):void
+    public function testCreateBySku(string $jsonFileIncome): void
     {
         $input = json_decode(file_get_contents($jsonFileIncome), true);
         $result = $this->getSvc()->createBySku($input);
@@ -134,7 +134,7 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     public function dataCreateBySku(string $jsonFileIncome)
     {
         return [
-            [__DIR__.'/../Resources/Products/create-by-sku.fail.0.request.json']
+            [__DIR__.'/../Resources/Products/create-by-sku.fail.0.request.json'],
         ];
     }
 
