@@ -1,8 +1,7 @@
+# Ozon-seller API client
 [![Build Status](https://travis-ci.com/gam6itko/ozon-seller.svg?branch=master)](https://travis-ci.com/gam6itko/ozon-seller)
 
-# Documentation
-
-<https://cb-api.ozonru.me/apiref/>
+Documentation: <https://cb-api.ozonru.me/apiref/>
 
 # Example
 For more examples look at `tests`
