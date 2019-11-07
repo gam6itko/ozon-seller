@@ -2,7 +2,8 @@ language: php
 php:
     - '7.1'
     - nightly
-
+directories:
+    - $HOME/.composer/cache/files
 script:
     - composer install
     - vendor/bin/phpunit --configuration phpunit.xml.dist --group unit-test
