@@ -15,7 +15,7 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_product_classifier
      *
-     * @param array $income
+     * @param array $income Single product structure or array of structures
      *
      * @return array
      */
@@ -51,7 +51,7 @@ class ProductsService extends AbstractService
      * @param array $income
      * @param bool  $validateBeforeSend
      *
-     * @return array
+     * @return array Single product structure or array of structures
      *
      * @deprecated v0.2 use import
      */
@@ -67,7 +67,7 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create
      *
-     * @param array $income
+     * @param array $income             Single item structure or array of items
      * @param bool  $validateBeforeSend
      *
      * @return array
@@ -92,7 +92,7 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @param array $income
+     * @param array $income Single item structure or array of item
      *
      * @return array|string
      *
@@ -106,7 +106,7 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @param array $income
+     * @param array $income Single item structure or array of item
      *
      * @return array|string
      */
@@ -155,7 +155,7 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
      *
-     * @param int $productId
+     * @param int $productId Id of product in Ozon system
      *
      * @return array
      */
@@ -205,7 +205,7 @@ class ProductsService extends AbstractService
      *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_prices
      *
-     * @param array $pagination
+     * @param array $pagination [page, page_size]
      *
      * @return array
      */
@@ -288,8 +288,8 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
      *
-     * @param array $product
-     * @param bool  $validate
+     * @param array $product  Product structure
+     * @param bool  $validate Perform validation before send
      *
      * @return array
      */
@@ -324,7 +324,7 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_deactivate
      *
-     * @param int $productId
+     * @param int $productId Ozon Product Id
      *
      * @return bool success
      */
