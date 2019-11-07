@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/gam6itko/ozon-seller.svg?branch=master)](https://travis-ci.com/gam6itko/ozon-seller)
+
 # Documentation
 
 <https://cb-api.ozonru.me/apiref/>
