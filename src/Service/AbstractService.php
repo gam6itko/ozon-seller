@@ -5,6 +5,9 @@ namespace Gam6itko\OzonSeller\Service;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 
+/**
+ * @author Alexander Strizhak <gam6itko@gmail.com>
+ */
 abstract class AbstractService
 {
     /** @var string */

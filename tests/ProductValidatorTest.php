@@ -5,6 +5,12 @@ namespace Gam6itko\OzonSeller\Tests;
 use Gam6itko\OzonSeller\ProductValidator;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass \Gam6itko\OzonSeller\ProductValidator
+ * @group unit-test
+ *
+ * @author Alexander Strizhak <gam6itko@gmail.com>
+ */
 class ProductValidatorTest extends TestCase
 {
     /**

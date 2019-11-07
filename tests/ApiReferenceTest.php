@@ -3,8 +3,12 @@
 namespace Gam6itko\OzonSeller\Tests;
 
 use PHPHtmlParser\Dom;
+use PHPUnit\Framework\TestCase;
 
-class ApiReferenceTest extends \PHPUnit\Framework\TestCase
+/**
+ * @author Alexander Strizhak <gam6itko@gmail.com>
+ */
+class ApiReferenceTest extends TestCase
 {
     const MAPPING = [
         '/v1/order/123456?translit=true' => '/v1/order/{$orderId}',

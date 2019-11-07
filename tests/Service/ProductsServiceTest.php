@@ -6,6 +6,8 @@ use Gam6itko\OzonSeller\Service\ProductsService;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\ProductsService
+ *
+ * @author Alexander Strizhak <gam6itko@gmail.com>
  */
 class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 {

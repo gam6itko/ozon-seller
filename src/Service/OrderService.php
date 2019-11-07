@@ -4,6 +4,9 @@ namespace Gam6itko\OzonSeller\Service;
 
 use Gam6itko\OzonSeller\Enum\DeliverySchema;
 
+/**
+ * @author Alexander Strizhak <gam6itko@gmail.com>
+ */
 class OrderService extends AbstractService
 {
     /**

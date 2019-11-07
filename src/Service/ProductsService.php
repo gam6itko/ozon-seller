@@ -5,6 +5,9 @@ namespace Gam6itko\OzonSeller\Service;
 use Gam6itko\OzonSeller\ProductValidator;
 use Gam6itko\OzonSeller\TypeCaster;
 
+/**
+ * @author Alexander Strizhak <gam6itko@gmail.com>
+ */
 class ProductsService extends AbstractService
 {
     /**

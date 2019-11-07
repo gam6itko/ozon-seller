@@ -8,6 +8,7 @@ use Gam6itko\OzonSeller\Enum\TransactionType;
  * Allows to retrieve reports via API, that are also available in Seller Center.
  *
  * @see https://cb-api.ozonru.me/apiref/en/#t-title_seller_reports
+ * @author Alexander Strizhak <gam6itko@gmail.com>
  */
 class ReportService extends AbstractService
 {

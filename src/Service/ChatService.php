@@ -2,6 +2,9 @@
 
 namespace Gam6itko\OzonSeller\Service;
 
+/**
+ * @author Alexander Strizhak <gam6itko@gmail.com>
+ */
 class ChatService extends AbstractService
 {
     /**

@@ -2,7 +2,15 @@
 
 namespace Gam6itko\OzonSeller\Tests;
 
-class TypeCasterTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+/**
+ * @coversDefaultClass \Gam6itko\OzonSeller\TypeCaster
+ * @group unit-test
+ *
+ * @author Alexander Strizhak <gam6itko@gmail.com>
+ */
+class TypeCasterTest extends TestCase
 {
     /**
      * @param array $data

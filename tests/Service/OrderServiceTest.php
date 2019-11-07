@@ -6,7 +6,9 @@ use Gam6itko\OzonSeller\Enum\DeliverySchema;
 use Gam6itko\OzonSeller\Service\OrderService;
 
 /**
- * @covers \OrderService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\OrderService
+ *
+ * @author Alexander Strizhak <gam6itko@gmail.com>
  */
 class OrderServiceTest extends \PHPUnit\Framework\TestCase
 {

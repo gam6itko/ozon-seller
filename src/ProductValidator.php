@@ -4,6 +4,9 @@ namespace Gam6itko\OzonSeller;
 
 use Gam6itko\OzonSeller\Exception\ProductValidatorException;
 
+/**
+ * @author Alexander Strizhak <gam6itko@gmail.com>
+ */
 class ProductValidator
 {
     private const MAX_IMAGES_COUNT = 10;

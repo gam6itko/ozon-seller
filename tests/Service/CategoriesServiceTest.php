@@ -5,7 +5,9 @@ namespace Gam6itko\OzonSeller\Tests\Service;
 use Gam6itko\OzonSeller\Service\CategoriesService;
 
 /**
- * @coversDefaultClass  \Gam6itko\OzonSeller\Service\CategoriesService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\CategoriesService
+ *
+ * @author Alexander Strizhak <gam6itko@gmail.com>
  */
 class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
 {
