@@ -2,4 +2,9 @@ language: php
 php:
     - '7.1'
     - nightly
+
+env:
+    global:
+        - PHPUNIT_VERSION=7
+
 script: phpunit --configuration phpunit.xml.dist --group unit-test
