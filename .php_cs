@@ -1,14 +1,14 @@
 <?php
 
 $rules = [
-    '@Symfony'               => true,
+    '@Symfony'                   => true,
     'no_superfluous_phpdoc_tags' => false,
-    'binary_operator_spaces' => [
+    'binary_operator_spaces'     => [
         'operators' => [
             '=>' => 'align',
         ],
     ],
-    'cast_spaces'            => ['space' => 'none'],
+    'cast_spaces'                => ['space' => 'none'],
 ];
 
 $finder = PhpCsFixer\Finder::create()
