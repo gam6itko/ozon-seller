@@ -15,8 +15,6 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_product_classifier
      *
-     * @param array $income
-     *
      * @return array
      */
     public function classify(array $income)
@@ -48,9 +46,6 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @param array $income
-     * @param bool  $validateBeforeSend
-     *
      * @return array
      *
      * @deprecated v0.2 use import
@@ -66,9 +61,6 @@ class ProductsService extends AbstractService
      * Creates product page in our system.
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create
-     *
-     * @param array $income
-     * @param bool  $validateBeforeSend
      *
      * @return array
      */
@@ -92,8 +84,6 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @param array $income
-     *
      * @return array|string
      *
      * @deprecated v0.2 use importBySku
@@ -106,8 +96,6 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @param array $income
-     *
      * @return array|string
      */
     public function importBySku(array $income)
@@ -154,8 +142,6 @@ class ProductsService extends AbstractService
      * Receive product info.
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
-     *
-     * @param int $productId
      *
      * @return array
      */
@@ -204,8 +190,6 @@ class ProductsService extends AbstractService
      * Receive products prices info.
      *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_prices
-     *
-     * @param array $pagination
      *
      * @return array
      */
@@ -288,9 +272,6 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
      *
-     * @param array $product
-     * @param bool  $validate
-     *
      * @return array
      */
     public function update(array $product, bool $validate = true)
@@ -308,8 +289,6 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_activate
      *
-     * @param int $productId
-     *
      * @return bool success
      */
     public function activate(int $productId): bool
@@ -324,8 +303,6 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_deactivate
      *
-     * @param int $productId
-     *
      * @return bool success
      */
     public function deactivate(int $productId): bool
@@ -337,9 +314,6 @@ class ProductsService extends AbstractService
 
     /**
      * This method allows you to remove product in some cases: [product must not have active stocks, product should not have any sales].
-     *
-     * @param int         $productId
-     * @param string|null $offerId
      *
      * @return bool deleted
      */

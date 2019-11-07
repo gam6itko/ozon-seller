@@ -46,9 +46,6 @@ class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ::attributes
      * @dataProvider dataTree
-     *
-     * @param int    $id
-     * @param string $title
      */
     public function testTree(int $id, string $title)
     {
@@ -70,8 +67,6 @@ class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ::attributes
      * @dataProvider dataAttributes
-     *
-     * @param int $id
      */
     public function testAttributes(int $id)
     {

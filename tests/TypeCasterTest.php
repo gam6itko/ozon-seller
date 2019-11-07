@@ -13,9 +13,6 @@ use PHPUnit\Framework\TestCase;
 class TypeCasterTest extends TestCase
 {
     /**
-     * @param array $data
-     * @param array $config
-     * @param array $expected
      * @dataProvider dataCatArr
      */
     public function testCastArr(array $data, array $config, array $expected)

@@ -27,9 +27,6 @@ class ChatService extends AbstractService
     /**
      * Retreives message history in a chat.
      *
-     * @param string $chatId
-     * @param array  $query
-     *
      * @return array
      */
     public function history(string $chatId, array $query = [])
@@ -43,9 +40,6 @@ class ChatService extends AbstractService
 
     /**
      * Sends a message in an existing chat with a customer.
-     *
-     * @param string $chatId
-     * @param string $text
      *
      * @return array
      */
@@ -85,8 +79,6 @@ class ChatService extends AbstractService
     /**
      * Creates a new chat with a customer related to a specific order.
      * For example, if a seller has some questions regarding delivery address, he can simply contact a buyer via new chat.
-     *
-     * @param int $orderId
      *
      * @return string Chat ID
      */

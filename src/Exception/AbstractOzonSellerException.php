@@ -9,9 +9,6 @@ class AbstractOzonSellerException extends \Exception
 
     /**
      * ValidationException constructor.
-     *
-     * @param string $messages
-     * @param array  $data
      */
     public function __construct(string $messages, array $data = [])
     {

@@ -45,8 +45,6 @@ class ProductValidator
 
     /**
      * ProductValidator constructor.
-     *
-     * @param string $mode
      */
     public function __construct(string $mode = 'create')
     {

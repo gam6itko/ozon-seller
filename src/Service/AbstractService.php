@@ -24,10 +24,6 @@ abstract class AbstractService
 
     /**
      * CategoriesService constructor.
-     *
-     * @param string $host
-     * @param int    $clientId
-     * @param string $apiKey
      */
     public function __construct(int $clientId, string $apiKey, string $host = 'https://api-seller.ozon.ru/')
     {
@@ -57,11 +53,6 @@ abstract class AbstractService
 
     /**
      * Filters unexpected array keys.
-     *
-     * @param array $query
-     * @param array $whitelist
-     *
-     * @return array
      */
     protected function faceControl(array $query, array $whitelist): array
     {
@@ -69,10 +60,6 @@ abstract class AbstractService
     }
 
     /**
-     * @param string $method
-     * @param string $uri
-     * @param array  $options
-     *
      * @return string|array
      */
     protected function request(string $method, string $uri = '', array $options = [])

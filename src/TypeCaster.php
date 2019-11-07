@@ -10,7 +10,6 @@ class TypeCaster
     /**
      * @param array $data   Array with cast types
      * @param array $config ['float_key' => 'float', 'str_key' => 'string', 'int_key' => 'int']
-     * @param bool  $force
      *
      * @return array Modified data
      */

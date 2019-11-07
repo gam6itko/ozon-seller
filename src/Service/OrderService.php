@@ -14,8 +14,7 @@ class OrderService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_order
      *
-     * @param int   $orderId
-     * @param array $query   ['translit']
+     * @param array $query ['translit']
      *
      * @return array
      */
@@ -31,12 +30,7 @@ class OrderService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_list_all
      *
-     * @param \DateTimeInterface $since
-     * @param \DateTimeInterface $to
-     * @param string             $deliverySchema
-     * @param array              $query          ['page', 'page_size', 'statuses']
-     *
-     * @return array
+     * @param array $query ['page', 'page_size', 'statuses']
      */
     public function list(\DateTimeInterface $since, \DateTimeInterface $to, string $deliverySchema = DeliverySchema::CROSSBOARDER, array $query = []): array
     {
@@ -161,8 +155,6 @@ class OrderService extends AbstractService
      * @param int   $orderId    Order ID
      * @param int   $reasonCode Cancellation reason code
      * @param array $itemsIds   List of unique item IDs in the order
-     *
-     * @return bool
      */
     public function itemsCancelCrossboarder(int $orderId, int $reasonCode, array $itemsIds): bool
     {
@@ -184,8 +176,6 @@ class OrderService extends AbstractService
      *
      * @param int $orderId    Order ID
      * @param int $reasonCode Cancellation reason code
-     *
-     * @return bool
      */
     public function itemsCancelFbs(int $orderId, int $reasonCode): bool
     {
