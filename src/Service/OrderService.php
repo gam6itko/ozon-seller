@@ -5,6 +5,8 @@ namespace Gam6itko\OzonSeller\Service;
 use Gam6itko\OzonSeller\Enum\DeliverySchema;
 
 /**
+ * @deprecated use PostingService
+ *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */
 class OrderService extends AbstractService
@@ -12,10 +14,10 @@ class OrderService extends AbstractService
     /**
      * Receive order info.
      *
+     * @deprecated
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_order
      *
-     * @param int   $orderId
-     * @param array $query   ['translit']
+     * @param array $query ['translit']
      *
      * @return array
      */
@@ -29,14 +31,10 @@ class OrderService extends AbstractService
     /**
      * Receive the list of orders.
      *
+     * @deprecated
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_list_all
      *
-     * @param \DateTimeInterface $since
-     * @param \DateTimeInterface $to
-     * @param string             $deliverySchema
-     * @param array              $query          ['page', 'page_size', 'statuses']
-     *
-     * @return array
+     * @param array $query ['page', 'page_size', 'statuses']
      */
     public function list(\DateTimeInterface $since, \DateTimeInterface $to, string $deliverySchema = DeliverySchema::CROSSBOARDER, array $query = []): array
     {
@@ -53,6 +51,8 @@ class OrderService extends AbstractService
 
     /**
      * Approve items in the order. Changes approval status for specific items in the order.
+     *
+     * @deprecated
      *
      * @param int $orderId Order ID
      *
@@ -72,6 +72,8 @@ class OrderService extends AbstractService
     /**
      * Receive the list of available shipping providers. Only for Crossborder.
      *
+     * @deprecated
+     *
      * @return array
      */
     public function shippingProviders()
@@ -82,6 +84,7 @@ class OrderService extends AbstractService
     /**
      * Create a package, mark it as dispatched and provide a tracking number.
      *
+     * @deprecated
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_ship_cb
      *
      * @param int    $orderId            Order ID
@@ -106,6 +109,7 @@ class OrderService extends AbstractService
     /**
      * Returns an FBS package label for one or several orders.
      *
+     * @deprecated
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_post_order_ship_fbs
      *
      * @param int[] $orderIds
@@ -120,20 +124,9 @@ class OrderService extends AbstractService
     }
 
     /**
-     * Retreives bill of lading for an FBS orders batch. When using this handle an OZON courier shipment will be created.
-     *
-     * @see https://cb-api.ozonru.me/apiref/en/#t-title_post_order_acceptancedocs_fbs
-     *
-     * @return array
-     */
-    public function acceptanceDocFbs()
-    {
-        return $this->request('POST', '/v1/order/acceptance-doc/fbs', ['body' => '{}']);
-    }
-
-    /**
      * Create a package, mark it as dispatched and provide a tracking number.  Only for Fulfilled by Seller (FBS).
      *
+     * @deprecated
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_ship_fbs
      *
      * @param int $orderId  Order ID
@@ -156,13 +149,12 @@ class OrderService extends AbstractService
     /**
      * Will cancel an item in the order, requires cancellation reason to be provided.
      *
+     * @deprecated
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_item_crossborder
      *
      * @param int   $orderId    Order ID
      * @param int   $reasonCode Cancellation reason code
      * @param array $itemsIds   List of unique item IDs in the order
-     *
-     * @return bool
      */
     public function itemsCancelCrossboarder(int $orderId, int $reasonCode, array $itemsIds): bool
     {
@@ -180,12 +172,11 @@ class OrderService extends AbstractService
     /**
      * Will cancel an order, requires cancellation reason to be provided.
      *
+     * @deprecated
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_item_fbs
      *
      * @param int $orderId    Order ID
      * @param int $reasonCode Cancellation reason code
-     *
-     * @return bool
      */
     public function itemsCancelFbs(int $orderId, int $reasonCode): bool
     {
@@ -202,6 +193,7 @@ class OrderService extends AbstractService
     /**
      * Receive the list of unfulfilled orders, within the specified order date and time.
      *
+     * @deprecated
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_order_unfulfilled
      *
      * @param array $query ['page', 'page_size']
@@ -218,6 +210,7 @@ class OrderService extends AbstractService
     /**
      * @return array
      *
+     * @deprecated
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_order_canceled
      */
     public function itemsCancelReasons()

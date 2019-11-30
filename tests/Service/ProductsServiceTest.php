@@ -19,9 +19,6 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ::classify
      * @dataProvider dataClassify
-     *
-     * @param string $jsonFile
-     * @param string $responseFile
      */
     public function testClassify(string $jsonFile, string $responseFile): void
     {
@@ -41,8 +38,6 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ::create
      * @dataProvider dataCreate
-     *
-     * @param string $jsonFile
      */
     public function testCreate(string $jsonFile): void
     {
@@ -63,8 +58,6 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      * @covers ::create
      * @dataProvider dataCreateInvalid
      * @expectedException \Gam6itko\OzonSeller\Exception\ProductValidatorException
-     *
-     * @param string $jsonFile
      */
     public function testCreateInvalid(string $jsonFile): void
     {
@@ -97,8 +90,6 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
      * @covers ::create
      * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      * @dataProvider dataCreateFail
-     *
-     * @param string $jsonFile
      */
     public function testCreateFail(string $jsonFile): void
     {
@@ -121,8 +112,6 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ::createBySku
      * @dataProvider dataCreateBySku
-     *
-     * @param string $jsonFileIncome
      */
     public function testCreateBySku(string $jsonFileIncome): void
     {

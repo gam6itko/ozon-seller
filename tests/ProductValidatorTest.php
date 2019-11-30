@@ -15,8 +15,6 @@ class ProductValidatorTest extends TestCase
 {
     /**
      * @dataProvider dataValidCreate
-     *
-     * @param string $json
      */
     public function testValidCreate(string $json)
     {
@@ -35,8 +33,6 @@ class ProductValidatorTest extends TestCase
     /**
      * @dataProvider dataInvalid
      * @expectedException \Gam6itko\OzonSeller\Exception\ProductValidatorException
-     *
-     * @param string $json
      */
     public function testInvalid(string $json)
     {
@@ -56,8 +52,6 @@ class ProductValidatorTest extends TestCase
 
     /**
      * @dataProvider dataValidUpdate
-     *
-     * @param string $json
      */
     public function testValidUpdate(string $json)
     {
@@ -78,8 +72,6 @@ class ProductValidatorTest extends TestCase
 
     /**
      * @dataProvider dataValidUpdate
-     *
-     * @param string $json
      */
     public function testInvalidUpdate(string $json)
     {
@@ -100,8 +92,6 @@ class ProductValidatorTest extends TestCase
 
     /**
      * @dataProvider dataImages
-     *
-     * @param string $json
      */
     public function testImages(string $json)
     {

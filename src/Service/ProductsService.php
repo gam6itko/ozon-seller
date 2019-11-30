@@ -48,9 +48,6 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @param array $income
-     * @param bool  $validateBeforeSend
-     *
      * @return array Single product structure or array of structures
      *
      * @deprecated v0.2 use import
@@ -67,8 +64,7 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create
      *
-     * @param array $income             Single item structure or array of items
-     * @param bool  $validateBeforeSend
+     * @param array $income Single item structure or array of items
      *
      * @return array
      */
@@ -308,8 +304,6 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_activate
      *
-     * @param int $productId
-     *
      * @return bool success
      */
     public function activate(int $productId): bool
@@ -337,9 +331,6 @@ class ProductsService extends AbstractService
 
     /**
      * This method allows you to remove product in some cases: [product must not have active stocks, product should not have any sales].
-     *
-     * @param int         $productId
-     * @param string|null $offerId
      *
      * @return bool deleted
      */

@@ -2,7 +2,6 @@
 
 $rules = [
     '@Symfony'                   => true,
-    'no_superfluous_phpdoc_tags' => false,
     'binary_operator_spaces'     => [
         'operators' => [
             '=>' => 'align',

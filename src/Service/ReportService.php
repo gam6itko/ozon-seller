@@ -18,8 +18,6 @@ class ReportService extends AbstractService
      *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_post_reportlist
      *
-     * @param array $query
-     *
      * @return array|string
      */
     public function list(array $query)
@@ -33,8 +31,6 @@ class ReportService extends AbstractService
      * Get report info by unique ID.
      *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_post_reportinfo
-     *
-     * @param string|null $code
      *
      * @return array|string
      */
@@ -66,11 +62,6 @@ class ReportService extends AbstractService
      * Returns products reports, which is also available in Seller Center.
      *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_post_reporttransactions
-     *
-     * @param \DateTimeInterface $dateFrom
-     * @param \DateTimeInterface $dateTo
-     * @param string|null        $search
-     * @param string             $transactionType
      *
      * @return array|string
      */
