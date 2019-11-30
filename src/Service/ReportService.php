@@ -59,7 +59,7 @@ class ReportService extends AbstractService
         $query = $this->faceControl($query, ['offer_id', 'search', 'sku', 'visibility']);
         $query = array_filter($query);
 
-        return $this->request('POST', '/v1/report/product/create', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/report/products/create', ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     /**

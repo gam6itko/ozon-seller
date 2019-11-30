@@ -47,7 +47,7 @@ class ChatService extends AbstractService
      * @param string $chatId
      * @param string $text
      *
-     * @return array
+     * @return bool
      */
     public function sendMessage(string $chatId, string $text): bool
     {
