@@ -3,13 +3,14 @@
 namespace Gam6itko\OzonSeller\Tests\Service;
 
 use Gam6itko\OzonSeller\Service\CategoriesService;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\CategoriesService
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */
-class CategoriesServiceTest extends \PHPUnit\Framework\TestCase
+class CategoriesServiceTest extends TestCase
 {
     /** @var CategoriesService */
     private static $svc;

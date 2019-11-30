@@ -4,13 +4,16 @@ namespace Gam6itko\OzonSeller\Tests\Service;
 
 use Gam6itko\OzonSeller\Enum\DeliverySchema;
 use Gam6itko\OzonSeller\Service\OrderService;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\OrderService
  *
+ * @deprecated
+ *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */
-class OrderServiceTest extends \PHPUnit\Framework\TestCase
+class OrderServiceTest extends TestCase
 {
     /** @var OrderService */
     private static $svc;
@@ -26,18 +29,12 @@ class OrderServiceTest extends \PHPUnit\Framework\TestCase
         self::assertNotEmpty($response);
     }
 
-    /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
-     */
     public function testListFbo()
     {
         $response = self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::FBO);
         self::assertNotEmpty($response);
     }
 
-    /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
-     */
     public function testListFbs()
     {
         $response = self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::FBS);
@@ -51,21 +48,6 @@ class OrderServiceTest extends \PHPUnit\Framework\TestCase
     {
         $result = self::$svc->itemsCancelReasons();
         self::assertNotEmpty($result);
-    }
-
-    public function testUnfulfilled()
-    {
-        $result = self::$svc->unfulfilled();
-        self::assertNotEmpty($result);
-
-        self::assertArrayHasKey('order_id', $result[0]);
-        self::assertArrayHasKey('items', $result[0]);
-    }
-
-    public function testCanceled()
-    {
-        $result = self::$svc->canceled();
-        self::assertTrue(true);
     }
 
     public function testShippingProviders()

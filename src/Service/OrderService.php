@@ -78,7 +78,7 @@ class OrderService extends AbstractService
      */
     public function shippingProviders()
     {
-        return $this->request('POST', '/v1/order/shipping-provider/list');
+        return $this->request('POST', '/v1/order/shipping-provider/list', ['body' => '{}']);
     }
 
     /**

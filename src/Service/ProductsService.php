@@ -91,20 +91,6 @@ class ProductsService extends AbstractService
      * @param array $income Single item structure or array of item
      *
      * @return array|string
-     *
-     * @deprecated v0.2 use importBySku
-     */
-    public function createBySku(array $income)
-    {
-        @trigger_error('Merhod `createBySku` deprecated. Use importBySku', E_USER_DEPRECATED);
-
-        return $this->importBySku($income);
-    }
-
-    /**
-     * @param array $income Single item structure or array of item
-     *
-     * @return array|string
      */
     public function importBySku(array $income)
     {
@@ -246,7 +232,7 @@ class ProductsService extends AbstractService
     public function updatePrices(array $prices)
     {
         foreach ($prices as &$p) {
-            $p = $this->faceControl($p, ['product_id', 'price', 'old_price', 'vat']);
+            $p = $this->faceControl($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price', 'vat']);
         }
 
         $arr = ['prices' => $prices];

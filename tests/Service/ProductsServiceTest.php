@@ -3,13 +3,14 @@
 namespace Gam6itko\OzonSeller\Tests\Service;
 
 use Gam6itko\OzonSeller\Service\ProductsService;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\ProductsService
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */
-class ProductsServiceTest extends \PHPUnit\Framework\TestCase
+class ProductsServiceTest extends TestCase
 {
     public function getSvc(): ProductsService
     {
@@ -18,40 +19,76 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers ::classify
-     * @dataProvider dataClassify
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
-    public function testClassify(string $jsonFile, string $responseFile): void
+    public function testClassify(): void
     {
-        $input = json_decode(file_get_contents($jsonFile), true);
-        $result = $this->getSvc()->classify($input);
-        self::assertNotEmpty($result);
-        self::assertJsonStringEqualsJsonFile($responseFile, json_encode($result));
-    }
+        $json = <<<JSON
+{
+    "products": [
+        {
+            "offer_id": "147190464",
+            "shop_category_full_path": "Электроника/Телефоны и аксессуары/Смартфоны",
+            "shop_category": "Смартфоны",
+            "shop_category_id": 15502,
+            "vendor": "Apple, Inc",
+            "model": "iPhone XS 256GB Space Grey",
+            "name": "Смартфон Apple iPhone XS 256GB Space Grey",
+            "price": "100990",
+            "offer_url": "https://www.ozon.ru/context/detail/id/147190464/",
+            "img_url": "https://ozon-st.cdn.ngenix.net/multimedia/1024351473.jpg",
+            "vendor_code": "apple_inc",
+            "barcode": "190198794017"
+        }
+    ]
+}
+JSON;
 
-    public function dataClassify(): array
-    {
-        return [
-            [__DIR__.'/../Resources/Products/classify.0.request.json', __DIR__.'/../Resources/Products/classify.0.response.json'],
-        ];
+        $this->getSvc()->classify(json_decode($json, true));
     }
 
     /**
      * @covers ::create
-     * @dataProvider dataCreate
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
-    public function testCreate(string $jsonFile): void
+    public function testCreate(): void
     {
-        $input = json_decode(file_get_contents($jsonFile), true);
-        $result = $this->getSvc()->create($input, true);
-        self::assertNotEmpty($result);
-        self::assertArrayHasKey('task_id', $result);
-    }
+        $json = <<<JSON
+{
+    "items": [
+        {
+            "category_id": "17036198",
+            "description": "Description for item",
+            "offer_id": "16209",
+            "name": "Наушники Apple AirPods 2 (без беспроводной зарядки чехла)",
+            "price": 10110,
+            "vat": 0,
+            "quantity": "3",
+            "vendor_code": "AM016209",
+            "height": "55",
+            "depth": "22",
+            "width": "45",
+            "dimension_unit": "mm",
+            "weight": "8",
+            "weight_unit": "g",
+            "images": [
+                {
+                    "file_name": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MRXJ2?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1551489675083",
+                    "default": true
+                }
+            ],
+            "attributes": [
+                {
+                    "id": 8229,
+                    "value": "193"
+                }
+            ]
+        }
+    ]
+}
+JSON;
 
-    public function dataCreate(): array
-    {
-        return [
-            [__DIR__.'/../Resources/Products/create.0.request.json'],
-        ];
+        $result = $this->getSvc()->create(json_decode($json, true), true);
     }
 
     /**
@@ -94,39 +131,49 @@ class ProductsServiceTest extends \PHPUnit\Framework\TestCase
     public function testCreateFail(string $jsonFile): void
     {
         $input = json_decode(file_get_contents($jsonFile), true);
-        $result = $this->getSvc()->create($input, false);
-        self::assertNotEmpty($result);
-        self::assertArrayHasKey('product_id', $result);
-        self::assertArrayHasKey('state', $result);
+        $this->getSvc()->create($input, false);
     }
 
     public function dataCreateFail(): array
     {
         return [
-            [__DIR__.'/../Resources/Products/create.fail.0.request.json'],
-            [__DIR__.'/../Resources/Products/create.invalid.1.request.json'],
             [__DIR__.'/../Resources/Products/create.invalid.0.request.json'],
+            [__DIR__.'/../Resources/Products/create.invalid.1.request.json'],
         ];
     }
 
     /**
      * @covers ::createBySku
-     * @dataProvider dataCreateBySku
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
-    public function testCreateBySku(string $jsonFileIncome): void
+    public function testImportBySku(string $jsonFileIncome): void
     {
-        $input = json_decode(file_get_contents($jsonFileIncome), true);
-        $result = $this->getSvc()->createBySku($input);
-        self::assertNotEmpty($result);
-        self::assertArrayHasKey('task_id', $result);
-        self::assertArrayHasKey('unmatched_sku_list', $result);
-    }
+        $json = <<<JSON
+{
+    "items": [
+        {
+            "sku": 1445625485,
+            "name": "Nice boots 1",
+            "offer_id": "RED-SHOES-MODEL-1-38-39",
+            "price": "7999",
+            "old_price": "8999",
+            "premium_price": "7555",
+            "vat": "0"
+        },
+        {
+            "sku": 1445625485,
+            "name": "Nice boots 2",
+            "offer_id": "RED-SHOES-MODEL-1-38-39",
+            "price": "7999",
+            "old_price": "8999",
+            "premium_price": "7555",
+            "vat": "0"
+        }
+    ]
+}
+JSON;
 
-    public function dataCreateBySku(string $jsonFileIncome)
-    {
-        return [
-            [__DIR__.'/../Resources/Products/create-by-sku.fail.0.request.json'],
-        ];
+        $this->getSvc()->importBySku(json_decode($json, true));
     }
 
     /**
@@ -309,9 +356,10 @@ JSON;
 
         $arr = [
             [
-                'product_id' => 508756,
-                'price'      => '45000',
-                'vat'        => '0.18',
+
+                'offer_id' => 'PRD-1',
+                'price'    => '45000',
+                'vat'      => '0.18',
             ],
         ];
         $result = $this->getSvc()->updatePrices($arr);

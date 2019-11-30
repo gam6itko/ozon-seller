@@ -107,6 +107,9 @@ abstract class AbstractService
     private function getExceptionClassByName(string $code): string
     {
         $parts = explode('_', strtolower($code));
+        if ('error' === end($parts)) {
+            unset($parts[key($parts)]);
+        }
         $parts = array_map('ucfirst', $parts);
         $name = implode('', $parts);
 

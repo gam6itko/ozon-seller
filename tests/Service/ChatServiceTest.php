@@ -22,11 +22,12 @@ class ChatServiceTest extends TestCase
         self::$svc = new ChatService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
     }
 
+    /**
+     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
+     */
     public function testSendMessage()
     {
-        $chatId = self::$svc->start($_SERVER['CHAT_ORDER_ID']);
-        self::assertNotEmpty($chatId);
-        self::$chatId = $chatId;
+        self::$svc->start(123456);
     }
 
     /**
