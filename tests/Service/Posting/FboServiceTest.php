@@ -35,5 +35,4 @@ class FboServiceTest extends TestCase
     {
         self::$svc->get('123456790');
     }
-
 }

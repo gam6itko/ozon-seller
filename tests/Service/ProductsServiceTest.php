@@ -356,7 +356,6 @@ JSON;
 
         $arr = [
             [
-
                 'offer_id' => 'PRD-1',
                 'price'    => '45000',
                 'vat'      => '0.18',
