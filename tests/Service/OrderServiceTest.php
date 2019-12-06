@@ -25,7 +25,7 @@ class OrderServiceTest extends TestCase
 
     public function testListCrossborder()
     {
-        $response = self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::CROSSBOARDER);
+        $response = self::$svc->list(new \DateTime('2018-01-01'), new \DateTime('2018-12-31'), DeliverySchema::CROSSBORDER);
         self::assertNotEmpty($response);
     }
 

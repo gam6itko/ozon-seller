@@ -4,3 +4,4 @@
 
 - Поддержка новый методов API `/v2/posting`
 - ProductService. Удалена функция `create`, вместо него используйте `import`. 
+- DeliverySchema::CROSSBOARDER исправлена опечатка на DeliverySchema::CROSSBORDER

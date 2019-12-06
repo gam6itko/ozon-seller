@@ -36,7 +36,7 @@ class OrderService extends AbstractService
      *
      * @param array $query ['page', 'page_size', 'statuses']
      */
-    public function list(\DateTimeInterface $since, \DateTimeInterface $to, string $deliverySchema = DeliverySchema::CROSSBOARDER, array $query = []): array
+    public function list(\DateTimeInterface $since, \DateTimeInterface $to, string $deliverySchema = DeliverySchema::CROSSBORDER, array $query = []): array
     {
         $query = $this->faceControl($query, ['page', 'page_size', 'statuses']);
 

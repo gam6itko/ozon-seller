@@ -11,5 +11,5 @@ final class DeliverySchema
     const FBO = 'fbo';
 
     /** @var string */
-    const CROSSBOARDER = 'crossborder';
+    const CROSSBORDER = 'crossborder';
 }
