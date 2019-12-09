@@ -2,6 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service\Posting;
 
+use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\CategoriesService;
 use Gam6itko\OzonSeller\Service\Posting\CrossborderService;
 use PHPUnit\Framework\TestCase;
@@ -45,7 +46,7 @@ class CrossborderServiceTest extends TestCase
      */
     public function testUnfulfilledList()
     {
-        self::$svc->unfulfilledList();
+        self::$svc->unfulfilledList(Status::AWAITING_APPROVE);
         self::assertTrue(true);
     }
 

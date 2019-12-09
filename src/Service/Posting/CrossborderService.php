@@ -42,9 +42,13 @@ class CrossborderService extends AbstractService
      *
      * @todo fix {"error":{"code":"BAD_REQUEST","message":"Invalid request payload","data":[{"name":"status","code":"TOO_FEW_ELEMENTS","value":"[]","message":""}]}}
      */
-    public function unfulfilledList(string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10): array
+    public function unfulfilledList($status, string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10): array
     {
+        if (is_string($status)) {
+            $status = [$status];
+        }
         $body = [
+            'status' => $status,
             'dir'    => $sort,
             'offset' => $offset,
             'limit'  => $limit,
