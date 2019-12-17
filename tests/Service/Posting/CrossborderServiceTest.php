@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\Posting\CrossborderService
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
- * @group v2
+ * @group  v2
  */
 class CrossborderServiceTest extends TestCase
 {
@@ -73,6 +73,18 @@ class CrossborderServiceTest extends TestCase
     {
         self::$svc->cancel('39268230-0002-3', '149123456', 349, 'Cancel reason');
         self::assertTrue(true);
+    }
+
+    /**
+     * @covers ::cancelReasons
+     */
+    public function testCancelReasons()
+    {
+        $result = self::$svc->cancelReasons();
+        self::assertNotNull($result);
+        self::assertArrayHasKey('id', $result[0]);
+        self::assertArrayHasKey('title', $result[0]);
+        self::assertArrayHasKey('type_id', $result[0]);
     }
 
     /**
