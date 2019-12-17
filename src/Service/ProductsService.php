@@ -338,6 +338,7 @@ class ProductsService extends AbstractService
      * @param array $pagination [page, page_size]
      *
      * @todo filter not works
+     *
      * @return array
      */
     public function price(array $filter = [], array $pagination = [])
