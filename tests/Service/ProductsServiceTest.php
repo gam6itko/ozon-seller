@@ -2,6 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service;
 
+use Gam6itko\OzonSeller\Enum\Visibility;
 use Gam6itko\OzonSeller\Service\ProductsService;
 use PHPUnit\Framework\TestCase;
 
@@ -390,5 +391,13 @@ JSON;
         $result = $this->getSvc()->updateStocks($arr);
         self::assertNotEmpty($result);
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
+    }
+
+    /**
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
+     */
+    public function testPrice()
+    {
+        $result = $this->getSvc()->price([], ['page' => 1, 'page_size' => 10]);
     }
 }

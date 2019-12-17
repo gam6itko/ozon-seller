@@ -237,3 +237,33 @@ $svcProduct->create([$product, $product1, $product2, ...]);
 $res = $svcProduct->create(['items' => [$product, $product1, $product2, ...] ]);
 echo $res['task_id']; // save it for checking with
 ```
+
+### price
+
+<https://github.com/gam6itko/ozon-seller/issues/6#issuecomment-566162289>
+
+```php
+$svcProduct = new ProductsService($clientId, $apiKey, $sandboxHost);
+$svcProduct->price([], ['page' => 1, 'page_size' => 10]);
+```
+
+```json5
+{
+  "items": [
+    {
+      "id": 595447,
+      "offer_id": "1315",
+      "old_price": "5175.0000",
+      "price": "4140.0000",
+      "premium_price": "",
+      "recommended_price": "",
+      "buybox_price": "4140.0000",
+      "commission": null,
+      "min_ozon_price": "4140.0000",
+      "marketing_price": "4140.0000"
+    },
+    // more items
+  ],
+  "total": 626
+}
+```

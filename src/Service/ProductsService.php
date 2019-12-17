@@ -330,4 +330,24 @@ class ProductsService extends AbstractService
 
         return 'deleted' === $response;
     }
+
+    /**
+     * @see https://github.com/gam6itko/ozon-seller/issues/6
+     *
+     * @param array $filter     ["offer_id": [], "product_id": [], "visibility": "ALL"]
+     * @param array $pagination [page, page_size]
+     *
+     * @todo filter not works
+     * @return array
+     */
+    public function price(array $filter = [], array $pagination = [])
+    {
+        $filter = $this->faceControl($filter, ['offer_id', 'product_id', 'visibility']);
+        $pagination = $this->faceControl($pagination, ['page', 'page_size']);
+        $body = array_merge($pagination, [
+//            'filter' => $filter,
+        ]);
+
+        return $this->request('POST', '/v1/product/list/price', ['body' => \GuzzleHttp\json_encode($body)]);
+    }
 }
