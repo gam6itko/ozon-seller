@@ -2,6 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service\Posting;
 
+use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\CategoriesService;
 use Gam6itko\OzonSeller\Service\Posting\CrossborderService;
@@ -28,7 +29,11 @@ class CrossborderServiceTest extends TestCase
      */
     public function testList()
     {
-        self::$svc->list(new \DateTime('2019-01-01'), new \DateTime('2020-01-01'));
+        self::$svc->list(SortDirection::ASC, 0, 10, [
+            'since'  => new \DateTime('2019-01-01'),
+            'to'     => new \DateTime('2020-01-01'),
+            'status' => Status::AWAITING_APPROVE,
+        ]);
         self::assertTrue(true);
     }
 
