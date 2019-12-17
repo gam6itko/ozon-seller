@@ -2,7 +2,6 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service;
 
-use Gam6itko\OzonSeller\Enum\Visibility;
 use Gam6itko\OzonSeller\Service\ProductsService;
 use PHPUnit\Framework\TestCase;
 
