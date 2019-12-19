@@ -39,7 +39,7 @@ class CrossborderService extends AbstractService
     }
 
     /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-cb_unfulfilled_list
+     * @see  https://cb-api.ozonru.me/apiref/en/#t-cb_unfulfilled_list
      *
      * @return array|string
      *
@@ -101,7 +101,7 @@ class CrossborderService extends AbstractService
      *
      * @return string list of postings IDs
      */
-    public function ship(string $postingNumber, string $track, int $shippingProviderId, array $items): string
+    public function ship(string $postingNumber, string $track, int $shippingProviderId, array $items): array
     {
         foreach ($items as &$item) {
             $item = $this->faceControl($item, ['quantity', 'sku']);
