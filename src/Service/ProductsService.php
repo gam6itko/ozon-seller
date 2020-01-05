@@ -257,7 +257,7 @@ class ProductsService extends AbstractService
         }
 
         foreach ($stocks as &$s) {
-            $s = $this->faceControl($s, ['product_id', 'stock']);
+            $s = $this->faceControl($s, ['product_id', 'offer_id', 'stock']);
         }
 
         $arr = ['stocks' => $stocks];
