@@ -84,6 +84,22 @@ class ProductsService extends AbstractService
             }
         }
 
+        // cast attributes types.
+        foreach ($income['items'] as &$item) {
+            if (is_array($item['attributes'])
+                && count($item['attributes']) > 0) {
+                foreach($item['attributes'] as &$attribute) {
+                    $attribute = TypeCaster::castArr($attribute, ['value' => 'str']);
+                    if (is_array($attribute['collection'])
+                        && count($attribute['collection']) > 0) {
+                        foreach($attribute['collection'] as &$collectionItem) {
+                            $collectionItem = (string) $collectionItem;
+                        }
+                    }
+                }
+            }
+        }
+
         return $this->request('POST', '/v1/product/import', ['body' => \GuzzleHttp\json_encode($income)]);
     }
 
