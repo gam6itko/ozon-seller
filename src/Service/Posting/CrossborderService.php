@@ -75,7 +75,7 @@ class CrossborderService extends AbstractService
      *
      * @param array|string $sku
      */
-    public function cancel(string $postingNumber, $sku, int $cancelReasonId, string $cancelReasonMessage = null): bool
+    public function cancel(string $postingNumber, $sku, int $cancelReasonId, string $cancelReasonMessage = ''): bool
     {
         if (is_string($sku)) {
             $sku = [$sku];
