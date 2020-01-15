@@ -65,9 +65,7 @@ class CrossborderService extends AbstractService
      */
     public function approve(string $postingNumber): bool
     {
-        $result = $this->request('POST', "{$this->path}/approve", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
-
-        return 'true' === $result;
+        return $this->request('POST', "{$this->path}/approve", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
     }
 
     /**
@@ -86,9 +84,7 @@ class CrossborderService extends AbstractService
             'cancel_reason_id'      => $cancelReasonId,
             'cancel_reason_message' => $cancelReasonMessage,
         ];
-        $result = $this->request('POST', "{$this->path}/cancel", ['body' => \GuzzleHttp\json_encode($body)]);
-
-        return 'true' === $result;
+        return $this->request('POST', "{$this->path}/cancel", ['body' => \GuzzleHttp\json_encode($body)]);
     }
 
     public function cancelReasons(): array
