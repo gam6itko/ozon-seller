@@ -84,6 +84,7 @@ class CrossborderService extends AbstractService
             'cancel_reason_id'      => $cancelReasonId,
             'cancel_reason_message' => $cancelReasonMessage,
         ];
+
         return $this->request('POST', "{$this->path}/cancel", ['body' => \GuzzleHttp\json_encode($body)]);
     }
 
