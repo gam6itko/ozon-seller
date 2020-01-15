@@ -22,6 +22,11 @@ class FboServiceTest extends TestCase
         self::$svc = new FboService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
     }
 
+    protected function setUp()
+    {
+        sleep(1); //fix 429 Too Many Requests
+    }
+
     public function testList()
     {
         self::$svc->list(new \DateTime('2019-01-01'), new \DateTime('2020-01-01'));

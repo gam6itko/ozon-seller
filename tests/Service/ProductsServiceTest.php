@@ -12,6 +12,11 @@ use PHPUnit\Framework\TestCase;
  */
 class ProductsServiceTest extends TestCase
 {
+    protected function setUp()
+    {
+        sleep(1); //fix 429 Too Many Requests
+    }
+
     public function getSvc(): ProductsService
     {
         return new ProductsService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);

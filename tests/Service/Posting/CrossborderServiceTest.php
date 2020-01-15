@@ -24,6 +24,11 @@ class CrossborderServiceTest extends TestCase
         self::$svc = new CrossborderService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
     }
 
+    protected function setUp()
+    {
+        sleep(1); //fix 429 Too Many Requests
+    }
+
     /**
      * @covers ::list
      */
