@@ -48,16 +48,11 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @param array $income
-     * @param bool  $validateBeforeSend
-     *
-     * @return array Single product structure or array of structures
-     *
      * @deprecated v0.2 use import
      */
     public function create(array $income, bool $validateBeforeSend = true)
     {
-        @trigger_error('Merhod `create` deprecated. Use import', E_USER_DEPRECATED);
+        @trigger_error('Merhod `create` deprecated. Use `import`', E_USER_DEPRECATED);
 
         return $this->import($income, $validateBeforeSend);
     }
@@ -135,6 +130,16 @@ class ProductsService extends AbstractService
     }
 
     /**
+     * @deprecated since 0.2.2. use importInfo
+     */
+    public function creationStatus(int $taskId)
+    {
+        @trigger_error(sprintf('Call deprecated method `creationStatus` use `importInfo` instead'), E_USER_DEPRECATED);
+
+        return $this->importInfo($taskId);
+    }
+
+    /**
      * Product creation status.
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create_status
@@ -143,7 +148,7 @@ class ProductsService extends AbstractService
      *
      * @return array
      */
-    public function creationStatus(int $taskId)
+    public function importInfo(int $taskId)
     {
         $query = ['task_id' => $taskId];
 
@@ -250,7 +255,7 @@ class ProductsService extends AbstractService
     public function updatePrices(array $prices)
     {
         foreach ($prices as &$p) {
-            $p = $this->faceControl($p, ['product_id', 'price', 'old_price', 'vat']);
+            $p = $this->faceControl($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price', 'vat']);
         }
 
         $arr = ['prices' => $prices];
@@ -308,8 +313,6 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_activate
      *
-     * @param int $productId
-     *
      * @return bool success
      */
     public function activate(int $productId): bool
@@ -338,9 +341,6 @@ class ProductsService extends AbstractService
     /**
      * This method allows you to remove product in some cases: [product must not have active stocks, product should not have any sales].
      *
-     * @param int         $productId
-     * @param string|null $offerId
-     *
      * @return bool deleted
      */
     public function delete(int $productId, string $offerId = null)
@@ -352,5 +352,40 @@ class ProductsService extends AbstractService
         $response = $this->request('POST', '/v1/product/delete', ['body' => \GuzzleHttp\json_encode($query)]);
 
         return 'deleted' === $response;
+    }
+
+    /**
+     * @see  https://github.com/gam6itko/ozon-seller/issues/6
+     *
+     * @param array $filter     ["offer_id": [], "product_id": [], "visibility": "ALL"]
+     * @param array $pagination [page, page_size]
+     *
+     * @todo filter not works
+     *
+     * @return array
+     */
+    public function price(array $filter = [], array $pagination = [])
+    {
+        $filter = $this->faceControl($filter, ['offer_id', 'product_id', 'visibility']);
+        $pagination = $this->faceControl($pagination, ['page', 'page_size']);
+        $body = array_merge($pagination, [
+//            'filter' => $filter,
+        ]);
+
+        return $this->request('POST', '/v1/product/list/price', ['body' => \GuzzleHttp\json_encode($body)]);
+    }
+
+    /**
+     * @see https://cb-api.ozonru.me/apiref/ru/#t-prepayment_set
+     *
+     * @param array $data ['is_prepayment', 'offers_ids', 'products_ids']
+     *
+     * @return array|string
+     */
+    public function setPrepayment(array $data)
+    {
+        $data = $this->faceControl($data, ['is_prepayment', 'offers_ids', 'products_ids']);
+
+        return $this->request('POST', '/v1/product/prepayment/set', ['body' => \GuzzleHttp\json_encode($data)]);
     }
 }
