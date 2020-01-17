@@ -359,4 +359,18 @@ class ProductsService extends AbstractService
 
         return $this->request('POST', '/v1/product/list/price', ['body' => \GuzzleHttp\json_encode($body)]);
     }
+
+    /**
+     * @see https://cb-api.ozonru.me/apiref/ru/#t-prepayment_set
+     *
+     * @param array $data ['is_prepayment', 'offers_ids', 'products_ids']
+     *
+     * @return array|string
+     */
+    public function setPrepayment(array $data)
+    {
+        $data = $this->faceControl($data, ['is_prepayment', 'offers_ids', 'products_ids']);
+
+        return $this->request('POST', '/v1/product/prepayment/set', ['body' => \GuzzleHttp\json_encode($data)]);
+    }
 }
