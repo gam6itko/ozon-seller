@@ -80,6 +80,16 @@ class OrderService extends AbstractService
     }
 
     /**
+     * @deprecated use shipCrossboader
+     */
+    public function shipCrossboarder(int $orderId, string $track, int $shippingProviderId, array $items)
+    {
+        @trigger_error(sprintf('You use method with typo in name. Use shipCrossboader method please'), E_USER_DEPRECATED);
+
+        return $this->shipCrossborder($orderId, $track, $shippingProviderId, $items);
+    }
+
+    /**
      * Create a package, mark it as dispatched and provide a tracking number.
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_order_ship_cb
@@ -91,7 +101,7 @@ class OrderService extends AbstractService
      *
      * @return array
      */
-    public function shipCrossboarder(int $orderId, string $track, int $shippingProviderId, array $items)
+    public function shipCrossborder(int $orderId, string $track, int $shippingProviderId, array $items)
     {
         $query = [
             'order_id'             => $orderId,
