@@ -48,13 +48,11 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @return array Single product structure or array of structures
-     *
      * @deprecated v0.2 use import
      */
     public function create(array $income, bool $validateBeforeSend = true)
     {
-        @trigger_error('Merhod `create` deprecated. Use import', E_USER_DEPRECATED);
+        @trigger_error('Merhod `create` deprecated. Use `import`', E_USER_DEPRECATED);
 
         return $this->import($income, $validateBeforeSend);
     }
@@ -117,6 +115,16 @@ class ProductsService extends AbstractService
     }
 
     /**
+     * @deprecated since 0.2.2. use importInfo
+     */
+    public function creationStatus(int $taskId)
+    {
+        @trigger_error(sprintf('Call deprecated method `creationStatus` use `importInfo` instead'), E_USER_DEPRECATED);
+
+        return $this->importInfo($taskId);
+    }
+
+    /**
      * Product creation status.
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create_status
@@ -125,7 +133,7 @@ class ProductsService extends AbstractService
      *
      * @return array
      */
-    public function creationStatus(int $taskId)
+    public function importInfo(int $taskId)
     {
         $query = ['task_id' => $taskId];
 
@@ -332,7 +340,7 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @see https://github.com/gam6itko/ozon-seller/issues/6
+     * @see  https://github.com/gam6itko/ozon-seller/issues/6
      *
      * @param array $filter     ["offer_id": [], "product_id": [], "visibility": "ALL"]
      * @param array $pagination [page, page_size]
