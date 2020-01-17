@@ -1,5 +1,9 @@
 # Changelog
 
+# 0.2.2
+- классы работы с API унаследованные от `AbstractService` поддерживают логирование запросов и ответов от сервера Ozon. 
+    Необходимо передать объект LoggerInterface в метод setLogger().
+
 # 0.2.1
 - [fix] CrossborderService методы `approve` и `cancel` всегда возвращали `false`
 

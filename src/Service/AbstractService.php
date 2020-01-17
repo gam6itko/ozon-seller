@@ -4,12 +4,16 @@ namespace Gam6itko\OzonSeller\Service;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */
 abstract class AbstractService
 {
+    use LoggerAwareTrait;
+
     /** @var string */
     private $host;
 
@@ -30,6 +34,7 @@ abstract class AbstractService
         $this->clientId = $clientId;
         $this->apiKey = $apiKey;
         $this->host = trim($host, '/').'/';
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -65,9 +70,11 @@ abstract class AbstractService
     protected function request(string $method, string $uri = '', array $options = [])
     {
         try {
+            $this->logger->debug("request {$method} {$uri}", $options);
             $response = $this->getClient()->request($method, $uri, $options);
 
             $arr = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+            $this->logger->debug("response {$method} {$uri}", $arr);
 
             if (isset($arr['result'])) {
                 return $arr['result'];
@@ -82,6 +89,7 @@ abstract class AbstractService
     private function adaptException(BadResponseException $clientException)
     {
         try {
+            $this->logger->error($clientException->getMessage());
             $body = $clientException->getResponse()->getBody()->getContents();
             $errorData = \GuzzleHttp\json_decode($body, true)['error'];
         } catch (\InvalidArgumentException $exc) {
