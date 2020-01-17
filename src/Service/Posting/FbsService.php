@@ -160,4 +160,22 @@ class FbsService extends AbstractService
     {
         return $this->request('POST', "{$this->path}/cancel-reason/list", ['body' => '{}']); //todo свериться с исправленной документацией
     }
+
+    /**
+     * @param string|array $postingNumber
+     *
+     * @return array|string
+     */
+    public function awaitingDelivery($postingNumber)
+    {
+        if (is_string($postingNumber)) {
+            $postingNumber = [$postingNumber];
+        }
+
+        $body = [
+            'posting_number' => $postingNumber,
+        ];
+
+        return $this->request('POST', "{$this->path}/awaiting-delivery", ['body' => \GuzzleHttp\json_encode($body)]);
+    }
 }

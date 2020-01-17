@@ -2,6 +2,14 @@
 
 namespace Gam6itko\OzonSeller\Tests;
 
+use Gam6itko\OzonSeller\Service\CategoriesService;
+use Gam6itko\OzonSeller\Service\ChatService;
+use Gam6itko\OzonSeller\Service\OrderService;
+use Gam6itko\OzonSeller\Service\Posting\CrossborderService;
+use Gam6itko\OzonSeller\Service\Posting\FboService;
+use Gam6itko\OzonSeller\Service\Posting\FbsService;
+use Gam6itko\OzonSeller\Service\ProductsService;
+use Gam6itko\OzonSeller\Service\ReportService;
 use PHPHtmlParser\Dom;
 use PHPUnit\Framework\TestCase;
 
@@ -10,8 +18,56 @@ use PHPUnit\Framework\TestCase;
  */
 class ApiReferenceTest extends TestCase
 {
-    const MAPPING = [
-        '/v1/order/123456?translit=true' => '/v1/order/{$orderId}',
+    const CONFIG = [
+        CategoriesService::class  => [
+            'prefix'  => '/v1/category',
+            'mapping' => [
+                'attribute' => 'attributes',
+            ],
+        ],
+        ChatService::class        => ['prefix' => '/v1/chat'],
+        OrderService::class       => [
+            'prefix'  => '/v1/order',
+            'mapping' => [
+                '123456?translit=true'     => 'info',
+                'approve/crossborder'      => 'approve',
+                'cancel-reason/list'       => 'itemsCancelReasons',
+                'cancel/fbs'               => 'itemsCancelFbs',
+                'items/cancel/crossborder' => 'itemsCancelCrossboarder',
+                'shipping-provider/list'   => 'shippingProviders',
+            ],
+        ],
+        ProductsService::class    => [
+            'prefix'  => '/v1/product',
+            'mapping' => [
+                'import/prices'  => 'updatePrices', //todo rename
+                'import/stocks'  => 'updateStocks', //todo rename
+                'info/prices'    => 'pricesInfo', //todo rename
+                'info/stocks'    => 'stockInfo', //todo rename
+                'prepayment/set' => 'setPrepayment',
+            ],
+        ],
+        ReportService::class      => [
+            'prefix'  => '/v1/report',
+            'mapping' => [
+                'products/create'     => 'products',
+                'transactions/create' => 'transaction', //todo rename
+            ],
+        ],
+        // Posting
+        CrossborderService::class => [
+            'prefix'  => '/v2/posting/crossborder',
+            'mapping' => [
+                'cancel-reason/list'     => 'cancelReasons',
+                'shipping-provider/list' => 'shippingProviders',
+            ],
+        ],
+        FboService::class         => [
+            'prefix' => '/v2/posting/fbo',
+        ],
+        FbsService::class         => [
+            'prefix' => '/v2/posting/fbs',
+        ],
     ];
 
     /**
@@ -32,7 +88,6 @@ class ApiReferenceTest extends TestCase
                 continue;
             }
 
-            $path = self::MAPPING[$path] ?? $path;
             if (in_array($path, $theirMethods)) {
                 continue;
             }
@@ -42,29 +97,29 @@ class ApiReferenceTest extends TestCase
         $theirMethods = array_values($theirMethods);
         self::assertNotEmpty($theirMethods);
 
-        $ourMethods = $this->collectRealizedMethods();
-        self::assertNotEmpty($ourMethods);
-
-        self::assertJsonStringEqualsJsonString(json_encode($theirMethods), json_encode($ourMethods));
+        foreach ($theirMethods as $path) {
+            self::assertTrue($this->isRealized($path), "Method `$path` not realized");
+        }
     }
 
-    private function collectRealizedMethods(): array
+    private function isRealized($path): bool
     {
-        $finder = new \Symfony\Component\Finder\Finder();
+        foreach (self::CONFIG as $class => $config) {
+            if (0 !== strpos($path, $config['prefix'])) {
+                continue;
+            }
 
-        $dir = realpath(__DIR__.'/../src/Service');
-        self::assertDirectoryExists($dir);
-        $finder->files()->in($dir)->name('*.php');
+            $method = ltrim(substr($path, strlen($config['prefix'])), '/');
+            if (isset($config['mapping']) && array_key_exists($method, $config['mapping'])) {
+                $method = $config['mapping'][$method];
+            }
 
-        $result = [];
-        foreach ($finder as $file) {
-            $matches = [];
-            preg_match_all('/[\'|"](\/v1.*?)[\'|"]/', $file->getContents(), $matches);
-            $result = array_merge($result, $matches[1]);
+            // to camelCase
+            $canonicalMethodName = lcfirst(implode('', array_map('ucfirst', explode('_', preg_replace('/\/|-|_/', '_', $method)))));
+
+            return method_exists($class, $canonicalMethodName);
         }
 
-        asort($result);
-
-        return array_values(array_unique($result));
+        return false;
     }
 }

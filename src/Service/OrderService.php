@@ -5,9 +5,9 @@ namespace Gam6itko\OzonSeller\Service;
 use Gam6itko\OzonSeller\Enum\DeliverySchema;
 
 /**
- * @deprecated use PostingService
+ * @deprecated since 0.2 and will be deleted in 0.3. use Posting/ services instead.
  *
- * @author Alexander Strizhak <gam6itko@gmail.com>
+ * @author     Alexander Strizhak <gam6itko@gmail.com>
  */
 class OrderService extends AbstractService
 {
@@ -82,6 +82,16 @@ class OrderService extends AbstractService
     }
 
     /**
+     * @deprecated use shipCrossboader
+     */
+    public function shipCrossboarder(int $orderId, string $track, int $shippingProviderId, array $items)
+    {
+        @trigger_error(sprintf('You use method with typo in name. Use shipCrossboader method please'), E_USER_DEPRECATED);
+
+        return $this->shipCrossborder($orderId, $track, $shippingProviderId, $items);
+    }
+
+    /**
      * Create a package, mark it as dispatched and provide a tracking number.
      *
      * @deprecated
@@ -94,7 +104,7 @@ class OrderService extends AbstractService
      *
      * @return array
      */
-    public function shipCrossboarder(int $orderId, string $track, int $shippingProviderId, array $items)
+    public function shipCrossborder(int $orderId, string $track, int $shippingProviderId, array $items)
     {
         $query = [
             'order_id'             => $orderId,
