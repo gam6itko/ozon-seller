@@ -53,10 +53,10 @@ JSON;
     }
 
     /**
-     * @covers ::create
+     * @covers ::import
      * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
-    public function testCreate(): void
+    public function testImport(): void
     {
         $json = <<<JSON
 {
@@ -93,24 +93,24 @@ JSON;
 }
 JSON;
 
-        $result = $this->getSvc()->create(json_decode($json, true), true);
+        $result = $this->getSvc()->import(json_decode($json, true), true);
     }
 
     /**
-     * @covers ::create
-     * @dataProvider dataCreateInvalid
+     * @covers ::import
+     * @dataProvider dataImportInvalid
      * @expectedException \Gam6itko\OzonSeller\Exception\ProductValidatorException
      */
-    public function testCreateInvalid(string $jsonFile): void
+    public function testImportInvalid(string $jsonFile): void
     {
         $input = json_decode(file_get_contents($jsonFile), true);
-        $result = $this->getSvc()->create($input, true);
+        $result = $this->getSvc()->import($input, true);
         self::assertNotEmpty($result);
         self::assertArrayHasKey('product_id', $result);
         self::assertArrayHasKey('state', $result);
     }
 
-    public function dataCreateInvalid(): array
+    public function dataImportInvalid(): array
     {
         return [
             [__DIR__.'/../Resources/Products/create.invalid.0.request.json'],
@@ -119,27 +119,27 @@ JSON;
     }
 
     /**
-     * @covers ::create
+     * @covers ::import
      * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      */
-    public function testCreateException(): void
+    public function testImportException(): void
     {
-        $result = $this->getSvc()->create([], false);
+        $result = $this->getSvc()->import([], false);
         self::assertNotEmpty($result);
     }
 
     /**
-     * @covers ::create
+     * @covers ::import
      * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
-     * @dataProvider dataCreateFail
+     * @dataProvider dataImportFail
      */
-    public function testCreateFail(string $jsonFile): void
+    public function testImportFail(string $jsonFile): void
     {
         $input = json_decode(file_get_contents($jsonFile), true);
-        $this->getSvc()->create($input, false);
+        $this->getSvc()->import($input, false);
     }
 
-    public function dataCreateFail(): array
+    public function dataImportFail(): array
     {
         return [
             [__DIR__.'/../Resources/Products/create.invalid.0.request.json'],
@@ -182,12 +182,12 @@ JSON;
     }
 
     /**
-     * @covers ::creationStatus
-     * @depends testCreate
+     * @covers ::importInfo
+     * @depends testImport
      */
     public function testCreationStatus(): void
     {
-        $status = $this->getSvc()->creationStatus(1914378);
+        $status = $this->getSvc()->importInfo(1914378);
         self::assertNotEmpty($status);
         self::assertArrayHasKey('total', $status);
         self::assertArrayHasKey('items', $status);
@@ -297,7 +297,7 @@ JSON;
 
     /**
      * @covers ::delete
-     * @depends testCreate
+     * @depends testImport
      */
     public function testDelete(): void
     {
