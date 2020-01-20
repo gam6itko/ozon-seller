@@ -249,7 +249,13 @@ class ProductsService extends AbstractService
     {
         foreach ($prices as &$p) {
             $p = $this->faceControl($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price', 'vat']);
-            $p = TypeCaster::castArr($p, ['price' => 'str', 'old_price' => 'str', 'premium_price' => 'str', 'vat' => 'str']);
+            $p = TypeCaster::castArr(
+                $p,
+                [
+                    'product_id' => 'int', 'offer_id' => 'str', 'price' => 'str',
+                    'old_price' => 'str', 'premium_price' => 'str', 'vat' => 'str'
+                ]
+            );
         }
 
         $arr = ['prices' => $prices];
