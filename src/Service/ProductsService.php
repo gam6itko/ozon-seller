@@ -88,12 +88,12 @@ class ProductsService extends AbstractService
         foreach ($income['items'] as &$item) {
             if (is_array($item['attributes'])
                 && count($item['attributes']) > 0) {
-                foreach($item['attributes'] as &$attribute) {
+                foreach ($item['attributes'] as &$attribute) {
                     $attribute = TypeCaster::castArr($attribute, ['value' => 'str']);
                     if (is_array($attribute['collection'])
                         && count($attribute['collection']) > 0) {
-                        foreach($attribute['collection'] as &$collectionItem) {
-                            $collectionItem = (string) $collectionItem;
+                        foreach ($attribute['collection'] as &$collectionItem) {
+                            $collectionItem = (string)$collectionItem;
                         }
                     }
                 }
@@ -253,7 +253,7 @@ class ProductsService extends AbstractService
                 $p,
                 [
                     'product_id' => 'int', 'offer_id' => 'str', 'price' => 'str',
-                    'old_price' => 'str', 'premium_price' => 'str', 'vat' => 'str'
+                    'old_price'  => 'str', 'premium_price' => 'str', 'vat' => 'str',
                 ]
             );
         }
