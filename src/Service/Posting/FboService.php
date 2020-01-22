@@ -12,15 +12,19 @@ class FboService extends AbstractService
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbo_list
      *
-     * @return array|string
+     * @param array $filter [since, to, status]
      */
-    public function list(\DateTimeInterface $since, \DateTimeInterface $to, string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10): array
+    public function list(string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10, array $filter = []): array
     {
+        $filter = $this->faceControl($filter, ['since', 'to', 'status']);
+        foreach (['since', 'to'] as $key) {
+            if (isset($filter[$key]) && $filter[$key] instanceof \DateTimeInterface) {
+                $filter[$key] = $filter[$key]->format(DATE_RFC3339);
+            }
+        }
+
         $body = [
-            'filter' => [
-                'since' => $since->format(DATE_RFC3339),
-                'to'    => $to->format(DATE_RFC3339),
-            ],
+            'filter' => $filter,
             'dir'    => $sort,
             'offset' => $offset,
             'limit'  => $limit,

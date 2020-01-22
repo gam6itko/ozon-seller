@@ -1,5 +1,8 @@
 # Changelog
 
+# 0.2.3
+- [change] FboService, FbsService метод `list` изменилась последовательность параметров. Добавлена поддержка параметра filter.status 
+
 # 0.2.2
 - классы работы с API унаследованные от `AbstractService` поддерживают логирование запросов и ответов от сервера Ozon. 
     Необходимо передать объект LoggerInterface в метод setLogger().

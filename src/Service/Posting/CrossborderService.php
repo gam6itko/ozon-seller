@@ -11,6 +11,8 @@ class CrossborderService extends AbstractService
 
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-cb_list
+     *
+     * @param array $filter [since, to, status]
      */
     public function list(string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10, array $filter = []): array
     {
@@ -20,6 +22,7 @@ class CrossborderService extends AbstractService
                 $filter[$key] = $filter[$key]->format(DATE_RFC3339);
             }
         }
+
         $body = [
             'filter' => $filter,
             'dir'    => $sort,
