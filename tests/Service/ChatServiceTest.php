@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass  \Gam6itko\OzonSeller\Service\ChatService
+ * @group  v1
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */

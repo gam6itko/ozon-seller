@@ -199,7 +199,10 @@ class ProductsService extends AbstractService
      */
     public function stockInfo(array $pagination = [])
     {
-        $pagination = $this->faceControl($pagination, ['page', 'page_size']);
+        $pagination = array_merge(
+            ['page' => 1, 'page_size' => 100],
+            $this->faceControl($pagination, ['page', 'page_size'])
+        );
 
         return $this->request('POST', '/v1/product/info/stocks', ['body' => \GuzzleHttp\json_encode($pagination)]);
     }
@@ -215,7 +218,10 @@ class ProductsService extends AbstractService
      */
     public function pricesInfo(array $pagination = [])
     {
-        $pagination = $this->faceControl($pagination, ['page', 'page_size']);
+        $pagination = array_merge(
+            ['page' => 1, 'page_size' => 100],
+            $pagination = $this->faceControl($pagination, ['page', 'page_size']),
+        );
 
         return $this->request('POST', '/v1/product/info/prices', ['body' => \GuzzleHttp\json_encode($pagination)]);
     }

@@ -2,11 +2,13 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service;
 
+use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Service\ProductsService;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\ProductsService
+ * @group  v1
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */
@@ -120,23 +122,30 @@ JSON;
 
     /**
      * @covers ::import
-     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      */
     public function testImportException(): void
     {
-        $result = $this->getSvc()->import([], false);
-        self::assertNotEmpty($result);
+        try {
+            $result = $this->getSvc()->import([], false);
+        } catch (BadRequestException $exc) {
+            self::assertEmpty($exc->getData()); //todo-ozon-support нет никаких данных
+            self::assertEquals('Invalid JSON payload', $exc->getMessage());
+        }
     }
 
     /**
      * @covers ::import
-     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      * @dataProvider dataImportFail
      */
     public function testImportFail(string $jsonFile): void
     {
-        $input = json_decode(file_get_contents($jsonFile), true);
-        $this->getSvc()->import($input, false);
+        try {
+            $input = json_decode(file_get_contents($jsonFile), true);
+            $this->getSvc()->import($input, false);
+        } catch (BadRequestException $exc) {
+            self::assertEmpty($exc->getData()); //todo-ozon-support нет никаких данных
+            self::assertEquals('Invalid JSON payload', $exc->getMessage());
+        }
     }
 
     public function dataImportFail(): array
@@ -151,7 +160,7 @@ JSON;
      * @covers ::createBySku
      * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
-    public function testImportBySku(string $jsonFileIncome): void
+    public function testImportBySku(): void
     {
         $json = <<<JSON
 {
@@ -184,6 +193,8 @@ JSON;
     /**
      * @covers ::importInfo
      * @depends testImport
+     *
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testCreationStatus(): void
     {
@@ -199,6 +210,8 @@ JSON;
 
     /**
      * @covers ::stockInfo
+     *
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testStockInfo(): void
     {
@@ -208,6 +221,8 @@ JSON;
 
     /**
      * @covers ::pricesInfo
+     *
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testPricesInfo(): void
     {
@@ -218,7 +233,7 @@ JSON;
     /**
      * @covers ::list
      *
-     * @throws \Exception
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testList(): void
     {
@@ -235,17 +250,20 @@ JSON;
 
     /**
      * @covers ::update
-     * @expectedException \Gam6itko\OzonSeller\Exception\ValidationException
      */
     public function testUpdateException(): void
     {
-        $result = $this->getSvc()->update([], false);
-        self::assertNotEmpty($result);
+        try {
+            $this->getSvc()->update([], false);
+        } catch (BadRequestException $exc) {
+            self::assertEmpty($exc->getData()); //todo-ozon-support нет никаких данных
+            self::assertEquals('Invalid JSON payload', $exc->getMessage());
+        }
     }
 
     /**
      * @covers ::info
-     * @depends testUpdate
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testInfo(): void
     {
@@ -257,7 +275,7 @@ JSON;
     /**
      * @covers ::update
      *
-     * @throws \Exception
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testUpdate(): void
     {
@@ -278,6 +296,7 @@ JSON;
 
     /**
      * @covers ::deactivate
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testDeactivate(): void
     {
@@ -288,6 +307,7 @@ JSON;
     /**
      * @covers ::deactivate
      * @depends testDeactivate
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testActivate(): void
     {
@@ -298,6 +318,7 @@ JSON;
     /**
      * @covers ::delete
      * @depends testImport
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testDelete(): void
     {
@@ -305,6 +326,9 @@ JSON;
         self::assertNotEmpty($status);
     }
 
+    /**
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
+     */
     public function testUpdatePricesNotFound(): void
     {
         $expectedJson = <<<JSON
@@ -327,16 +351,20 @@ JSON;
 JSON;
         $arr = [
             [
-                'product_id' => 120000,
-                'price'      => '79990',
-                'old_price'  => '89990',
-                'vat'        => '0.10',
+                'product_id'    => 120000,
+                'offer_id'      => 'offer_1',
+                'price'         => '79990',
+                'old_price'     => '89990',
+                'premium_price' => '69990',
+                'vat'           => '0.1',
             ],
             [
-                'product_id' => 124100,
-                'price'      => '79990',
-                'old_price'  => '89990',
-                'vat'        => '0.18',
+                'product_id'    => 124100,
+                'offer_id'      => 'offer_2',
+                'price'         => '79990',
+                'old_price'     => '89990',
+                'premium_price' => '69990',
+                'vat'           => '0.1',
             ],
         ];
         $result = $this->getSvc()->updatePrices($arr);
@@ -346,6 +374,7 @@ JSON;
 
     /**
      * @covers ::updatePrices
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testUpdatePrices(): void
     {
@@ -361,9 +390,12 @@ JSON;
 
         $arr = [
             [
-                'offer_id' => 'PRD-1',
-                'price'    => '45000',
-                'vat'      => '0.18',
+                'product_id'    => 508756,
+                'offer_id'      => 'PRD-1',
+                'price'         => '45000',
+                'old_price'     => '40000',
+                'premium_price' => '35000',
+                'vat'           => '0.2',
             ],
         ];
         $result = $this->getSvc()->updatePrices($arr);
@@ -373,6 +405,7 @@ JSON;
 
     /**
      * @covers ::updateStocks
+     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testUpdateStocks(): void
     {

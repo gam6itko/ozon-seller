@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\CategoriesService
+ * @group  v1
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */
@@ -31,7 +32,7 @@ class CategoriesServiceTest extends TestCase
      */
     public function testTreeException()
     {
-        $res = self::$svc->tree();
+        $res = self::$svc->tree(1917);
         self::assertNotEmpty($res);
     }
 
@@ -46,7 +47,7 @@ class CategoriesServiceTest extends TestCase
         self::assertArrayHasKey('category_id', $res[0]);
         self::assertArrayHasKey('title', $res[0]);
         self::assertArrayHasKey('children', $res[0]);
-        self::assertCount(21, $res);
+        self::assertCount(23, $res);
     }
 
     /**
@@ -65,8 +66,8 @@ class CategoriesServiceTest extends TestCase
     public function dataTree()
     {
         return [
-            [41777480, 'Куртка'],
-            [17036379, 'Коврик туристический'],
+            [17027492, 'Канцелярия'],
+            [72078193, 'Аксессуар для информационного держателя'],
         ];
     }
 

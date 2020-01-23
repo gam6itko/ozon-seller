@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\OrderService
+ * @group  v1
  *
  * @deprecated
  *

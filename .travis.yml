@@ -8,4 +8,4 @@ directories:
     - $HOME/.composer/cache/files
 script:
     - composer install
-    - vendor/bin/phpunit --configuration phpunit.xml.dist --group=unit-test --group=v2
+    - vendor/bin/phpunit --configuration phpunit.xml.dist --group=unit-test --group=v1 --group=v2
