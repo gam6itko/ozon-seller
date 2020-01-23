@@ -6,8 +6,7 @@ $rules = [
         'operators' => [
             '=>' => 'align',
         ],
-    ],
-    'cast_spaces'                => ['space' => 'none'],
+    ]
 ];
 
 $finder = PhpCsFixer\Finder::create()

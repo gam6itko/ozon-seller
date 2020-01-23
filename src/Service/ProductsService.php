@@ -89,7 +89,7 @@ class ProductsService extends AbstractService
                     $attribute = TypeCaster::castArr($attribute, ['value' => 'str']);
                     if (isset($item['collection']) && is_array($attribute['collection']) && count($attribute['collection']) > 0) {
                         foreach ($attribute['collection'] as &$collectionItem) {
-                            $collectionItem = (string)$collectionItem;
+                            $collectionItem = (string) $collectionItem;
                         }
                     }
                 }

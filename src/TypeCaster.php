@@ -19,16 +19,16 @@ class TypeCaster
             if (array_key_exists($key, $config)) {
                 switch (self::normalizeType($config[$key])) {
                     case 'boolean':
-                        $val = (bool)$val;
+                        $val = (bool) $val;
                         break;
                     case 'string':
-                        $val = (string)$val;
+                        $val = (string) $val;
                         break;
                     case 'integer':
-                        $val = (int)$val;
+                        $val = (int) $val;
                         break;
                     case 'float':
-                        $val = (float)$val;
+                        $val = (float) $val;
                         break;
                     default:
                         if ($force) {
