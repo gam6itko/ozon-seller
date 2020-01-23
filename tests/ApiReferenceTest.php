@@ -66,7 +66,10 @@ class ApiReferenceTest extends TestCase
             'prefix' => '/v2/posting/fbo',
         ],
         FbsService::class         => [
-            'prefix' => '/v2/posting/fbs',
+            'prefix'  => '/v2/posting/fbs',
+            'mapping' => [
+                'cancel-reason/list' => 'cancelReasons',
+            ],
         ],
     ];
 
