@@ -82,6 +82,22 @@ class ProductsService extends AbstractService
             }
         }
 
+        // cast attributes types.
+        foreach ($income['items'] as &$item) {
+            if (is_array($item['attributes'])
+                && count($item['attributes']) > 0) {
+                foreach ($item['attributes'] as &$attribute) {
+                    $attribute = TypeCaster::castArr($attribute, ['value' => 'str']);
+                    if (is_array($attribute['collection'])
+                        && count($attribute['collection']) > 0) {
+                        foreach ($attribute['collection'] as &$collectionItem) {
+                            $collectionItem = (string)$collectionItem;
+                        }
+                    }
+                }
+            }
+        }
+
         return $this->request('POST', '/v1/product/import', ['body' => \GuzzleHttp\json_encode($income)]);
     }
 
@@ -241,6 +257,13 @@ class ProductsService extends AbstractService
     {
         foreach ($prices as &$p) {
             $p = $this->faceControl($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price', 'vat']);
+            $p = TypeCaster::castArr(
+                $p,
+                [
+                    'product_id' => 'int', 'offer_id' => 'str', 'price' => 'str',
+                    'old_price'  => 'str', 'premium_price' => 'str', 'vat' => 'str',
+                ]
+            );
         }
 
         $arr = ['prices' => $prices];
@@ -265,7 +288,7 @@ class ProductsService extends AbstractService
         }
 
         foreach ($stocks as &$s) {
-            $s = $this->faceControl($s, ['product_id', 'stock']);
+            $s = $this->faceControl($s, ['product_id', 'offer_id', 'stock']);
         }
 
         $arr = ['stocks' => $stocks];
