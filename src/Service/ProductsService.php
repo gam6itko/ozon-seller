@@ -52,7 +52,7 @@ class ProductsService extends AbstractService
      */
     public function create(array $income, bool $validateBeforeSend = true)
     {
-        @trigger_error('Merhod `create` deprecated. Use `import`', E_USER_DEPRECATED);
+        @trigger_error('Method `create` deprecated. Use `import`', E_USER_DEPRECATED);
 
         return $this->import($income, $validateBeforeSend);
     }
@@ -84,12 +84,10 @@ class ProductsService extends AbstractService
 
         // cast attributes types.
         foreach ($income['items'] as &$item) {
-            if (is_array($item['attributes'])
-                && count($item['attributes']) > 0) {
+            if (isset($item['attributes']) && is_array($item['attributes']) && count($item['attributes']) > 0) {
                 foreach ($item['attributes'] as &$attribute) {
                     $attribute = TypeCaster::castArr($attribute, ['value' => 'str']);
-                    if (is_array($attribute['collection'])
-                        && count($attribute['collection']) > 0) {
+                    if (isset($item['collection']) && is_array($attribute['collection']) && count($attribute['collection']) > 0) {
                         foreach ($attribute['collection'] as &$collectionItem) {
                             $collectionItem = (string)$collectionItem;
                         }
@@ -260,8 +258,12 @@ class ProductsService extends AbstractService
             $p = TypeCaster::castArr(
                 $p,
                 [
-                    'product_id' => 'int', 'offer_id' => 'str', 'price' => 'str',
-                    'old_price'  => 'str', 'premium_price' => 'str', 'vat' => 'str',
+                    'product_id'    => 'int',
+                    'offer_id'      => 'str',
+                    'price'         => 'str',
+                    'old_price'     => 'str',
+                    'premium_price' => 'str',
+                    'vat'           => 'str',
                 ]
             );
         }
@@ -283,7 +285,7 @@ class ProductsService extends AbstractService
     public function updateStocks(array $stocks)
     {
         if (array_key_exists('stocks', $stocks)) {
-            trigger_error('You should pass stoks arg without stocks key', E_USER_NOTICE);
+            trigger_error('You should pass stocks arg without stocks key', E_USER_NOTICE);
             $stocks = $stocks['stocks'];
         }
 
