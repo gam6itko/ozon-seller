@@ -1,5 +1,11 @@
 # Changelog
 
+# 0.2.4
+- ProductsService.updateStocks учитывает параметр `offer_id`
+- ProductsService.updatePrices добавлено приведение типов аргументов перед отправкой.
+- ProductsService.import приведение типов аргументов.
+ 
+
 # 0.2.3
 - [change] FboService, FbsService метод `list` изменилась последовательность параметров. Добавлена поддержка параметра filter.status 
 
