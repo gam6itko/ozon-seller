@@ -220,7 +220,7 @@ class ProductsService extends AbstractService
     {
         $pagination = array_merge(
             ['page' => 1, 'page_size' => 100],
-            $pagination = $this->faceControl($pagination, ['page', 'page_size']),
+            $this->faceControl($pagination, ['page', 'page_size'])
         );
 
         return $this->request('POST', '/v1/product/info/prices', ['body' => \GuzzleHttp\json_encode($pagination)]);
