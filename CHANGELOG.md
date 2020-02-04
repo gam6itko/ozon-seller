@@ -1,6 +1,7 @@
 # Changelog
 
 # 0.2.4
+- Удален класс `OrderService` т.к. сервер больше не поддерживает запросы `/v1/order`
 - ProductsService.updateStocks учитывает параметр `offer_id`
 - ProductsService.updatePrices добавлено приведение типов аргументов перед отправкой.
 - ProductsService.import приведение типов аргументов.
