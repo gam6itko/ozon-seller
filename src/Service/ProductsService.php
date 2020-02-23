@@ -297,6 +297,14 @@ class ProductsService extends AbstractService
 
         foreach ($stocks as &$s) {
             $s = $this->faceControl($s, ['product_id', 'offer_id', 'stock']);
+            $s = TypeCaster::castArr(
+                $s,
+                [
+                    'product_id'    => 'int',
+                    'offer_id'      => 'str',
+                    'stock'         => 'int',
+                ]
+            );
         }
 
         $arr = ['stocks' => $stocks];
