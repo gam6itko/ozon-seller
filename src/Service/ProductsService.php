@@ -260,7 +260,7 @@ class ProductsService extends AbstractService
     public function updatePrices(array $prices)
     {
         foreach ($prices as &$p) {
-            $p = $this->faceControl($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price', 'vat']);
+            $p = $this->faceControl($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price']);
             $p = TypeCaster::castArr(
                 $p,
                 [
@@ -269,7 +269,6 @@ class ProductsService extends AbstractService
                     'price'         => 'str',
                     'old_price'     => 'str',
                     'premium_price' => 'str',
-                    'vat'           => 'str',
                 ]
             );
         }
