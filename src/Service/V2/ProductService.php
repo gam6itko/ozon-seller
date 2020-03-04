@@ -61,8 +61,6 @@ class ProductService extends AbstractService
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_products_info
      *
      * @param array $query ['product_id', 'sku', 'offer_id']
-     *
-     * @return array
      */
     public function info(array $query): array
     {
