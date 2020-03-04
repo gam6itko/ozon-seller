@@ -10,6 +10,7 @@ use Gam6itko\OzonSeller\Service\Posting\FboService;
 use Gam6itko\OzonSeller\Service\Posting\FbsService;
 use Gam6itko\OzonSeller\Service\ProductsService;
 use Gam6itko\OzonSeller\Service\ReportService;
+use Gam6itko\OzonSeller\Service\Seller\ActionsService;
 use PHPHtmlParser\Dom;
 use PHPUnit\Framework\TestCase;
 
@@ -18,6 +19,10 @@ use PHPUnit\Framework\TestCase;
  */
 class ApiReferenceTest extends TestCase
 {
+    const IGNORE_PREFIXES = [
+        '/v1/order',
+    ];
+
     const CONFIG = [
         CategoriesService::class  => [
             'prefix'  => '/v1/category',
@@ -26,24 +31,20 @@ class ApiReferenceTest extends TestCase
             ],
         ],
         ChatService::class        => ['prefix' => '/v1/chat'],
-        OrderService::class       => [
-            'prefix'  => '/v1/order',
-            'mapping' => [
-                '123456?translit=true'     => 'info',
-                'approve/crossborder'      => 'approve',
-                'cancel-reason/list'       => 'itemsCancelReasons',
-                'cancel/fbs'               => 'itemsCancelFbs',
-                'items/cancel/crossborder' => 'itemsCancelCrossboarder',
-                'shipping-provider/list'   => 'shippingProviders',
-            ],
-        ],
+//        OrderService::class       => [
+//            'prefix'  => '/v1/order',
+//            'mapping' => [
+//                '123456?translit=true'     => 'info',
+//                'approve/crossborder'      => 'approve',
+//                'cancel-reason/list'       => 'itemsCancelReasons',
+//                'cancel/fbs'               => 'itemsCancelFbs',
+//                'items/cancel/crossborder' => 'itemsCancelCrossboarder',
+//                'shipping-provider/list'   => 'shippingProviders',
+//            ],
+//        ],
         ProductsService::class    => [
             'prefix'  => '/v1/product',
             'mapping' => [
-                'import/prices'  => 'updatePrices', //todo rename
-                'import/stocks'  => 'updateStocks', //todo rename
-                'info/prices'    => 'pricesInfo', //todo rename
-                'info/stocks'    => 'stockInfo', //todo rename
                 'prepayment/set' => 'setPrepayment',
             ],
         ],
@@ -69,6 +70,13 @@ class ApiReferenceTest extends TestCase
             'prefix'  => '/v2/posting/fbs',
             'mapping' => [
                 'cancel-reason/list' => 'cancelReasons',
+            ],
+        ],
+        //Seller
+        ActionsService::class     => [
+            'prefix'  => '/sa/v1/actions',
+            'mapping' => [
+                '' => 'list',
             ],
         ],
     ];
@@ -107,6 +115,12 @@ class ApiReferenceTest extends TestCase
 
     private function isRealized($path): bool
     {
+        foreach (self::IGNORE_PREFIXES as $ignore) {
+            if (0 === strpos($path, $ignore)) {
+                return true;
+            }
+        }
+
         foreach (self::CONFIG as $class => $config) {
             if (0 !== strpos($path, $config['prefix'])) {
                 continue;
