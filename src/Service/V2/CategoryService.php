@@ -34,7 +34,7 @@ class CategoryService extends AbstractService
         return $this->request('POST', "{$this->path}/attribute", ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
-    public function attribute​ValueByOption(string $language = 'RU', array $options = [])
+    public function attributeValueByOption(string $language = 'RU', array $options = [])
     {
         $options = $this->ensureCollection($options);
         foreach ($options as &$o) {

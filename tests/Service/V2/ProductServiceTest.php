@@ -59,7 +59,7 @@ class ProductServiceTest extends TestCase
 }
 JSON;
 
-        $this->getSvc()->import(json_decode($json, true), true);
+        $this->getSvc()->import(json_decode($json, true), false);
     }
 
     /**
@@ -73,10 +73,10 @@ JSON;
         self::assertArrayHasKey('name', $productInfo);
     }
 
-    public function testInfoAttributes()
-    {
-        $productInfo = $this->getSvc()->infoAttributes(['product_id' => 507735]);
-        self::assertNotEmpty($productInfo);
-        self::assertArrayHasKey('name', $productInfo);
-    }
+//    public function testInfoAttributes()
+//    {
+//        $productInfo = $this->getSvc()->infoAttributes(['product_id' => 507735]);
+//        self::assertNotEmpty($productInfo);
+//        self::assertArrayHasKey('name', $productInfo);
+//    }
 }

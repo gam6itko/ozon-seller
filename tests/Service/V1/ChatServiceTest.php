@@ -29,7 +29,7 @@ class ChatServiceTest extends TestCase
     }
 
     /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
+     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      */
     public function testSendMessage()
     {

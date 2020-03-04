@@ -121,8 +121,10 @@ class ApiReferenceTest extends TestCase
         }
     }
 
-    private function isRealized($path): bool
+    private function isRealized(string $path): bool
     {
+        $path = preg_replace('/[^-|_|\/|0-9|a-z]/', '', $path);
+
         foreach (self::IGNORE_PREFIXES as $ignore) {
             if (0 === strpos($path, $ignore)) {
                 return true;
@@ -130,7 +132,7 @@ class ApiReferenceTest extends TestCase
         }
 
         foreach (self::CONFIG as $class => $config) {
-            if (0 !== strpos($path, $config['prefix'])) {
+            if (0 !== $p = strpos($path, $config['prefix'])) {
                 continue;
             }
 
