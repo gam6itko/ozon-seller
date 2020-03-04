@@ -1,12 +1,12 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\Service;
+namespace Gam6itko\OzonSeller\Tests\Service\V1;
 
-use Gam6itko\OzonSeller\Service\CategoriesService;
+use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\CategoriesService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\CategoriesService
  * @group  v1
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -47,7 +47,7 @@ class CategoriesServiceTest extends TestCase
         self::assertArrayHasKey('category_id', $res[0]);
         self::assertArrayHasKey('title', $res[0]);
         self::assertArrayHasKey('children', $res[0]);
-        self::assertCount(23, $res);
+        self::assertCount(24, $res);
     }
 
     /**

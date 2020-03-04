@@ -1,12 +1,12 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\Service;
+namespace Gam6itko\OzonSeller\Tests\Service\V1;
 
-use Gam6itko\OzonSeller\Service\ChatService;
+use Gam6itko\OzonSeller\Service\V1\ChatService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass  \Gam6itko\OzonSeller\Service\ChatService
+ * @coversDefaultClass  \Gam6itko\OzonSeller\Service\V1\ChatService
  * @group  v1
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Service\Seller;
+namespace Gam6itko\OzonSeller\Service\V1\Seller;
 
 use Gam6itko\OzonSeller\Service\AbstractService;
 
@@ -67,10 +67,7 @@ class ActionsService extends AbstractService
      */
     public function productsActivate(int $actionId, array $products): array
     {
-        if (array_key_exists('product_id', $products)) {
-            $products = [$products];
-        }
-
+        $products = $this->ensureCollection($products);
         foreach ($products as &$p) {
             $p = $this->faceControl($p, ['product_id', 'action_price']);
         }

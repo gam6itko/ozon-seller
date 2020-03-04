@@ -1,6 +1,6 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Service\Posting;
+namespace Gam6itko\OzonSeller\Service\V2\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Service\AbstractService;

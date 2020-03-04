@@ -2,15 +2,15 @@
 
 namespace Gam6itko\OzonSeller\Tests;
 
-use Gam6itko\OzonSeller\Service\CategoriesService;
-use Gam6itko\OzonSeller\Service\ChatService;
-use Gam6itko\OzonSeller\Service\OrderService;
-use Gam6itko\OzonSeller\Service\Posting\CrossborderService;
-use Gam6itko\OzonSeller\Service\Posting\FboService;
-use Gam6itko\OzonSeller\Service\Posting\FbsService;
-use Gam6itko\OzonSeller\Service\ProductsService;
-use Gam6itko\OzonSeller\Service\ReportService;
-use Gam6itko\OzonSeller\Service\Seller\ActionsService;
+use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use Gam6itko\OzonSeller\Service\V1\ChatService;
+use Gam6itko\OzonSeller\Service\V1\OrderService;
+use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use Gam6itko\OzonSeller\Service\V1\ReportService;
+use Gam6itko\OzonSeller\Service\V1\Seller\ActionsService;
+use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
+use Gam6itko\OzonSeller\Service\V2\Posting\FboService;
+use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use PHPHtmlParser\Dom;
 use PHPUnit\Framework\TestCase;
 

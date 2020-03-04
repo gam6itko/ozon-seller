@@ -1,13 +1,13 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\Service;
+namespace Gam6itko\OzonSeller\Tests\Service\V1;
 
 use Gam6itko\OzonSeller\Exception\BadRequestException;
-use Gam6itko\OzonSeller\Service\ProductsService;
+use Gam6itko\OzonSeller\Service\V1\ProductsService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\ProductsService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\ProductsService
  * @group  v1
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -95,7 +95,7 @@ JSON;
 }
 JSON;
 
-        $result = $this->getSvc()->import(json_decode($json, true), true);
+        $this->getSvc()->import(json_decode($json, true), true);
     }
 
     /**
@@ -115,8 +115,8 @@ JSON;
     public function dataImportInvalid(): array
     {
         return [
-            [__DIR__.'/../Resources/Products/create.invalid.0.request.json'],
-            [__DIR__.'/../Resources/Products/create.invalid.1.request.json'],
+            [__DIR__.'/../../Resources/V1/Products/create.invalid.0.request.json'],
+            [__DIR__.'/../../Resources/V1/Products/create.invalid.1.request.json'],
         ];
     }
 
@@ -151,8 +151,8 @@ JSON;
     public function dataImportFail(): array
     {
         return [
-            [__DIR__.'/../Resources/Products/create.invalid.0.request.json'],
-            [__DIR__.'/../Resources/Products/create.invalid.1.request.json'],
+            [__DIR__.'/../../Resources/V1/Products/create.invalid.0.request.json'],
+            [__DIR__.'/../../Resources/V1/Products/create.invalid.1.request.json'],
         ];
     }
 

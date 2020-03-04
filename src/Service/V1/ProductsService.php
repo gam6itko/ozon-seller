@@ -1,8 +1,9 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Service;
+namespace Gam6itko\OzonSeller\Service\V1;
 
 use Gam6itko\OzonSeller\ProductValidator;
+use Gam6itko\OzonSeller\Service\AbstractService;
 use Gam6itko\OzonSeller\TypeCaster;
 
 /**

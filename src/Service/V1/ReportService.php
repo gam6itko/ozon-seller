@@ -1,8 +1,9 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Service;
+namespace Gam6itko\OzonSeller\Service\V1;
 
 use Gam6itko\OzonSeller\Enum\TransactionType;
+use Gam6itko\OzonSeller\Service\AbstractService;
 
 /**
  * Allows to retrieve reports via API, that are also available in Seller Center.

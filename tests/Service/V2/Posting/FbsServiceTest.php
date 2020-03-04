@@ -4,15 +4,15 @@ namespace Gam6itko\OzonSeller\Tests\Service\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
-use Gam6itko\OzonSeller\Service\CategoriesService;
-use Gam6itko\OzonSeller\Service\Posting\FbsService;
+use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\Posting\FbsService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\Posting\FbsService
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
- * @group v2
+ * @group  v2
  */
 class FbsServiceTest extends TestCase
 {
@@ -92,7 +92,8 @@ class FbsServiceTest extends TestCase
     public function testActCreate()
     {
         $res = self::$svc->actCreate();
-        self:self::assertNotEmpty($res);
+        self:
+        self::assertNotEmpty($res);
     }
 
     /**
