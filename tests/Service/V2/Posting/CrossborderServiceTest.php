@@ -84,7 +84,6 @@ class CrossborderServiceTest extends TestCase
 
     /**
      * @covers ::cancelReasons
-     * @expectedException \Gam6itko\OzonSeller\Exception\InternalException
      */
     public function testCancelReasons()
     {
