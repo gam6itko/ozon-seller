@@ -8,6 +8,7 @@ use Gam6itko\OzonSeller\Service\V1\OrderService;
 use Gam6itko\OzonSeller\Service\V1\ProductsService;
 use Gam6itko\OzonSeller\Service\V1\ReportService;
 use Gam6itko\OzonSeller\Service\V1\Seller\ActionsService;
+use Gam6itko\OzonSeller\Service\V2\CategoryService;
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FboService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
@@ -55,6 +56,14 @@ class ApiReferenceTest extends TestCase
                 'transactions/create' => 'transaction', //todo rename
             ],
         ],
+        //Seller
+        ActionsService::class     => [
+            'prefix'  => '/sa/v1/actions',
+            'mapping' => [
+                '' => 'list',
+            ],
+        ],
+        // V2
         // Posting
         CrossborderService::class => [
             'prefix'  => '/v2/posting/crossborder',
@@ -72,12 +81,8 @@ class ApiReferenceTest extends TestCase
                 'cancel-reason/list' => 'cancelReasons',
             ],
         ],
-        //Seller
-        ActionsService::class     => [
-            'prefix'  => '/sa/v1/actions',
-            'mapping' => [
-                '' => 'list',
-            ],
+        CategoryService::class    => [
+            'prefix'  => '/v2/category',
         ],
     ];
 
