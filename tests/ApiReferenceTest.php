@@ -4,14 +4,14 @@ namespace Gam6itko\OzonSeller\Tests;
 
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use Gam6itko\OzonSeller\Service\V1\ChatService;
-use Gam6itko\OzonSeller\Service\V1\OrderService;
 use Gam6itko\OzonSeller\Service\V1\ProductsService;
 use Gam6itko\OzonSeller\Service\V1\ReportService;
 use Gam6itko\OzonSeller\Service\V1\Seller\ActionsService;
-use Gam6itko\OzonSeller\Service\V2\CategoryService;
+use Gam6itko\OzonSeller\Service\V2\CategoryService as V2CategoryService;
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FboService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
+use Gam6itko\OzonSeller\Service\V2\ProductService as V2ProductService;
 use PHPHtmlParser\Dom;
 use PHPUnit\Framework\TestCase;
 
@@ -81,8 +81,11 @@ class ApiReferenceTest extends TestCase
                 'cancel-reason/list' => 'cancelReasons',
             ],
         ],
-        CategoryService::class    => [
-            'prefix'  => '/v2/category',
+        V2CategoryService::class  => [
+            'prefix' => '/v2/category',
+        ],
+        V2ProductService::class   => [
+            'prefix' => '/v2/product',
         ],
     ];
 
