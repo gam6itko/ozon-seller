@@ -47,6 +47,6 @@ class CategoryService extends AbstractService
             'options'  => $options,
         ];
 
-        return $this->request('POST', "{$this->path}/attribute​/value​/by-option", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/attribute/value/by-option", ['body' => \GuzzleHttp\json_encode($body)]);
     }
 }
