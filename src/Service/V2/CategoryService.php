@@ -22,16 +22,42 @@ class CategoryService extends AbstractService
      *
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
-    public function attribute(int $categoryId, string $language = 'RU', array $query = []): array
+    public function attribute(int $categoryId, array $query = []): array
     {
         $query = $this->faceControl($query, ['attribute_type']);
         $query = TypeCaster::castArr($query, ['attribute_type' => 'str']);
         $query = array_merge([
             'category_id' => $categoryId,
-            'language'    => strtoupper($language),
+            'language'    => 'RU',
         ], $query);
 
         return $this->request('POST', "{$this->path}/attribute", ['body' => \GuzzleHttp\json_encode($query)]);
+    }
+
+    /**
+     * Check the dictionary for attributes or options by theirs IDs.
+     *
+     * @param array $query [last_value_id, limit, language]
+     */
+    public function attributeValues(int $categoryId, int $attrId, array $query = []): array
+    {
+        $query = $this->faceControl($query, ['last_value_id', 'limit', 'language']);
+        $query = array_merge([
+            'category_id'   => $categoryId,
+            'attribute_id'  => $attrId,
+            'limit'         => 1000,
+            'last_value_id' => 0,
+            'language'      => 'RU',
+        ], $query);
+        $query = TypeCaster::castArr($query, [
+            'category_id'   => 'int',
+            'attribute_id'  => 'int',
+            'last_value_id' => 'int',
+            'limit'         => 'int',
+            'language'      => 'str',
+        ]);
+
+        return $this->request('POST', "{$this->path}/attribute/values", ['body' => \GuzzleHttp\json_encode($query)]);
     }
 
     public function attributeValueByOption(string $language = 'RU', array $options = [])
