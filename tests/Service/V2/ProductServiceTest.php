@@ -22,6 +22,9 @@ class ProductServiceTest extends TestCase
         return new ProductService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);
     }
 
+    /**
+     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
+     */
     public function testImport()
     {
         $json = <<<JSON

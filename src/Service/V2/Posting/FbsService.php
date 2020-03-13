@@ -5,6 +5,7 @@ namespace Gam6itko\OzonSeller\Service\V2\Posting;
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\AbstractService;
+use GuzzleHttp\Exception\BadResponseException;
 
 class FbsService extends AbstractService
 {
@@ -110,9 +111,15 @@ class FbsService extends AbstractService
      *
      * @return array|string
      */
-    public function actGetPdf(int $id)
+    public function actGetPdf(int $id): string
     {
-        return $this->request('POST', "{$this->path}/act/get-pdf", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
+        try {
+            $response = $this->getClient()->request('POST', "{$this->path}/act/get-pdf", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
+
+            return $response->getBody()->getContents();
+        } catch (BadResponseException $exc) {
+            $this->adaptException($exc);
+        }
     }
 
     /**
@@ -120,13 +127,19 @@ class FbsService extends AbstractService
      *
      * @param array|string $postingNumber
      */
-    public function packageLabel($postingNumber)
+    public function packageLabel($postingNumber): string
     {
         if (is_string($postingNumber)) {
             $postingNumber = [$postingNumber];
         }
 
-        return $this->request('POST', "{$this->path}/package-label", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
+        try {
+            $response = $this->getClient()->request('POST', "{$this->path}/package-label", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
+
+            return $response->getBody()->getContents();
+        } catch (BadResponseException $exc) {
+            $this->adaptException($exc);
+        }
     }
 
     /**

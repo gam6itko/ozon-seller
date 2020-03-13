@@ -1,6 +1,6 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Service\V1\Seller;
+namespace Gam6itko\OzonSeller\Service\V1;
 
 use Gam6itko\OzonSeller\Service\AbstractService;
 
@@ -11,7 +11,7 @@ use Gam6itko\OzonSeller\Service\AbstractService;
  */
 class ActionsService extends AbstractService
 {
-    private $path = '/sa/v1/actions';
+    private $path = '/v1/actions';
 
     public function __construct(int $clientId, string $apiKey, string $host = 'https://seller-api.ozon.ru/')
     {

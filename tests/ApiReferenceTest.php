@@ -2,11 +2,11 @@
 
 namespace Gam6itko\OzonSeller\Tests;
 
+use Gam6itko\OzonSeller\Service\V1\ActionsService;
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use Gam6itko\OzonSeller\Service\V1\ChatService;
 use Gam6itko\OzonSeller\Service\V1\ProductsService;
 use Gam6itko\OzonSeller\Service\V1\ReportService;
-use Gam6itko\OzonSeller\Service\V1\Seller\ActionsService;
 use Gam6itko\OzonSeller\Service\V2\CategoryService as V2CategoryService;
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FboService;
@@ -58,7 +58,7 @@ class ApiReferenceTest extends TestCase
         ],
         //Seller
         ActionsService::class     => [
-            'prefix'  => '/sa/v1/actions',
+            'prefix'  => '/v1/actions',
             'mapping' => [
                 '' => 'list',
             ],

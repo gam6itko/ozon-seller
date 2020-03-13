@@ -87,7 +87,7 @@ class FbsServiceTest extends TestCase
 
     /**
      * @covers ::actCreate
-     * @expectedException \Gam6itko\OzonSeller\Exception\PostingNotFoundException
+     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundInSortingCenterException
      */
     public function testActCreate()
     {
@@ -97,7 +97,7 @@ class FbsServiceTest extends TestCase
 
     /**
      * @covers ::actCheckStatus
-     * @expectedException \Gam6itko\OzonSeller\Exception\PostingNotFoundException
+     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testActCheckStatus()
     {
@@ -110,16 +110,17 @@ class FbsServiceTest extends TestCase
      */
     public function testActGetPdf()
     {
-        self::$svc->actGetPdf(123);
+        self::$svc->actGetPdf(15684442104000);
     }
 
     /**
      * @covers ::packageLabel
-     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      */
     public function testPackageLabel()
     {
-        self::$svc->packageLabel('13770987-0051-1');
+        $fileData = self::$svc->packageLabel('25849584-0029-1');
+        self::assertNotEmpty($fileData);
+//        file_put_contents('package-label.pdf', $fileData);
     }
 
     /**
