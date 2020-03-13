@@ -71,9 +71,9 @@ class FbsService extends AbstractService
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_ship
      *
-     * @return string list of postings IDs
+     * @return array list of postings IDs
      */
-    public function ship(array $packages, string $postingNumber): string
+    public function ship(array $packages, string $postingNumber): array
     {
         foreach ($packages as &$package) {
             $package = $this->faceControl($package, ['items']);
