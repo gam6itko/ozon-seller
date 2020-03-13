@@ -102,7 +102,7 @@ class FbsService extends AbstractService
      */
     public function actCheckStatus(int $id): array
     {
-        return $this->request('POST', "{$this->path}/act/create", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
+        return $this->request('POST', "{$this->path}/act/check-status", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
     }
 
     /**
@@ -112,7 +112,7 @@ class FbsService extends AbstractService
      */
     public function actGetPdf(int $id)
     {
-        return $this->request('POST', "{$this->path}/act/create", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
+        return $this->request('POST', "{$this->path}/act/get-pdf", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
     }
 
     /**
