@@ -34,7 +34,7 @@ class FbsServiceTest extends TestCase
      */
     public function testList()
     {
-        self::$svc->list(SortDirection::ASC, 0, 10, ['since' => new \DateTime('2019-01-01'), 'to' => new \DateTime('2020-01-01')]);
+        self::$svc->list(SortDirection::ASC, 0, 10, ['since' => new \DateTime('2018-01-01'), 'to' => new \DateTime('2020-01-01')]);
         self::assertTrue(true);
     }
 
@@ -92,7 +92,6 @@ class FbsServiceTest extends TestCase
     public function testActCreate()
     {
         $res = self::$svc->actCreate();
-        self:
         self::assertNotEmpty($res);
     }
 
@@ -103,6 +102,15 @@ class FbsServiceTest extends TestCase
     public function testActCheckStatus()
     {
         self::$svc->actCheckStatus(123);
+    }
+
+    /**
+     * @covers ::actGetPdf
+     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
+     */
+    public function testActGetPdf()
+    {
+        self::$svc->actGetPdf(123);
     }
 
     /**
