@@ -1,13 +1,13 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\Service;
+namespace Gam6itko\OzonSeller\Tests\Service\V1;
 
 use Gam6itko\OzonSeller\Exception\BadRequestException;
-use Gam6itko\OzonSeller\Service\ProductsService;
+use Gam6itko\OzonSeller\Service\V1\ProductsService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\ProductsService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\ProductsService
  * @group  v1
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -95,7 +95,7 @@ JSON;
 }
 JSON;
 
-        $result = $this->getSvc()->import(json_decode($json, true), true);
+        $this->getSvc()->import(json_decode($json, true), true);
     }
 
     /**
@@ -115,8 +115,8 @@ JSON;
     public function dataImportInvalid(): array
     {
         return [
-            [__DIR__.'/../Resources/Products/create.invalid.0.request.json'],
-            [__DIR__.'/../Resources/Products/create.invalid.1.request.json'],
+            [__DIR__.'/../../Resources/V1/Products/create.invalid.0.request.json'],
+            [__DIR__.'/../../Resources/V1/Products/create.invalid.1.request.json'],
         ];
     }
 
@@ -126,7 +126,7 @@ JSON;
     public function testImportException(): void
     {
         try {
-            $result = $this->getSvc()->import([], false);
+            $this->getSvc()->import([], false);
         } catch (BadRequestException $exc) {
             self::assertEmpty($exc->getData()); //todo-ozon-support нет никаких данных
             self::assertEquals('Invalid JSON payload', $exc->getMessage());
@@ -151,8 +151,8 @@ JSON;
     public function dataImportFail(): array
     {
         return [
-            [__DIR__.'/../Resources/Products/create.invalid.0.request.json'],
-            [__DIR__.'/../Resources/Products/create.invalid.1.request.json'],
+            [__DIR__.'/../../Resources/V1/Products/create.invalid.0.request.json'],
+            [__DIR__.'/../../Resources/V1/Products/create.invalid.1.request.json'],
         ];
     }
 
@@ -209,24 +209,24 @@ JSON;
     }
 
     /**
-     * @covers ::stockInfo
+     * @covers ::infoStocks
      *
      * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
-    public function testStockInfo(): void
+    public function testInfoStock(): void
     {
-        $status = $this->getSvc()->stockInfo();
+        $status = $this->getSvc()->infoStocks();
         self::assertNotEmpty($status);
     }
 
     /**
-     * @covers ::pricesInfo
+     * @covers ::infoPrices
      *
      * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
-    public function testPricesInfo(): void
+    public function testInfoPrices(): void
     {
-        $status = $this->getSvc()->pricesInfo();
+        $status = $this->getSvc()->infoPrices();
         self::assertNotEmpty($status);
     }
 
@@ -367,13 +367,13 @@ JSON;
                 'vat'           => '0.1',
             ],
         ];
-        $result = $this->getSvc()->updatePrices($arr);
+        $result = $this->getSvc()->importPrices($arr);
         self::assertNotEmpty($result);
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
     }
 
     /**
-     * @covers ::updatePrices
+     * @covers ::importPrices
      * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testUpdatePrices(): void
@@ -398,13 +398,13 @@ JSON;
                 'vat'           => '0.2',
             ],
         ];
-        $result = $this->getSvc()->updatePrices($arr);
+        $result = $this->getSvc()->importPrices($arr);
         self::assertNotEmpty($result);
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
     }
 
     /**
-     * @covers ::updateStocks
+     * @covers ::importStocks
      * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testUpdateStocks(): void
@@ -425,7 +425,7 @@ JSON;
                 'stock'      => 20,
             ],
         ];
-        $result = $this->getSvc()->updateStocks($arr);
+        $result = $this->getSvc()->importStocks($arr);
         self::assertNotEmpty($result);
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
     }
@@ -435,6 +435,6 @@ JSON;
      */
     public function testPrice()
     {
-        $result = $this->getSvc()->price([], ['page' => 1, 'page_size' => 10]);
+        $this->getSvc()->price([], ['page' => 1, 'page_size' => 10]);
     }
 }

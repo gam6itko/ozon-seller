@@ -5,13 +5,13 @@ namespace Gam6itko\OzonSeller\Tests\Service\Posting;
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Exception\NotFoundException;
-use Gam6itko\OzonSeller\Service\CategoriesService;
-use Gam6itko\OzonSeller\Service\Posting\CrossborderService;
+use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\Test\TestLogger;
 
 /**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\Posting\CrossborderService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  * @group  v2

@@ -1,7 +1,7 @@
 <phpunit bootstrap="vendor/autoload.php">
     <php>
-        <server name="CLIENT_ID" value="466"/>
-        <server name="API_KEY" value="9753260e-2324-fde7-97f1-7848ed7ed097"/>
+        <server name="CLIENT_ID" value="836"/>
+        <server name="API_KEY" value="0296d4f2-70a1-4c09-b507-904fd05567b9"/>
         <server name="API_URL" value="http://cb-api.ozonru.me/"/>
     </php>
 

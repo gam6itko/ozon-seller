@@ -3,12 +3,12 @@
 namespace Gam6itko\OzonSeller\Tests\Service\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
-use Gam6itko\OzonSeller\Service\CategoriesService;
-use Gam6itko\OzonSeller\Service\Posting\FboService;
+use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use Gam6itko\OzonSeller\Service\V2\Posting\FboService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\Posting\FboService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\Posting\FboService
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  * @group v2

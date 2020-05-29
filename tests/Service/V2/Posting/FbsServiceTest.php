@@ -4,15 +4,15 @@ namespace Gam6itko\OzonSeller\Tests\Service\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
-use Gam6itko\OzonSeller\Service\CategoriesService;
-use Gam6itko\OzonSeller\Service\Posting\FbsService;
+use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\Posting\FbsService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\Posting\FbsService
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
- * @group v2
+ * @group  v2
  */
 class FbsServiceTest extends TestCase
 {
@@ -34,7 +34,7 @@ class FbsServiceTest extends TestCase
      */
     public function testList()
     {
-        self::$svc->list(SortDirection::ASC, 0, 10, ['since' => new \DateTime('2019-01-01'), 'to' => new \DateTime('2020-01-01')]);
+        self::$svc->list(SortDirection::ASC, 0, 10, ['since' => new \DateTime('2018-01-01'), 'to' => new \DateTime('2020-01-01')]);
         self::assertTrue(true);
     }
 
@@ -87,17 +87,17 @@ class FbsServiceTest extends TestCase
 
     /**
      * @covers ::actCreate
-     * @expectedException \Gam6itko\OzonSeller\Exception\PostingNotFoundException
+     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundInSortingCenterException
      */
     public function testActCreate()
     {
         $res = self::$svc->actCreate();
-        self:self::assertNotEmpty($res);
+        self::assertNotEmpty($res);
     }
 
     /**
      * @covers ::actCheckStatus
-     * @expectedException \Gam6itko\OzonSeller\Exception\PostingNotFoundException
+     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testActCheckStatus()
     {
@@ -105,12 +105,22 @@ class FbsServiceTest extends TestCase
     }
 
     /**
+     * @covers ::actGetPdf
+     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
+     */
+    public function testActGetPdf()
+    {
+        self::$svc->actGetPdf(15684442104000);
+    }
+
+    /**
      * @covers ::packageLabel
-     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      */
     public function testPackageLabel()
     {
-        self::$svc->packageLabel('13770987-0051-1');
+        $fileData = self::$svc->packageLabel('25849584-0029-1');
+        self::assertNotEmpty($fileData);
+//        file_put_contents('package-label.pdf', $fileData);
     }
 
     /**

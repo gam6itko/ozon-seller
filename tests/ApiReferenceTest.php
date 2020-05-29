@@ -2,14 +2,16 @@
 
 namespace Gam6itko\OzonSeller\Tests;
 
-use Gam6itko\OzonSeller\Service\CategoriesService;
-use Gam6itko\OzonSeller\Service\ChatService;
-use Gam6itko\OzonSeller\Service\OrderService;
-use Gam6itko\OzonSeller\Service\Posting\CrossborderService;
-use Gam6itko\OzonSeller\Service\Posting\FboService;
-use Gam6itko\OzonSeller\Service\Posting\FbsService;
-use Gam6itko\OzonSeller\Service\ProductsService;
-use Gam6itko\OzonSeller\Service\ReportService;
+use Gam6itko\OzonSeller\Service\V1\ActionsService;
+use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use Gam6itko\OzonSeller\Service\V1\ChatService;
+use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use Gam6itko\OzonSeller\Service\V1\ReportService;
+use Gam6itko\OzonSeller\Service\V2\CategoryService as V2CategoryService;
+use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
+use Gam6itko\OzonSeller\Service\V2\Posting\FboService;
+use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
+use Gam6itko\OzonSeller\Service\V2\ProductService as V2ProductService;
 use PHPHtmlParser\Dom;
 use PHPUnit\Framework\TestCase;
 
@@ -18,6 +20,10 @@ use PHPUnit\Framework\TestCase;
  */
 class ApiReferenceTest extends TestCase
 {
+    const IGNORE_PREFIXES = [
+        '/v1/order',
+    ];
+
     const CONFIG = [
         CategoriesService::class  => [
             'prefix'  => '/v1/category',
@@ -26,24 +32,20 @@ class ApiReferenceTest extends TestCase
             ],
         ],
         ChatService::class        => ['prefix' => '/v1/chat'],
-        OrderService::class       => [
-            'prefix'  => '/v1/order',
-            'mapping' => [
-                '123456?translit=true'     => 'info',
-                'approve/crossborder'      => 'approve',
-                'cancel-reason/list'       => 'itemsCancelReasons',
-                'cancel/fbs'               => 'itemsCancelFbs',
-                'items/cancel/crossborder' => 'itemsCancelCrossboarder',
-                'shipping-provider/list'   => 'shippingProviders',
-            ],
-        ],
+//        OrderService::class       => [
+//            'prefix'  => '/v1/order',
+//            'mapping' => [
+//                '123456?translit=true'     => 'info',
+//                'approve/crossborder'      => 'approve',
+//                'cancel-reason/list'       => 'itemsCancelReasons',
+//                'cancel/fbs'               => 'itemsCancelFbs',
+//                'items/cancel/crossborder' => 'itemsCancelCrossboarder',
+//                'shipping-provider/list'   => 'shippingProviders',
+//            ],
+//        ],
         ProductsService::class    => [
             'prefix'  => '/v1/product',
             'mapping' => [
-                'import/prices'  => 'updatePrices', //todo rename
-                'import/stocks'  => 'updateStocks', //todo rename
-                'info/prices'    => 'pricesInfo', //todo rename
-                'info/stocks'    => 'stockInfo', //todo rename
                 'prepayment/set' => 'setPrepayment',
             ],
         ],
@@ -54,6 +56,14 @@ class ApiReferenceTest extends TestCase
                 'transactions/create' => 'transaction', //todo rename
             ],
         ],
+        //Seller
+        ActionsService::class     => [
+            'prefix'  => '/v1/actions',
+            'mapping' => [
+                '' => 'list',
+            ],
+        ],
+        // V2
         // Posting
         CrossborderService::class => [
             'prefix'  => '/v2/posting/crossborder',
@@ -70,6 +80,12 @@ class ApiReferenceTest extends TestCase
             'mapping' => [
                 'cancel-reason/list' => 'cancelReasons',
             ],
+        ],
+        V2CategoryService::class  => [
+            'prefix' => '/v2/category',
+        ],
+        V2ProductService::class   => [
+            'prefix' => '/v2/product',
         ],
     ];
 
@@ -105,10 +121,18 @@ class ApiReferenceTest extends TestCase
         }
     }
 
-    private function isRealized($path): bool
+    private function isRealized(string $path): bool
     {
+        $path = preg_replace('/[^-|_|\/|0-9|a-z]/', '', $path);
+
+        foreach (self::IGNORE_PREFIXES as $ignore) {
+            if (0 === strpos($path, $ignore)) {
+                return true;
+            }
+        }
+
         foreach (self::CONFIG as $class => $config) {
-            if (0 !== strpos($path, $config['prefix'])) {
+            if (0 !== $p = strpos($path, $config['prefix'])) {
                 continue;
             }
 

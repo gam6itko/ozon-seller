@@ -1,10 +1,11 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Service\Posting;
+namespace Gam6itko\OzonSeller\Service\V2\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\AbstractService;
+use GuzzleHttp\Exception\BadResponseException;
 
 class FbsService extends AbstractService
 {
@@ -71,9 +72,9 @@ class FbsService extends AbstractService
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_ship
      *
-     * @return string list of postings IDs
+     * @return array list of postings IDs
      */
-    public function ship(array $packages, string $postingNumber): string
+    public function ship(array $packages, string $postingNumber): array
     {
         foreach ($packages as &$package) {
             $package = $this->faceControl($package, ['items']);
@@ -102,7 +103,7 @@ class FbsService extends AbstractService
      */
     public function actCheckStatus(int $id): array
     {
-        return $this->request('POST', "{$this->path}/act/create", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
+        return $this->request('POST', "{$this->path}/act/check-status", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
     }
 
     /**
@@ -110,9 +111,15 @@ class FbsService extends AbstractService
      *
      * @return array|string
      */
-    public function actGetPdf(int $id)
+    public function actGetPdf(int $id): string
     {
-        return $this->request('POST', "{$this->path}/act/create", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
+        try {
+            $response = $this->getClient()->request('POST', "{$this->path}/act/get-pdf", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
+
+            return $response->getBody()->getContents();
+        } catch (BadResponseException $exc) {
+            $this->adaptException($exc);
+        }
     }
 
     /**
@@ -120,13 +127,19 @@ class FbsService extends AbstractService
      *
      * @param array|string $postingNumber
      */
-    public function packageLabel($postingNumber)
+    public function packageLabel($postingNumber): string
     {
         if (is_string($postingNumber)) {
             $postingNumber = [$postingNumber];
         }
 
-        return $this->request('POST', "{$this->path}/package-label", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
+        try {
+            $response = $this->getClient()->request('POST', "{$this->path}/package-label", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
+
+            return $response->getBody()->getContents();
+        } catch (BadResponseException $exc) {
+            $this->adaptException($exc);
+        }
     }
 
     /**

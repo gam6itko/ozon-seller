@@ -86,7 +86,7 @@ abstract class AbstractService
         }
     }
 
-    private function adaptException(BadResponseException $clientException)
+    protected function adaptException(BadResponseException $clientException)
     {
         try {
             $this->logger->error($clientException->getMessage());

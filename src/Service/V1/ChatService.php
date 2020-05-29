@@ -1,6 +1,8 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Service;
+namespace Gam6itko\OzonSeller\Service\V1;
+
+use Gam6itko\OzonSeller\Service\AbstractService;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>

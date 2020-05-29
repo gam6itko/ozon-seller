@@ -1,8 +1,9 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Service;
+namespace Gam6itko\OzonSeller\Service\V1;
 
 use Gam6itko\OzonSeller\ProductValidator;
+use Gam6itko\OzonSeller\Service\AbstractService;
 use Gam6itko\OzonSeller\TypeCaster;
 
 /**
@@ -45,16 +46,6 @@ class ProductsService extends AbstractService
         }
 
         return $this->request('POST', '/v1/product/classify', ['body' => \GuzzleHttp\json_encode($income)]);
-    }
-
-    /**
-     * @deprecated v0.2 use import
-     */
-    public function create(array $income, bool $validateBeforeSend = true)
-    {
-        @trigger_error('Method `create` deprecated. Use `import`', E_USER_DEPRECATED);
-
-        return $this->import($income, $validateBeforeSend);
     }
 
     /**
@@ -129,16 +120,6 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @deprecated since 0.2.2. use importInfo
-     */
-    public function creationStatus(int $taskId)
-    {
-        @trigger_error(sprintf('Call deprecated method `creationStatus` use `importInfo` instead'), E_USER_DEPRECATED);
-
-        return $this->importInfo($taskId);
-    }
-
-    /**
      * Product creation status.
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_create_status
@@ -197,7 +178,7 @@ class ProductsService extends AbstractService
      *
      * @return array
      */
-    public function stockInfo(array $pagination = [])
+    public function infoStocks(array $pagination = [])
     {
         $pagination = array_merge(
             ['page' => 1, 'page_size' => 100],
@@ -216,7 +197,7 @@ class ProductsService extends AbstractService
      *
      * @return array
      */
-    public function pricesInfo(array $pagination = [])
+    public function infoPrices(array $pagination = [])
     {
         $pagination = array_merge(
             ['page' => 1, 'page_size' => 100],
@@ -257,7 +238,7 @@ class ProductsService extends AbstractService
      *
      * @return array
      */
-    public function updatePrices(array $prices)
+    public function importPrices(array $prices)
     {
         foreach ($prices as &$p) {
             $p = $this->faceControl($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price']);
@@ -287,7 +268,7 @@ class ProductsService extends AbstractService
      *
      * @return array
      */
-    public function updateStocks(array $stocks)
+    public function importStocks(array $stocks)
     {
         if (array_key_exists('stocks', $stocks)) {
             trigger_error('You should pass stocks arg without stocks key', E_USER_NOTICE);
@@ -399,7 +380,7 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @see https://cb-api.ozonru.me/apiref/ru/#t-prepayment_set
+     * @see https://cb-api.ozonru.me/apiref/en/#t-prepayment_set
      *
      * @param array $data ['is_prepayment', 'offers_ids', 'products_ids']
      *
