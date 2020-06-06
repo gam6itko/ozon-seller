@@ -94,6 +94,6 @@ class ProductService extends AbstractService
             'page_size' => $pageSize,
         ];
 
-        return $this->request('POST', "{$this->path}/info/attributes", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', "/v2/products/info/attributes", ['body' => \GuzzleHttp\json_encode($query)]);
     }
 }
