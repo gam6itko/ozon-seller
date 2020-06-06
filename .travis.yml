@@ -4,8 +4,9 @@ php:
 #    - '7.2'
 #    - '7.3'
 #    - '7.4snapshot'
-directories:
-    - $HOME/.composer/cache/files
+cache:
+    directories:
+        - $HOME/.composer/cache/files
 script:
     - composer install
     - vendor/bin/phpunit --configuration phpunit.xml.dist --group=unit-test --group=v1 --group=v2
