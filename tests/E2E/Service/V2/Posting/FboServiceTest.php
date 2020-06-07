@@ -1,6 +1,6 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\Service\Posting;
+namespace Gam6itko\OzonSeller\Tests\E2E\Service\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  * @group v2
+ *        @group e2e
  */
 class FboServiceTest extends TestCase
 {

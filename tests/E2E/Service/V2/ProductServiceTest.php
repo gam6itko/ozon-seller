@@ -1,6 +1,6 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\Service\V2;
+namespace Gam6itko\OzonSeller\Tests\E2E\Service\V2;
 
 use Gam6itko\OzonSeller\Service\V2\ProductService;
 use PHPUnit\Framework\TestCase;
@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @author Alexander Strizhak <gam6itko@gmail.com>
  *
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\ProductService
+ * @group  e2e
  */
 class ProductServiceTest extends TestCase
 {

@@ -3,88 +3,75 @@
 namespace Gam6itko\OzonSeller\Tests\Service\V1;
 
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
-use PHPUnit\Framework\TestCase;
+use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
 
-/**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\CategoriesService
- * @group  v1
- *
- * @author Alexander Strizhak <gam6itko@gmail.com>
- */
-class CategoriesServiceTest extends TestCase
+class CategoriesServiceTest extends AbstractTestCase
 {
-    /** @var CategoriesService */
-    private static $svc;
-
-    public static function setUpBeforeClass()
+    protected function getClass(): string
     {
-        self::$svc = new CategoriesService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
+        return CategoriesService::class;
     }
 
-    protected function setUp()
+    public function testTree()
     {
-        sleep(1); //fix 429 Too Many Requests
+        $responseJson = <<<JSON
+{
+  "result": [
+    {
+      "category_id": 1,
+      "title": "Books",
+      "children": [
+        {
+          "category_id": 2,
+          "title": "Glossary",
+          "children": []
+        },
+        {
+          "category_id": 3,
+          "title": "Science Fiction",
+          "children": []
+        }
+      ]
     }
+  ]
+}
+JSON;
 
-    /**
-     * @covers ::tree
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
-     */
-    public function testTreeException()
-    {
-        $res = self::$svc->tree(1917);
-        self::assertNotEmpty($res);
-    }
-
-    /**
-     * @covers ::tree
-     */
-    public function testTreeRoot()
-    {
-        $res = self::$svc->tree();
-        self::assertNotEmpty($res);
-        self::assertIsArray($res);
-        self::assertArrayHasKey('category_id', $res[0]);
-        self::assertArrayHasKey('title', $res[0]);
-        self::assertArrayHasKey('children', $res[0]);
-        self::assertCount(24, $res);
-    }
-
-    /**
-     * @covers ::attributes
-     * @dataProvider dataTree
-     */
-    public function testTree(int $id, string $title)
-    {
-        $res = self::$svc->tree($id);
-        self::assertNotEmpty($res);
-        self::assertCount(1, $res);
-        $cat = $res[0];
-        self::assertEquals($title, $cat['title']);
-    }
-
-    public function dataTree()
-    {
-        return [
-            [17027492, 'Канцелярия'],
-            [72078193, 'Аксессуар для информационного держателя'],
+        $expectedOptions = [
+            'body' => '{"category_id":17036076,"language":"EN"}',
         ];
+        $client = $this->createClient('POST', '/v1/category/tree', $expectedOptions, $responseJson);
+        /** @var CategoriesService $svc */
+        $svc = $this->createSvc($client);
+        $result = $svc->tree(17036076, "EN");
+        self::assertEquals(json_decode($responseJson, true)['result'], $result);
     }
 
-    /**
-     * @covers ::attributes
-     * @dataProvider dataAttributes
-     */
-    public function testAttributes(int $id)
+    public function testAttribute()
     {
-        $res = self::$svc->attributes($id);
-        self::assertNotEmpty($res);
+        $responseJson = <<<JSON
+{
+    "result": {
+        "id": 1,
+        "name": "Explosive",
+        "description": "Mark for product if it is explosive", 
+        "type": "bool",
+        "is_collection": false,
+        "is_required": false,
+        "group_id": 0,
+        "group_name": "", 
+        "dictionary_id": 0 
     }
+}
+JSON;
 
-    public function dataAttributes()
-    {
-        return [
-            [17029835],
+        $expectedOptions = [
+            'body' => '{"category_id":17036076,"language":"EN","attribute_type":"required"}',
         ];
+        $client = $this->createClient('POST', '/v1/category/attribute', $expectedOptions, $responseJson);
+        /** @var CategoriesService $svc */
+        $svc = $this->createSvc($client);
+        $result = $svc->attributes(17036076, "EN", ["attribute_type"=> "required", "foo" => "bar"]);
+        self::assertEquals(json_decode($responseJson, true)['result'], $result);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\Service\V1;
+namespace Gam6itko\OzonSeller\Tests\E2E\Service\V1;
 
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Service\V1\ProductsService;
@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\ProductsService
  * @group  v1
+ * @group  e2e
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */
