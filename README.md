@@ -1,5 +1,6 @@
 # Ozon-seller API client
 [![Build Status](https://travis-ci.com/gam6itko/ozon-seller.svg?branch=master)](https://travis-ci.com/gam6itko/ozon-seller)
+[![Coverage Status](https://coveralls.io/repos/github/gam6itko/ozon-seller/badge.svg?branch=master)](https://coveralls.io/github/gam6itko/ozon-seller?branch=master)
 
 Documentation: <https://cb-api.ozonru.me/apiref/>
 
