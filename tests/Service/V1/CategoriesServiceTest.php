@@ -12,7 +12,7 @@ class CategoriesServiceTest extends AbstractTestCase
         return CategoriesService::class;
     }
 
-    public function testTree()
+    public function testTree(): void
     {
         $responseJson = <<<JSON
 {
@@ -47,7 +47,7 @@ JSON;
         self::assertEquals(json_decode($responseJson, true)['result'], $result);
     }
 
-    public function testAttribute()
+    public function testAttribute(): void
     {
         $responseJson = <<<JSON
 {
@@ -71,7 +71,7 @@ JSON;
         $client = $this->createClient('POST', '/v1/category/attribute', $expectedOptions, $responseJson);
         /** @var CategoriesService $svc */
         $svc = $this->createSvc($client);
-        $result = $svc->attributes(17036076, 'EN', ['attribute_type'=> 'required', 'foo' => 'bar']);
+        $result = $svc->attributes(17036076, 'EN', ['attribute_type' => 'required', 'foo' => 'bar']);
         self::assertEquals(json_decode($responseJson, true)['result'], $result);
     }
 }
