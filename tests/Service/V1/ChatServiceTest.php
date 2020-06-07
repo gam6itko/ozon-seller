@@ -55,12 +55,12 @@ JSON;
         /** @var ChatService $svc */
         $svc = $this->createSvc($client);
         $result = $svc->list([
-            "chat_id_list" => [
-                "6639ec81-616e-480d-82b6-111dec41f674",
-                "3cdf5407-9f90-4752-8105-8f1d4cd427f5",
+            'chat_id_list' => [
+                '6639ec81-616e-480d-82b6-111dec41f674',
+                '3cdf5407-9f90-4752-8105-8f1d4cd427f5',
             ],
-            "page"         => 1,
-            "page_size"    => 100,
+            'page'         => 1,
+            'page_size'    => 100,
         ]);
         self::assertEquals(json_decode($responseJson, true)['result'], $result);
     }
@@ -112,10 +112,10 @@ JSON;
         $client = $this->createClient('POST', '/v1/chat/history', $expectedOptions, $responseJson);
         /** @var ChatService $svc */
         $svc = $this->createSvc($client);
-        $result = $svc->history("3cdf5407-9f90-4752-8105-8f1d4cd427f5", [
-            "from_message_id" => "986714",
-            "limit"           => 10,
-            "foo"             => "bar",
+        $result = $svc->history('3cdf5407-9f90-4752-8105-8f1d4cd427f5', [
+            'from_message_id' => '986714',
+            'limit'           => 10,
+            'foo'             => 'bar',
         ]);
         self::assertEquals(json_decode($responseJson, true)['result'], $result);
     }
@@ -133,7 +133,7 @@ JSON;
         $client = $this->createClient('POST', '/v1/chat/send/message', $expectedOptions, $responseJson);
         /** @var ChatService $svc */
         $svc = $this->createSvc($client);
-        $result = $svc->sendMessage("3cdf5407-9f90-4752-8105-8f1d4cd427f5", "Test Message");
+        $result = $svc->sendMessage('3cdf5407-9f90-4752-8105-8f1d4cd427f5', 'Test Message');
         self::assertTrue($result);
     }
 
@@ -150,7 +150,7 @@ JSON;
         $client = $this->createClient('POST', '/v1/chat/send/file', $expectedOptions, $responseJson);
         /** @var ChatService $svc */
         $svc = $this->createSvc($client);
-        $result = $svc->sendFile("MSwgMiwgMwo=", "3cdf5407-9f90-4752-8105-8f1d4cd427f5", "test.txt");
+        $result = $svc->sendFile('MSwgMiwgMwo=', '3cdf5407-9f90-4752-8105-8f1d4cd427f5', 'test.txt');
         self::assertTrue($result);
     }
 
@@ -170,6 +170,6 @@ JSON;
         /** @var ChatService $svc */
         $svc = $this->createSvc($client);
         $result = $svc->start(598586936);
-        self::assertEquals("3cdf5407-9f90-4752-8105-8f1d4cd427f5", $result);
+        self::assertEquals('3cdf5407-9f90-4752-8105-8f1d4cd427f5', $result);
     }
 }

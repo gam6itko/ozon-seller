@@ -43,7 +43,7 @@ JSON;
         $client = $this->createClient('POST', '/v1/category/tree', $expectedOptions, $responseJson);
         /** @var CategoriesService $svc */
         $svc = $this->createSvc($client);
-        $result = $svc->tree(17036076, "EN");
+        $result = $svc->tree(17036076, 'EN');
         self::assertEquals(json_decode($responseJson, true)['result'], $result);
     }
 
@@ -71,7 +71,7 @@ JSON;
         $client = $this->createClient('POST', '/v1/category/attribute', $expectedOptions, $responseJson);
         /** @var CategoriesService $svc */
         $svc = $this->createSvc($client);
-        $result = $svc->attributes(17036076, "EN", ["attribute_type"=> "required", "foo" => "bar"]);
+        $result = $svc->attributes(17036076, 'EN', ['attribute_type'=> 'required', 'foo' => 'bar']);
         self::assertEquals(json_decode($responseJson, true)['result'], $result);
     }
 }

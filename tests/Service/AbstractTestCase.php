@@ -2,7 +2,6 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service;
 
-use Gam6itko\OzonSeller\Service\V1\ActionsService;
 use GuzzleHttp\ClientInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
