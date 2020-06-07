@@ -108,8 +108,8 @@ JSON;
         $client = $this->createClient('POST', '/v1/actions/products/activate', $expectedOptions, $responseJson);
         $svc = $this->createSvc($client);
         $result = $svc->productsActivate(2422, [
-            "product_id"   => 15323889,
-            "action_price" => 931.00,
+            'product_id'   => 15323889,
+            'action_price' => 931.00,
         ]);
         self::assertEquals(json_decode($responseJson, true)['result'], $result);
     }
