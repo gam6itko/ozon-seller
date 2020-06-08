@@ -27,11 +27,11 @@ $categoryTree = $svc->tree();
 $attributes = $svc->attributes(17038826);
 ```
 
-## Order
+## Posting Crossborder
 
-### info
+### get info 
 
-`/v1/order/{order-number}`
+`/v2/posting/crossborder/get`
 
 ```php
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
