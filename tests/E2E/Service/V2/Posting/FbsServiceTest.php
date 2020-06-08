@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Gam6itko\OzonSeller\Tests\E2E\Service\V2\Posting;
 

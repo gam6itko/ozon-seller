@@ -8,6 +8,7 @@ $rules = [
             '=>' => 'align',
         ],
     ],
+    'declare_strict_types'         => true,
 ];
 
 $finder = PhpCsFixer\Finder::create()
