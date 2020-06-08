@@ -183,6 +183,7 @@ class FbsService extends AbstractService
      * @param string|array $postingNumber
      *
      * @return array|string
+     *
      * @todo return true
      */
     public function awaitingDelivery($postingNumber)

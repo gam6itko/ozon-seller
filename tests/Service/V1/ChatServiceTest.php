@@ -106,6 +106,5 @@ class ChatServiceTest extends AbstractTestCase
                 self::assertEquals('3cdf5407-9f90-4752-8105-8f1d4cd427f5', $result);
             }
         );
-
     }
 }

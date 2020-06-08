@@ -33,7 +33,6 @@ class FbsServiceTests extends AbstractTestCase
                 '/v2/posting/fbs/list',
                 ['body' => '{"filter":{"since":"2018-11-18T11:27:45+00:00","to":"2019-11-18T11:27:45+00:00","status":"awaiting_approve"},"dir":"asc","offset":0,"limit":10}'],
             ]
-
         );
     }
 
@@ -41,13 +40,12 @@ class FbsServiceTests extends AbstractTestCase
     {
         $this->quickTest(
             'get',
-            ["39268230-0002-3"],
+            ['39268230-0002-3'],
             [
                 'POST',
                 '/v2/posting/fbs/get',
                 ['body' => '{"posting_number":"39268230-0002-3"}'],
             ]
-
         );
     }
 
@@ -72,10 +70,10 @@ class FbsServiceTests extends AbstractTestCase
 
     public function testShip(): void
     {
-        $packages = ['items' => [["quantity" => 3, "sku" => 123065]]];
+        $packages = ['items' => [['quantity' => 3, 'sku' => 123065]]];
         $this->quickTest(
             'ship',
-            [$packages, "13076543-0001-1"],
+            [$packages, '13076543-0001-1'],
             [
                 'POST',
                 '/v2/posting/fbs/ship',
@@ -135,7 +133,7 @@ class FbsServiceTests extends AbstractTestCase
     {
         $this->quickTest(
             'packageLabel',
-            ["13076543-0001-1"],
+            ['13076543-0001-1'],
             [
                 'POST',
                 '/v2/posting/fbs/package-label',
@@ -152,7 +150,7 @@ class FbsServiceTests extends AbstractTestCase
     {
         $this->quickTest(
             'arbitration',
-            ["13076543-0001-1"],
+            ['13076543-0001-1'],
             [
                 'POST',
                 '/v2/posting/fbs/arbitration',
@@ -170,7 +168,7 @@ class FbsServiceTests extends AbstractTestCase
         $this->quickTest(
             'awaitingDelivery',
             [
-                ["13076543-0001-1", "02898753-0009-2"]
+                ['13076543-0001-1', '02898753-0009-2'],
             ],
             [
                 'POST',
@@ -185,9 +183,9 @@ class FbsServiceTests extends AbstractTestCase
         $this->quickTest(
             'cancel',
             [
-                "39268230-0002-3",
+                '39268230-0002-3',
                 361,
-                "Cancel it!"
+                'Cancel it!',
             ],
             [
                 'POST',

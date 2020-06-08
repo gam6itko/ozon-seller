@@ -32,7 +32,7 @@ class CategoriesServiceTest extends AbstractTestCase
             [
                 17036076,
                 'EN',
-                ['attribute_type' => 'required', 'foo' => 'bar']
+                ['attribute_type' => 'required', 'foo' => 'bar'],
             ],
             [
                 'POST',

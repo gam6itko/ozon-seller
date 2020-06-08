@@ -16,9 +16,9 @@ class ReportServiceTest extends AbstractTestCase
     public function testList(): void
     {
         $query = [
-            "page"        => 1,
-            "page_size"   => 100,
-            "report_type" => "SELLER_TRANSACTIONS",
+            'page'        => 1,
+            'page_size'   => 100,
+            'report_type' => 'SELLER_TRANSACTIONS',
         ];
         $this->quickTest(
             'list',
@@ -35,7 +35,7 @@ class ReportServiceTest extends AbstractTestCase
     {
         $this->quickTest(
             'info',
-            ["63d60fd4-1959-4087-89fa-2afa320eb2fb"],
+            ['63d60fd4-1959-4087-89fa-2afa320eb2fb'],
             [
                 'POST',
                 '/v1/report/info',
@@ -47,10 +47,10 @@ class ReportServiceTest extends AbstractTestCase
     public function testProducts(): void
     {
         $query = [
-            "offer_id"   => ["GJ5O52T5"],
-            "search"     => "SAMSUNG",
-            "sku"        => [555929582],
-            "visibility" => "VISIBLE",
+            'offer_id'   => ['GJ5O52T5'],
+            'search'     => 'SAMSUNG',
+            'sku'        => [555929582],
+            'visibility' => 'VISIBLE',
         ];
 
         $this->quickTest(
@@ -68,7 +68,7 @@ class ReportServiceTest extends AbstractTestCase
     {
         $this->quickTest(
             'transaction',
-            [new \DateTime('2019-01-01'), new \DateTime('2019-01-15'), "MEIZU", TransactionType::ALL],
+            [new \DateTime('2019-01-01'), new \DateTime('2019-01-15'), 'MEIZU', TransactionType::ALL],
             [
                 'POST',
                 '/v1/report/transactions/create',
