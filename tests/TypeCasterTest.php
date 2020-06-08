@@ -2,11 +2,11 @@
 
 namespace Gam6itko\OzonSeller\Tests;
 
+use Gam6itko\OzonSeller\TypeCaster;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\TypeCaster
- * @group unit-test
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */
@@ -17,7 +17,7 @@ class TypeCasterTest extends TestCase
      */
     public function testCastArr(array $data, array $config, array $expected)
     {
-        $result = \Gam6itko\OzonSeller\TypeCaster::castArr($data, $config);
+        $result = TypeCaster::castArr($data, $config);
 
         foreach ($result as $key => $val) {
             switch ($config[$key]) {

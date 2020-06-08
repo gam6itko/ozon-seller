@@ -1,6 +1,6 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\Service\Posting;
+namespace Gam6itko\OzonSeller\Tests\E2E\Service\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
@@ -12,18 +12,19 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  * @group v2
+ *        @group e2e
  */
 class FboServiceTest extends TestCase
 {
     /** @var CategoriesService */
     private static $svc;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$svc = new FboService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         sleep(1); //fix 429 Too Many Requests
     }

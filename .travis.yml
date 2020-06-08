@@ -1,12 +1,16 @@
 language: php
 php:
     - '7.1'
-#    - '7.2'
-#    - '7.3'
-#    - '7.4snapshot'
+    - '7.2'
+    - '7.3'
+    - '7.4'
 cache:
     directories:
         - $HOME/.composer/cache/files
-script:
+install:
     - composer install
-    - vendor/bin/phpunit --configuration phpunit.xml.dist --group=unit-test --group=v1 --group=v2
+script:
+    - mkdir -p build/logs
+    - vendor/bin/phpunit --configuration phpunit.xml.dist --exclude-group=e2e --coverage-clover build/logs/clover.xml
+after_script:
+    - travis_retry php vendor/bin/php-coveralls -v

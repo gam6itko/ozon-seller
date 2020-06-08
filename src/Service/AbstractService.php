@@ -126,8 +126,11 @@ abstract class AbstractService
 
     protected function ensureCollection(array $arr)
     {
-        $isAssoc = array_keys($arr) !== range(0, count($arr) - 1);
+        return $this->isAssoc($arr) ? [$arr] : $arr;
+    }
 
-        return $isAssoc ? [$arr] : $arr;
+    protected function isAssoc(array $arr): bool
+    {
+        return array_keys($arr) !== range(0, count($arr) - 1);
     }
 }

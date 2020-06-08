@@ -1,6 +1,6 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests;
+namespace Gam6itko\OzonSeller\Tests\E2E;
 
 use Gam6itko\OzonSeller\Service\V1\ActionsService;
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
@@ -17,6 +17,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
+ *
+ * @group  e2e
  */
 class ApiReferenceTest extends TestCase
 {
