@@ -2,7 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Exception;
 
-class AbstractOzonSellerException extends \Exception
+abstract class AbstractOzonSellerException extends \Exception
 {
     /** @var array|null */
     protected $data;

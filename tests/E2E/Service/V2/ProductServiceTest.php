@@ -22,7 +22,7 @@ class ProductServiceTest extends TestCase
 
     public function getSvc(): ProductService
     {
-        return new ProductService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);
+        return new ProductService((int) $_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);
     }
 
     public function testImport()

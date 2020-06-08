@@ -24,7 +24,7 @@ class ProductsServiceTest extends TestCase
 
     public function getSvc(): ProductsService
     {
-        return new ProductsService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);
+        return new ProductsService((int) $_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);
     }
 
     /**
@@ -105,22 +105,69 @@ JSON;
      * @covers ::import
      * @dataProvider dataImportInvalid
      */
-    public function testImportInvalid(string $jsonFile): void
+    public function testImportInvalid(string $json): void
     {
         $this->expectException(ProductValidatorException::class);
-        $input = json_decode(file_get_contents($jsonFile), true);
+        $input = json_decode($json, true);
         $result = $this->getSvc()->import($input, true);
         self::assertNotEmpty($result);
         self::assertArrayHasKey('product_id', $result);
         self::assertArrayHasKey('state', $result);
     }
 
-    public function dataImportInvalid(): array
+    public function dataImportInvalid()
     {
-        return [
-            [__DIR__.'/../../Resources/V1/Products/create.invalid.0.request.json'],
-            [__DIR__.'/../../Resources/V1/Products/create.invalid.1.request.json'],
-        ];
+        $json = <<<JSON
+{
+    "items": [
+        {
+            "category_id": "17036198",
+            "offer_id": "16209",
+            "name": "Наушники Apple AirPods 2 (без беспроводной зарядки чехла)",
+            "price": 10110,
+            "quantity": "3",
+            "vendor_code": "AM016209",
+            "description": "",
+            "vat": 0,
+            "height": 1,
+            "images": [
+                {
+                    "file_name": "http:\/\/allo.market\/upload\/iblock\/4f4\/4f4cc9604b964fdca797519e7e2c0fb1.jpeg",
+                    "default": true
+                }
+            ],
+            "attributes": [
+                {
+                    "id": 8229,
+                    "value": "193"
+                }
+            ]
+        }
+    ]
+}
+JSON;
+
+        yield [$json];
+
+        $json = <<<JSON
+{
+    "category_id": 17029321,
+    "name": "uno dos tres cuatrocopter",
+    "price": 19000,
+    "vat": "0.18",
+    "vendor": "Gambitko spy technology",
+    "weight": "1500",
+    "weight_unit": "g",
+    "images": [
+        {
+            "file_name": "https://images.pexels.com/photos/8769/pen-writing-notes-studying.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+            "default": true
+        }
+    ]
+}
+JSON;
+
+        yield [$json];
     }
 
     /**
@@ -140,10 +187,10 @@ JSON;
      * @covers ::import
      * @dataProvider dataImportFail
      */
-    public function testImportFail(string $jsonFile): void
+    public function testImportFail(string $json): void
     {
         try {
-            $input = json_decode(file_get_contents($jsonFile), true);
+            $input = json_decode($json, true);
             $this->getSvc()->import($input, false);
         } catch (BadRequestException $exc) {
             self::assertEmpty($exc->getData()); //todo-ozon-support нет никаких данных
@@ -151,12 +198,59 @@ JSON;
         }
     }
 
-    public function dataImportFail(): array
+    public function dataImportFail()
     {
-        return [
-            [__DIR__.'/../../Resources/V1/Products/create.invalid.0.request.json'],
-            [__DIR__.'/../../Resources/V1/Products/create.invalid.1.request.json'],
-        ];
+        $json = <<<JSON
+{
+    "items": [
+        {
+            "category_id": "17036198",
+            "offer_id": "16209",
+            "name": "Наушники Apple AirPods 2 (без беспроводной зарядки чехла)",
+            "price": 10110,
+            "quantity": "3",
+            "vendor_code": "AM016209",
+            "description": "",
+            "vat": 0,
+            "height": 1,
+            "images": [
+                {
+                    "file_name": "http:\/\/allo.market\/upload\/iblock\/4f4\/4f4cc9604b964fdca797519e7e2c0fb1.jpeg",
+                    "default": true
+                }
+            ],
+            "attributes": [
+                {
+                    "id": 8229,
+                    "value": "193"
+                }
+            ]
+        }
+    ]
+}
+JSON;
+
+        yield [$json];
+
+        $json = <<<JSON
+{
+    "category_id": 17029321,
+    "name": "uno dos tres cuatrocopter",
+    "price": 19000,
+    "vat": "0.18",
+    "vendor": "Gambitko spy technology",
+    "weight": "1500",
+    "weight_unit": "g",
+    "images": [
+        {
+            "file_name": "https://images.pexels.com/photos/8769/pen-writing-notes-studying.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+            "default": true
+        }
+    ]
+}
+JSON;
+
+        yield [$json];
     }
 
     /**

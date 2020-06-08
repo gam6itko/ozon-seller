@@ -19,7 +19,7 @@ class CategoryServiceTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$svc = new CategoryService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
+        self::$svc = new CategoryService((int) $_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
     }
 
     protected function setUp(): void
