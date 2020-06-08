@@ -223,14 +223,13 @@ JSON;
             'product_id' => [552526],
             'visibility' => 'ALL',
         ];
-        $paginator = ['page' => 1, 'page_size' => 100];
         $this->quickTest(
             'list',
-            [$filters, $paginator],
+            [$filters],
             [
                 'POST',
                 '/v1/product/list',
-                ['body' => '{"page":1,"page_size":100,"filter":{"offer_id":["1255959"],"product_id":[552526],"visibility":"ALL"}}'],
+                ['body' => '{"page":1,"page_size":10,"filter":{"offer_id":["1255959"],"product_id":[552526],"visibility":"ALL"}}'],
             ],
             $responseJson
         );

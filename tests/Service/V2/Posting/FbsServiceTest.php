@@ -71,7 +71,7 @@ class FbsServiceTest extends AbstractTestCase
     public function testShip(): void
     {
         $packages = [
-            ['items' => [['quantity' => 3, 'sku' => 123065]]]
+            ['items' => [['quantity' => 3, 'sku' => 123065]]],
         ];
         $this->quickTest(
             'ship',
@@ -167,6 +167,18 @@ class FbsServiceTest extends AbstractTestCase
 
     public function testAwaitingDelivery(): void
     {
+        $this->quickTest(
+            'awaitingDelivery',
+            [
+                '13076543-0001-1',
+            ],
+            [
+                'POST',
+                '/v2/posting/fbs/awaiting-delivery',
+                ['body' => '{"posting_number":["13076543-0001-1"]}'],
+            ]
+        );
+
         $this->quickTest(
             'awaitingDelivery',
             [
