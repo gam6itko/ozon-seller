@@ -12,7 +12,7 @@ For more examples look at `tests`
 ## Categories
 
 ```php
-use Gam6itko\OzonSeller\Service\CategoriesService;
+use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 
 $clientId = '<ozon seller client-id>';
 $apiKey = '<ozon seller api-key>';
@@ -34,122 +34,65 @@ $attributes = $svc->attributes(17038826);
 `/v1/order/{order-number}`
 
 ```php
-$svcOrder = new OrderService($clientId, $apiKey, $sandboxHost);
+use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
 
-$orderId = '12345678-1234'; // ozon client oreder like \d{8}-\d{4}
-$orderArr = $svcOrder->info($orderId);
+$svc = new CrossborderService($clientId, $apiKey, $sandboxHost);
+
+$postingNumber = '39268230-0002-3';
+$orderArr = $svc->get($postingNumber);
 echo json_encode($orderArr);
 ```
 
 ```json
 {
-  "order_id": 123456,
-  "order_nr": "12345678-1234",
-  "status": "delivered",
-  "customer_id": 122334,
-  "delivery_schema": "fbo",
-  "last_updated": "2018-09-25T12:41:48.932Z",
-  "order_time": "2018-09-25T12:41:48.932Z",
-  "address": {
-    "address_tail": "Vlogogradskaya st. 12 - 23",
-    "addressee": "Ivan Ivanov",
-    "city": "Moscow",
-    "comment": "pass code #123",
-    "country": "Russia",
-    "district": "Central",
-    "phone": "7903XXXXXXX",
-    "email": "test@ozon.ru",
-    "region": "Moscow",
-    "zip_code": "112334"
-  },
-  "items": [
+  "result": [
     {
-      "product_id": 124525,
-      "item_id": 325441,
-      "quantity": 1,
-      "offer_id": "124100",
-      "price": "79999",
-      "tracking_number": "XZY1111111",
-      "status": "delivered",
-      "cancel_reason_id": 0,
-      "auto_cancel_date": "2019-01-09T09:56:53.587Z",
-      "shipping_provider_id": 5
+      "address": {
+        "address_tail": "г. Москва, ул. Центральная, 1",
+        "addressee": "Петров Иван Владимирович",
+        "city": "Москва",
+        "comment": "",
+        "country": "Россия",
+        "district": "",
+        "phone": "+7 495 123-45-67",
+        "region": "Москва",
+        "zip_code": "101000"
+      },
+      "auto_cancel_date": "2019-11-18T11:30:11.571Z",
+      "cancel_reason_id": 76,
+      "created_at": "2019-11-18T11:30:11.571Z",
+      "customer_email": "petrov@email.com",
+      "customer_id": 60006,
+      "in_process_at": "2019-11-18T11:30:11.571Z",
+      "order_id": 77712345,
+      "order_nr": "1111444",
+      "posting_number": "39268230-0002-3",
+      "products": [
+        {
+          "name": "Фитнес-браслет",
+          "offer_id": "DEP-1234",
+          "price": "1900.00",
+          "quantity": 1,
+          "sku": 100056
+        }
+      ],
+      "shipping_provider_id": 0,
+      "status": "awaiting_approve",
+      "tracking_number": ""
     }
   ]
 }
 ```
 
-
-### order approve
-
-`/v1/order/approve/crossborder`
-
-```php
-$orderId = '12345678-1234'; // ozon client oreder like \d{8}-\d{4}
-$isSuccess = $svcOrder->approve($orderId);
-```
-
-### ship crossborder
-
-`/v1/order/ship/crossborder`
-
-```php
-$orderId = '12345678-1234'; // ozon client oreder like \d{8}-\d{4}
-$track = 'TRACK_NUMBER_1234';
-$shippingProviderId = 1;
-$items = [
-  [
-    'item_id'  => 123,
-    'quantity' => 1
-  ]
-];
-$isSuccess = $svcOrder->shipCrossboarder($orderId, $track, $shippingProviderId, $items);
-```
-
-### itemsCancelReasons
-
-`/v1/order/cancel-reason/list`
-
-```php
-$cancelReasons = $svcOrder->itemsCancelReasons();
-```
-
-```json
-[
-  {
-    "id": 352,
-    "title": "Product is out of stock"
-  },
-  {
-    "id": 353,
-    "title": "Product with wrong price"
-  },
-  {
-    "id": 358,
-    "title": "Canceled by seller"
-  }
-]
-```
-
-
-### cancel crossborder
-
-`/v1/order/items/cancel/crossborder`
-
-```php
-$reasonCode = 352;
-$itemIds = [123, 456];
-$isSuccess = $svcOrder->itemsCancelCrossboarder($orderId, $reasonCode, $itemIds);
-```
-
-
 ## Products
 
-### create
+### import
 
 `/v1/product/import`
 
 ```php
+use Gam6itko\OzonSeller\Service\V1\ProductsService;
+
 $svcProduct = new ProductsService($clientId, $apiKey, $sandboxHost);
 $product = [
     'barcode'        => '8801643566784',
@@ -233,40 +176,10 @@ $product = [
     ],
 ];
 
-$svcProduct->create($product);
+$svcProduct->import($product);
 // or
-$svcProduct->create([$product, $product1, $product2, ...]);
+$svcProduct->import([$product, $product1, $product2, ...]);
 // or
-$res = $svcProduct->create(['items' => [$product, $product1, $product2, ...] ]);
-echo $res['task_id']; // save it for checking with
-```
-
-### price
-
-<https://github.com/gam6itko/ozon-seller/issues/6#issuecomment-566162289>
-
-```php
-$svcProduct = new ProductsService($clientId, $apiKey, $sandboxHost);
-$svcProduct->price([], ['page' => 1, 'page_size' => 10]);
-```
-
-```json5
-{
-  "items": [
-    {
-      "id": 595447,
-      "offer_id": "1315",
-      "old_price": "5175.0000",
-      "price": "4140.0000",
-      "premium_price": "",
-      "recommended_price": "",
-      "buybox_price": "4140.0000",
-      "commission": null,
-      "min_ozon_price": "4140.0000",
-      "marketing_price": "4140.0000"
-    },
-    // more items
-  ],
-  "total": 626
-}
+$res = $svcProduct->import(['items' => [$product, $product1, $product2, ...] ]);
+echo $res['task_id']; // save it for checking by `importInfo`
 ```

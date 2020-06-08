@@ -34,17 +34,6 @@ class ApiReferenceTest extends TestCase
             ],
         ],
         ChatService::class        => ['prefix' => '/v1/chat'],
-//        OrderService::class       => [
-//            'prefix'  => '/v1/order',
-//            'mapping' => [
-//                '123456?translit=true'     => 'info',
-//                'approve/crossborder'      => 'approve',
-//                'cancel-reason/list'       => 'itemsCancelReasons',
-//                'cancel/fbs'               => 'itemsCancelFbs',
-//                'items/cancel/crossborder' => 'itemsCancelCrossboarder',
-//                'shipping-provider/list'   => 'shippingProviders',
-//            ],
-//        ],
         ProductsService::class    => [
             'prefix'  => '/v1/product',
             'mapping' => [
