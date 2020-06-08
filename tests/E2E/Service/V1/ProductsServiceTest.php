@@ -2,7 +2,9 @@
 
 namespace Gam6itko\OzonSeller\Tests\E2E\Service\V1;
 
+use Gam6itko\OzonSeller\Exception\AccessDeniedException;
 use Gam6itko\OzonSeller\Exception\BadRequestException;
+use Gam6itko\OzonSeller\Exception\ProductValidatorException;
 use Gam6itko\OzonSeller\Service\V1\ProductsService;
 use PHPUnit\Framework\TestCase;
 
@@ -27,10 +29,10 @@ class ProductsServiceTest extends TestCase
 
     /**
      * @covers ::classify
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testClassify(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $json = <<<JSON
 {
     "products": [
@@ -57,10 +59,10 @@ JSON;
 
     /**
      * @covers ::import
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testImport(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $json = <<<JSON
 {
     "items": [
@@ -102,10 +104,10 @@ JSON;
     /**
      * @covers ::import
      * @dataProvider dataImportInvalid
-     * @expectedException \Gam6itko\OzonSeller\Exception\ProductValidatorException
      */
     public function testImportInvalid(string $jsonFile): void
     {
+        $this->expectException(ProductValidatorException::class);
         $input = json_decode(file_get_contents($jsonFile), true);
         $result = $this->getSvc()->import($input, true);
         self::assertNotEmpty($result);
@@ -159,10 +161,10 @@ JSON;
 
     /**
      * @covers ::createBySku
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testImportBySku(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $json = <<<JSON
 {
     "items": [
@@ -194,11 +196,10 @@ JSON;
     /**
      * @covers ::importInfo
      * @depends testImport
-     *
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testCreationStatus(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $status = $this->getSvc()->importInfo(1914378);
         self::assertNotEmpty($status);
         self::assertArrayHasKey('total', $status);
@@ -211,33 +212,30 @@ JSON;
 
     /**
      * @covers ::infoStocks
-     *
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testInfoStock(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $status = $this->getSvc()->infoStocks();
         self::assertNotEmpty($status);
     }
 
     /**
      * @covers ::infoPrices
-     *
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testInfoPrices(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $status = $this->getSvc()->infoPrices();
         self::assertNotEmpty($status);
     }
 
     /**
      * @covers ::list
-     *
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testList(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $result = $this->getSvc()->list();
         self::assertNotEmpty($result);
         self::assertCount(2, $result);
@@ -264,10 +262,10 @@ JSON;
 
     /**
      * @covers ::info
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testInfo(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $productInfo = $this->getSvc()->info(507735);
         self::assertNotEmpty($productInfo);
         self::assertArrayHasKey('name', $productInfo);
@@ -275,11 +273,10 @@ JSON;
 
     /**
      * @covers ::update
-     *
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testUpdate(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $arr = [
             'product_id' => 507735,
             'images'     => [
@@ -297,20 +294,20 @@ JSON;
 
     /**
      * @covers ::deactivate
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testDeactivate(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $result = $this->getSvc()->deactivate(510216);
         self::assertTrue($result);
     }
 
     /**
      * @covers ::activate
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testActivate(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $result = $this->getSvc()->activate(510216);
         self::assertTrue($result);
     }
@@ -318,19 +315,17 @@ JSON;
     /**
      * @covers ::delete
      * @depends testImport
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testDelete(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $status = $this->getSvc()->delete(510216);
         self::assertNotEmpty($status);
     }
 
-    /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
     public function testUpdatePricesNotFound(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $expectedJson = <<<JSON
 [
     {
@@ -374,10 +369,10 @@ JSON;
 
     /**
      * @covers ::importPrices
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testUpdatePrices(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $expectedJson = <<<JSON
 [
     {
@@ -405,10 +400,10 @@ JSON;
 
     /**
      * @covers ::importStocks
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testUpdateStocks(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $expectedJson = <<<JSON
 [
     {
@@ -430,11 +425,9 @@ JSON;
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
     }
 
-    /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
     public function testPrice()
     {
+        $this->expectException(AccessDeniedException::class);
         $this->getSvc()->price([], ['page' => 1, 'page_size' => 10]);
     }
 }

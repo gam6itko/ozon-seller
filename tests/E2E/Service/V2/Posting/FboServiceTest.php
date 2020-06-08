@@ -1,18 +1,19 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\E2E\Service\Posting;
+namespace Gam6itko\OzonSeller\Tests\E2E\Service\V2\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
+use Gam6itko\OzonSeller\Exception\NotFoundException;
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FboService;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\Posting\FboService
+ * @group  v2
+ * @group  e2e
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
- * @group v2
- *        @group e2e
  */
 class FboServiceTest extends TestCase
 {
@@ -35,11 +36,9 @@ class FboServiceTest extends TestCase
         self::assertTrue(true);
     }
 
-    /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
-     */
     public function testGet()
     {
+        $this->expectException(NotFoundException::class);
         self::$svc->get('123456790');
     }
 }

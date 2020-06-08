@@ -2,6 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Tests\E2E\Service\V1;
 
+use Gam6itko\OzonSeller\Exception\NotFoundException;
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use PHPUnit\Framework\TestCase;
 
@@ -29,10 +30,10 @@ class CategoriesServiceTest extends TestCase
 
     /**
      * @covers ::tree
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testTreeException()
     {
+        $this->expectException(NotFoundException::class);
         $res = self::$svc->tree(1917);
         self::assertNotEmpty($res);
     }

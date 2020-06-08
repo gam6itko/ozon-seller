@@ -1,19 +1,21 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\E2E\Service\Posting;
+namespace Gam6itko\OzonSeller\Tests\E2E\Service\V2\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
+use Gam6itko\OzonSeller\Exception\NotFoundException;
+use Gam6itko\OzonSeller\Exception\NotFoundInSortingCenterException;
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\Posting\FbsService
+ * @group  v2
+ * @group  e2e
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
- * @group  v2
- *         @group e2e
  */
 class FbsServiceTest extends TestCase
 {
@@ -41,10 +43,10 @@ class FbsServiceTest extends TestCase
 
     /**
      * @covers ::get
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testGet()
     {
+        $this->expectException(NotFoundException::class);
         self::$svc->get('123456790');
     }
 
@@ -59,20 +61,20 @@ class FbsServiceTest extends TestCase
 
     /**
      * @covers ::unfulfilledList
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Incorrect status `sending out of space`
      */
     public function testUnfulfilledListFail()
     {
+        $this->expectExceptionMessage('Incorrect status `sending out of space`');
+        $this->expectException(\LogicException::class);
         self::$svc->unfulfilledList('sending out of space');
     }
 
     /**
      * @covers ::ship
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testShip()
     {
+        $this->expectException(NotFoundException::class);
         self::$svc->ship([
             [
                 'items' => [
@@ -88,29 +90,29 @@ class FbsServiceTest extends TestCase
 
     /**
      * @covers ::actCreate
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundInSortingCenterException
      */
     public function testActCreate()
     {
+        $this->expectException(NotFoundInSortingCenterException::class);
         $res = self::$svc->actCreate();
         self::assertNotEmpty($res);
     }
 
     /**
      * @covers ::actCheckStatus
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testActCheckStatus()
     {
+        $this->expectException(NotFoundException::class);
         self::$svc->actCheckStatus(123);
     }
 
     /**
      * @covers ::actGetPdf
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testActGetPdf()
     {
+        $this->expectException(NotFoundException::class);
         self::$svc->actGetPdf(15684442104000);
     }
 
@@ -126,10 +128,10 @@ class FbsServiceTest extends TestCase
 
     /**
      * @covers ::arbitration
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testArbitration()
     {
+        $this->expectException(NotFoundException::class);
         self::$svc->arbitration('13070987-0051-1');
     }
 }

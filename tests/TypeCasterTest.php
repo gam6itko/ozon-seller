@@ -15,7 +15,7 @@ class TypeCasterTest extends TestCase
     /**
      * @dataProvider dataCatArr
      */
-    public function testCastArr(array $data, array $config, array $expected)
+    public function testCastArr(array $data, array $config, array $expected): void
     {
         $result = TypeCaster::castArr($data, $config);
 
@@ -43,12 +43,41 @@ class TypeCasterTest extends TestCase
 
     public function dataCatArr()
     {
-        return [
+        yield [
             [
-                ['product_id' => 'must be 0', 'sku' => '1234', 'offer_id' => 1234141, 'bool_key' => 1, 'false_bool' => 0],
-                ['product_id' => 'int', 'sku' => 'int', 'offer_id' => 'str', 'bool_key' => 'bool', 'false_bool' => 'bool'],
-                ['product_id' => 0, 'sku' => 1234, 'offer_id' => '1234141', 'bool_key' => true, 'false_bool' => false],
+                'product_id' => 'must be 0',
+                'sku'        => '1234',
+                'offer_id'   => 1234141,
+                'bool_key'   => 1,
+                'false_bool' => 0,
+                'double'     => '0.0',
+                'float'      => '.23',
+            ],
+            [
+                'product_id' => 'int',
+                'sku'        => 'integer',
+                'offer_id'   => 'str',
+                'bool_key'   => 'bool',
+                'false_bool' => 'bool',
+                'double'     => 'double',
+                'float'      => 'float',
+            ],
+            [
+                'product_id' => 0,
+                'sku'        => 1234,
+                'offer_id'   => '1234141',
+                'bool_key'   => true,
+                'false_bool' => false,
+                'double'     => 0.0,
+                'float'      => .23,
             ],
         ];
+    }
+
+    public function testFail()
+    {
+        $this->expectException(\LogicException::class);
+
+        TypeCaster::castArr(['foo' => 'bar'], ['foo' => 'bar']);
     }
 }

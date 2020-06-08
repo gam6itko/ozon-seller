@@ -2,14 +2,16 @@
 
 namespace Gam6itko\OzonSeller\Tests\E2E\Service\V2;
 
+use Gam6itko\OzonSeller\Exception\AccessDeniedException;
+use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Service\V2\ProductService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Alexander Strizhak <gam6itko@gmail.com>
- *
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\ProductService
  * @group  e2e
+ *
+ * @author Alexander Strizhak <gam6itko@gmail.com>
  */
 class ProductServiceTest extends TestCase
 {
@@ -23,11 +25,9 @@ class ProductServiceTest extends TestCase
         return new ProductService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);
     }
 
-    /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
-     */
     public function testImport()
     {
+        $this->expectException(BadRequestException::class);
         $json = <<<JSON
 {
     "items": [
@@ -68,10 +68,10 @@ JSON;
 
     /**
      * @covers ::info
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testInfo(): void
     {
+        $this->expectException(AccessDeniedException::class);
         $productInfo = $this->getSvc()->info(['product_id' => 507735]);
         self::assertNotEmpty($productInfo);
         self::assertArrayHasKey('name', $productInfo);

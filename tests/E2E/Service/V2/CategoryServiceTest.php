@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\CategoryService
  * @group  v2
- *         @group e2e
+ * @group  e2e
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */

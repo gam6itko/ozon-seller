@@ -2,6 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Tests\E2E\Service\V1;
 
+use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Service\V1\ChatService;
 use PHPUnit\Framework\TestCase;
 
@@ -29,11 +30,9 @@ class ChatServiceTest extends TestCase
         sleep(1); //fix 429 Too Many Requests
     }
 
-    /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
-     */
     public function testSendMessage()
     {
+        $this->expectException(BadRequestException::class);
         self::$svc->start(123456);
     }
 

@@ -1,9 +1,10 @@
 <?php
 
-namespace Gam6itko\OzonSeller\Tests\E2E\Service\Posting;
+namespace Gam6itko\OzonSeller\Tests\E2E\Service\V2\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
+use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Exception\NotFoundException;
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
@@ -12,10 +13,10 @@ use Psr\Log\Test\TestLogger;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService
+ * @group  v2
+ * @group  e2e
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
- * @group  v2
- * @group e2e
  */
 class CrossborderServiceTest extends TestCase
 {
@@ -47,10 +48,10 @@ class CrossborderServiceTest extends TestCase
 
     /**
      * @covers ::get
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testGet()
     {
+        $this->expectException(NotFoundException::class);
         self::$svc->get('123456790');
     }
 
@@ -65,20 +66,20 @@ class CrossborderServiceTest extends TestCase
 
     /**
      * @covers ::approve
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testApprove()
     {
+        $this->expectException(NotFoundException::class);
         self::$svc->approve('123456');
         self::assertTrue(true);
     }
 
     /**
      * @covers ::cancel
-     * @expectedException \Gam6itko\OzonSeller\Exception\BadRequestException
      */
     public function testCancel()
     {
+        $this->expectException(BadRequestException::class);
         self::$svc->cancel('39268230-0002-3', '149123456', 349, 'Cancel reason');
         self::assertTrue(true);
     }
@@ -97,10 +98,10 @@ class CrossborderServiceTest extends TestCase
 
     /**
      * @covers ::ship
-     * @expectedException \Gam6itko\OzonSeller\Exception\NotFoundException
      */
     public function testShip()
     {
+        $this->expectException(NotFoundException::class);
         self::$svc->ship('39268230-0002-3', 'AB123456CD', 15109877837000, [
             [
                 'quantity' => 2,
