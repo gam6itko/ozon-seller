@@ -8,7 +8,7 @@ cache:
     directories:
         - $HOME/.composer/cache/files
 before_script:
-    - composer install -vv
+    - composer install
 script:
     - mkdir -p build/logs
     - vendor/bin/phpunit --configuration phpunit.xml.dist --exclude-group=e2e --coverage-clover build/logs/clover.xml
