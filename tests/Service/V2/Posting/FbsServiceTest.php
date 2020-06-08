@@ -7,7 +7,7 @@ use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
 
-class FbsServiceTests extends AbstractTestCase
+class FbsServiceTest extends AbstractTestCase
 {
     protected function getClass(): string
     {
@@ -70,14 +70,16 @@ class FbsServiceTests extends AbstractTestCase
 
     public function testShip(): void
     {
-        $packages = ['items' => [['quantity' => 3, 'sku' => 123065]]];
+        $packages = [
+            ['items' => [['quantity' => 3, 'sku' => 123065]]]
+        ];
         $this->quickTest(
             'ship',
             [$packages, '13076543-0001-1'],
             [
                 'POST',
                 '/v2/posting/fbs/ship',
-                ['body' => '{"posting_number":"39268230-0002-3","tracking_number":"AB123456CD","shipping_provider_id":15109877837000,"items":[{"quantity":2,"sku":100056}]}'],
+                ['body' => '{"packages":[{"items":[{"quantity":3,"sku":123065}]}],"posting_number":"13076543-0001-1"}'],
             ]
         );
     }

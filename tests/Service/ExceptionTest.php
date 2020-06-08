@@ -12,7 +12,7 @@ use GuzzleHttp\Exception\BadResponseException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
-class ExceptionTests extends AbstractTestCase
+class ExceptionTest extends AbstractTestCase
 {
     protected function getClass(): string
     {

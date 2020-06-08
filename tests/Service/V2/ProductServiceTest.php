@@ -5,7 +5,7 @@ namespace Gam6itko\OzonSeller\Tests\Service\V2;
 use Gam6itko\OzonSeller\Service\V2\ProductService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
 
-class ProductServiceTests extends AbstractTestCase
+class ProductServiceTest extends AbstractTestCase
 {
     protected function getClass(): string
     {
@@ -23,7 +23,7 @@ class ProductServiceTests extends AbstractTestCase
             [
                 'POST',
                 '/v2/product/import',
-                ['body' => '{}'],
+                ['body' => '{"items":[{"description":"text of description","barcode":"string","category_id":0,"depth":0,"dimension_unit":"cm","height":0,"image_group_id":"string","images":["string"],"images360":["string"],"name":"string","offer_id":"string","old_price":"string","pdf_list":[{"index":0,"name":"string","src_url":"string"}],"premium_price":"string","price":"string","vat":"string","weight":0,"weight_unit":"g","width":0,"attributes":[{"complex_id":0,"id":0,"values":[{"dictionary_value_id":0,"value":"string"}]}],"complex_attributes":[{"attributes":[{"complex_id":0,"id":0,"values":[{"dictionary_value_id":0,"value":"string"}]}]}]}]}'],
             ]
         );
     }
@@ -31,10 +31,11 @@ class ProductServiceTests extends AbstractTestCase
     public function dataImport()
     {
         $item = [
+            'description'        => 'text of description',
             'barcode'            => 'string',
             'category_id'        => 0,
             'depth'              => 0,
-            'dimension_unit'     => 'string',
+            'dimension_unit'     => 'cm',
             'height'             => 0,
             'image_group_id'     => 'string',
             'images'             => [
@@ -57,7 +58,7 @@ class ProductServiceTests extends AbstractTestCase
             'price'              => 'string',
             'vat'                => 'string',
             'weight'             => 0,
-            'weight_unit'        => 'string',
+            'weight_unit'        => 'g',
             'width'              => 0,
             'attributes'         => [
                 [
