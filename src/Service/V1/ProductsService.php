@@ -234,14 +234,33 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
      *
-     * @param $prices
+     * @param $input
      *
      * @return array
      */
-    public function importPrices(array $prices)
+    public function importPrices(array $input)
     {
-        foreach ($prices as &$p) {
-            $p = $this->faceControl($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price']);
+        if (empty($input)) {
+            throw new \InvalidArgumentException('Empty prices data');
+        }
+
+        if ($this->isAssoc($input) && !isset($input['prices'])) {// if it one price
+            $input = ['prices' => [$input]];
+        } else {
+            if (!$this->isAssoc($input)) {// if it plain array on prices
+                $input = ['prices' => $input];
+            }
+        }
+
+        if (!isset($input['prices'])) {
+            throw new \InvalidArgumentException();
+        }
+
+        foreach ($input['prices'] as $i => &$p) {
+            if (!$p = $this->faceControl($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price'])) {
+                throw new \InvalidArgumentException('Invalid price data at index '.$i);
+            }
+
             $p = TypeCaster::castArr(
                 $p,
                 [
@@ -254,9 +273,7 @@ class ProductsService extends AbstractService
             );
         }
 
-        $arr = ['prices' => $prices];
-
-        return $this->request('POST', '/v1/product/import/prices', ['body' => \GuzzleHttp\json_encode($arr)]);
+        return $this->request('POST', '/v1/product/import/prices', ['body' => \GuzzleHttp\json_encode($input)]);
     }
 
     /**
@@ -264,43 +281,57 @@ class ProductsService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_stocks
      *
-     * @param $stocks
+     * @param $input
      *
      * @return array
      */
-    public function importStocks(array $stocks)
+    public function importStocks(array $input)
     {
-        if (array_key_exists('stocks', $stocks)) {
-            trigger_error('You should pass stocks arg without stocks key', E_USER_NOTICE);
-            $stocks = $stocks['stocks'];
+        if (empty($input)) {
+            throw new \InvalidArgumentException('Empty stocks data');
         }
 
-        foreach ($stocks as &$s) {
-            $s = $this->faceControl($s, ['product_id', 'offer_id', 'stock']);
+        if ($this->isAssoc($input) && !isset($input['stocks'])) {// if it one price
+            $input = ['stocks' => [$input]];
+        } else {
+            if (!$this->isAssoc($input)) {// if it plain array on prices
+                $input = ['stocks' => $input];
+            }
+        }
+
+        if (!isset($input['stocks'])) {
+            throw new \InvalidArgumentException();
+        }
+
+        foreach ($input['stocks'] as $i => &$s) {
+            if (!$s = $this->faceControl($s, ['product_id', 'offer_id', 'stock'])) {
+                throw new \InvalidArgumentException('Invalid stock data at index '.$i);
+            }
+
             $s = TypeCaster::castArr(
                 $s,
                 [
-                    'product_id'    => 'int',
-                    'offer_id'      => 'str',
-                    'stock'         => 'int',
+                    'product_id' => 'int',
+                    'offer_id'   => 'str',
+                    'stock'      => 'int',
                 ]
             );
         }
 
-        $arr = ['stocks' => $stocks];
-
-        return $this->request('POST', '/v1/product/import/stocks', ['body' => \GuzzleHttp\json_encode($arr)]);
+        return $this->request('POST', '/v1/product/import/stocks', ['body' => \GuzzleHttp\json_encode($input)]);
     }
 
     /**
      * Change the product info. Please note, that you cannot update price and stocks.
      *
-     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
+     * @see  http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
      *
      * @param array $product  Product structure
      * @param bool  $validate Perform validation before send
      *
      * @return array
+     *
+     * @todo return bool
      */
     public function update(array $product, bool $validate = true)
     {
@@ -315,9 +346,11 @@ class ProductsService extends AbstractService
     /**
      * Mark the product as in stock.
      *
-     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_activate
+     * @see        http://cb-api.ozonru.me/apiref/en/#t-title_post_products_activate
      *
      * @return bool success
+     *
+     * @todo       Documentation missed
      */
     public function activate(int $productId): bool
     {
@@ -329,11 +362,13 @@ class ProductsService extends AbstractService
     /**
      * Mark the product as not in stock.
      *
-     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_deactivate
+     * @see        http://cb-api.ozonru.me/apiref/en/#t-title_post_products_deactivate
      *
      * @param int $productId Ozon Product Id
      *
      * @return bool success
+     *
+     * @todo       Documentation missed
      */
     public function deactivate(int $productId): bool
     {
@@ -346,6 +381,8 @@ class ProductsService extends AbstractService
      * This method allows you to remove product in some cases: [product must not have active stocks, product should not have any sales].
      *
      * @return bool deleted
+     *
+     * @todo Documentation missed
      */
     public function delete(int $productId, string $offerId = null)
     {
@@ -380,7 +417,7 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-prepayment_set
+     * @see  https://cb-api.ozonru.me/apiref/en/#t-prepayment_set
      *
      * @param array $data ['is_prepayment', 'offers_ids', 'products_ids']
      *

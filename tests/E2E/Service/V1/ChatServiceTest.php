@@ -19,12 +19,12 @@ class ChatServiceTest extends TestCase
 
     private static $chatId;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$svc = new ChatService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         sleep(1); //fix 429 Too Many Requests
     }

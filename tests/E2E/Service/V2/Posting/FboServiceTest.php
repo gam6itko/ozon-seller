@@ -19,12 +19,12 @@ class FboServiceTest extends TestCase
     /** @var CategoriesService */
     private static $svc;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$svc = new FboService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         sleep(1); //fix 429 Too Many Requests
     }

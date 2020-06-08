@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ProductsServiceTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         sleep(1); //fix 429 Too Many Requests
     }
@@ -306,8 +306,7 @@ JSON;
     }
 
     /**
-     * @covers ::deactivate
-     * @depends testDeactivate
+     * @covers ::activate
      * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
      */
     public function testActivate(): void

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ProductServiceTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         sleep(1); //fix 429 Too Many Requests
     }
