@@ -9,7 +9,6 @@ use Gam6itko\OzonSeller\Exception\NotFoundException;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -52,7 +51,7 @@ class ExceptionTests extends AbstractTestCase
         try {
             /** @var FbsService $svc */
             $svc = $this->createSvc($client);
-            $svc->get("");
+            $svc->get('');
         } catch (AbstractOzonSellerException $exc) {
             self::assertInstanceOf($class, $exc);
             self::assertEquals($expectedData, $exc->getData());
@@ -64,7 +63,7 @@ class ExceptionTests extends AbstractTestCase
     {
         yield [
             AccessDeniedException::class,
-            '{"error":{"code":"ACCESS_DENIED","message":"Invalid Api-Key, please contact support","data":[]}}'
+            '{"error":{"code":"ACCESS_DENIED","message":"Invalid Api-Key, please contact support","data":[]}}',
         ];
 
         yield [
@@ -76,7 +75,7 @@ class ExceptionTests extends AbstractTestCase
             BadRequestException::class,
             '{"error":{"code":"BAD_REQUEST","message":"Invalid request payload","data":[{"name":"posting_number","code":"EMPTY","value":"","message":""}]}}',
             [
-                ["name" => "posting_number", "code" => "EMPTY", "value" => "", "message" => ""],
+                ['name' => 'posting_number', 'code' => 'EMPTY', 'value' => '', 'message' => ''],
             ],
         ];
     }
