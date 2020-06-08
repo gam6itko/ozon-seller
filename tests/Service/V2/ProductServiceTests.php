@@ -31,56 +31,56 @@ class ProductServiceTests extends AbstractTestCase
     public function dataImport()
     {
         $item = [
-            "barcode"            => "string",
-            "category_id"        => 0,
-            "depth"              => 0,
-            "dimension_unit"     => "string",
-            "height"             => 0,
-            "image_group_id"     => "string",
-            "images"             => [
-                "string",
+            'barcode'            => 'string',
+            'category_id'        => 0,
+            'depth'              => 0,
+            'dimension_unit'     => 'string',
+            'height'             => 0,
+            'image_group_id'     => 'string',
+            'images'             => [
+                'string',
             ],
-            "images360"          => [
-                "string",
+            'images360'          => [
+                'string',
             ],
-            "name"               => "string",
-            "offer_id"           => "string",
-            "old_price"          => "string",
-            "pdf_list"           => [
+            'name'               => 'string',
+            'offer_id'           => 'string',
+            'old_price'          => 'string',
+            'pdf_list'           => [
                 [
-                    "index"   => 0,
-                    "name"    => "string",
-                    "src_url" => "string",
+                    'index'   => 0,
+                    'name'    => 'string',
+                    'src_url' => 'string',
                 ],
             ],
-            "premium_price"      => "string",
-            "price"              => "string",
-            "vat"                => "string",
-            "weight"             => 0,
-            "weight_unit"        => "string",
-            "width"              => 0,
-            "attributes"         => [
+            'premium_price'      => 'string',
+            'price'              => 'string',
+            'vat'                => 'string',
+            'weight'             => 0,
+            'weight_unit'        => 'string',
+            'width'              => 0,
+            'attributes'         => [
                 [
-                    "complex_id" => 0,
-                    "id"         => 0,
-                    "values"     => [
+                    'complex_id' => 0,
+                    'id'         => 0,
+                    'values'     => [
                         [
-                            "dictionary_value_id" => 0,
-                            "value"               => "string",
+                            'dictionary_value_id' => 0,
+                            'value'               => 'string',
                         ],
                     ],
                 ],
             ],
-            "complex_attributes" => [
+            'complex_attributes' => [
                 [
-                    "attributes" => [
+                    'attributes' => [
                         [
-                            "complex_id" => 0,
-                            "id"         => 0,
-                            "values"     => [
+                            'complex_id' => 0,
+                            'id'         => 0,
+                            'values'     => [
                                 [
-                                    "dictionary_value_id" => 0,
-                                    "value"               => "string",
+                                    'dictionary_value_id' => 0,
+                                    'value'               => 'string',
                                 ],
                             ],
                         ],
@@ -99,7 +99,7 @@ class ProductServiceTests extends AbstractTestCase
         $this->quickTest(
             'info',
             [
-                ["offer_id" => "item_6060091", "product_id" => 7154396, "sku" => 150583609],
+                ['offer_id' => 'item_6060091', 'product_id' => 7154396, 'sku' => 150583609],
             ],
             [
                 'POST',
@@ -115,8 +115,8 @@ class ProductServiceTests extends AbstractTestCase
             'infoAttributes',
             [
                 [
-                    "offer_id"   => ["ABC-123"],
-                    "product_id" => [2346321],
+                    'offer_id'   => ['ABC-123'],
+                    'product_id' => [2346321],
                 ],
                 0,
                 10,

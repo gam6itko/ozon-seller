@@ -33,7 +33,6 @@ class FboServiceTests extends AbstractTestCase
                 '/v2/posting/fbo/list',
                 ['body' => '{"filter":{"since":"2018-11-18T11:27:45+00:00","to":"2019-11-18T11:27:45+00:00","status":"awaiting_approve"},"dir":"asc","offset":0,"limit":10}'],
             ]
-
         );
     }
 
@@ -41,7 +40,7 @@ class FboServiceTests extends AbstractTestCase
     {
         $this->quickTest(
             'get',
-            ["39268230-0002-3"],
+            ['39268230-0002-3'],
             [
                 'POST',
                 '/v2/posting/fbo/get',

@@ -18,7 +18,7 @@ class CategoryServiceTest extends AbstractTestCase
             'attribute',
             [
                 17036076,
-                ["attribute_type" => "required", "language" => "EN"],
+                ['attribute_type' => 'required', 'language' => 'EN'],
             ],
             [
                 'POST',
@@ -35,7 +35,7 @@ class CategoryServiceTest extends AbstractTestCase
             [
                 17036076,
                 8229,
-                ["last_value_id" => 0, "language" => "EN", "limit" => 1],
+                ['last_value_id' => 0, 'language' => 'EN', 'limit' => 1],
             ],
             [
                 'POST',
@@ -51,7 +51,7 @@ class CategoryServiceTest extends AbstractTestCase
             'attributeValueByOption',
             [
                 'RU',
-                [["attribute_id" => 8229, "option_id" => 400]],
+                [['attribute_id' => 8229, 'option_id' => 400]],
             ],
             [
                 'POST',

@@ -40,13 +40,12 @@ class CrossborderServiceTest extends AbstractTestCase
     {
         $this->quickTest(
             'get',
-            ["39268230-0002-3"],
+            ['39268230-0002-3'],
             [
                 'POST',
                 '/v2/posting/crossborder/get',
                 ['body' => '{"posting_number":"39268230-0002-3"}'],
             ]
-
         );
     }
 
@@ -73,11 +72,11 @@ class CrossborderServiceTest extends AbstractTestCase
         $this->quickTest(
             'ship',
             [
-                "39268230-0002-3",
-                "AB123456CD",
+                '39268230-0002-3',
+                'AB123456CD',
                 15109877837000,
                 [
-                    ["quantity" => 2, "sku" => 100056],
+                    ['quantity' => 2, 'sku' => 100056],
                 ],
             ],
             [
@@ -105,7 +104,7 @@ class CrossborderServiceTest extends AbstractTestCase
     {
         $this->quickTest(
             'approve',
-            ["13009555-0001-1"],
+            ['13009555-0001-1'],
             [
                 'POST',
                 '/v2/posting/crossborder/approve',
@@ -123,10 +122,10 @@ class CrossborderServiceTest extends AbstractTestCase
         $this->quickTest(
             'cancel',
             [
-                "39268230-0002-3",
+                '39268230-0002-3',
                 149123456,
                 361,
-                "Cancel it!"
+                'Cancel it!',
             ],
             [
                 'POST',
