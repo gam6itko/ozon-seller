@@ -1,12 +1,13 @@
 <?php
 
 $rules = [
-    '@Symfony'                   => true,
-    'binary_operator_spaces'     => [
+    '@Symfony'                     => true,
+    'blank_line_after_opening_tag' => false, // <?php declare(strict_types=1);
+    'binary_operator_spaces'       => [
         'operators' => [
             '=>' => 'align',
         ],
-    ]
+    ],
 ];
 
 $finder = PhpCsFixer\Finder::create()

@@ -1,53 +1,63 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Gam6itko\OzonSeller\Tests\Service\V2;
 
 use Gam6itko\OzonSeller\Service\V2\CategoryService;
-use PHPUnit\Framework\TestCase;
+use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
 
-/**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\CategoryService
- * @group  v2
- *
- * @author Alexander Strizhak <gam6itko@gmail.com>
- */
-class CategoryServiceTest extends TestCase
+class CategoryServiceTest extends AbstractTestCase
 {
-    /** @var CategoryService */
-    private static $svc;
-
-    public static function setUpBeforeClass()
+    protected function getClass(): string
     {
-        self::$svc = new CategoryService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
+        return CategoryService::class;
     }
 
-    protected function setUp()
-    {
-        sleep(1); //fix 429 Too Many Requests
-    }
-
-    /**
-     * @covers ::attribute
-     */
     public function testAttribute(): void
     {
-        $result = self::$svc->attribute(17033429);
-        self::assertNotEmpty($result);
-        self::assertIsArray($result);
-        self::assertIsArray($result);
-        self::assertArrayHasKey('id', $result[0]);
+        $this->quickTest(
+            'attribute',
+            [
+                17036076,
+                ["attribute_type" => "required", "language" => "EN"],
+            ],
+            [
+                'POST',
+                '/v2/category/attribute',
+                ['body' => '{"category_id":17036076,"language":"EN","attribute_type":"required"}'],
+            ]
+        );
     }
 
-    /**
-     * @covers ::attributeValues
-     */
-    public function testAttributeValues(): void
+    public function testAttributeValues()
     {
-        $result = self::$svc->attributeValues(17036076, 8229);
-        self::assertNotEmpty($result);
-        self::assertIsArray($result);
-        self::assertCount(7, $result);
-        self::assertArrayHasKey('id', $result[0]);
-        self::assertArrayHasKey('value', $result[0]);
+        $this->quickTest(
+            'attributeValues',
+            [
+                17036076,
+                8229,
+                ["last_value_id" => 0, "language" => "EN", "limit" => 1],
+            ],
+            [
+                'POST',
+                '/v2/category/attribute/values',
+                ['body' => '{"category_id":17036076,"attribute_id":8229,"limit":1,"last_value_id":0,"language":"EN"}'],
+            ]
+        );
+    }
+
+    public function testAttributeValueByOption(): void
+    {
+        $this->quickTest(
+            'attributeValueByOption',
+            [
+                'RU',
+                [["attribute_id" => 8229, "option_id" => 400]],
+            ],
+            [
+                'POST',
+                '/v2/category/attribute/value/by-option',
+                ['body' => '{"language":"RU","options":[{"attribute_id":8229,"option_id":400}]}'],
+            ]
+        );
     }
 }

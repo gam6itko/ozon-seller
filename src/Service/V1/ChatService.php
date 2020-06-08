@@ -67,8 +67,8 @@ class ChatService extends AbstractService
     public function sendFile(string $base64Content, string $chatId, string $name)
     {
         $arr = [
-            'base64_content' => $base64Content,
             'chat_id'        => $chatId,
+            'base64_content' => $base64Content,
             'name'           => $name,
         ];
         $response = $this->request('POST', '/v1/chat/send/file', ['body' => \GuzzleHttp\json_encode($arr)]);

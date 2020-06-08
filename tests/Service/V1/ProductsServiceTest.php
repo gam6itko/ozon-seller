@@ -1,440 +1,401 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Gam6itko\OzonSeller\Tests\Service\V1;
 
-use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Service\V1\ProductsService;
-use PHPUnit\Framework\TestCase;
+use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
 
-/**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\ProductsService
- * @group  v1
- *
- * @author Alexander Strizhak <gam6itko@gmail.com>
- */
-class ProductsServiceTest extends TestCase
+class ProductsServiceTest extends AbstractTestCase
 {
-    protected function setUp()
+    protected function getClass(): string
     {
-        sleep(1); //fix 429 Too Many Requests
+        return ProductsService::class;
     }
 
-    public function getSvc(): ProductsService
-    {
-        return new ProductsService($_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);
-    }
-
-    /**
-     * @covers ::classify
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
     public function testClassify(): void
     {
-        $json = <<<JSON
-{
-    "products": [
-        {
-            "offer_id": "147190464",
-            "shop_category_full_path": "Электроника/Телефоны и аксессуары/Смартфоны",
-            "shop_category": "Смартфоны",
-            "shop_category_id": 15502,
-            "vendor": "Apple, Inc",
-            "model": "iPhone XS 256GB Space Grey",
-            "name": "Смартфон Apple iPhone XS 256GB Space Grey",
-            "price": "100990",
-            "offer_url": "https://www.ozon.ru/context/detail/id/147190464/",
-            "img_url": "https://ozon-st.cdn.ngenix.net/multimedia/1024351473.jpg",
-            "vendor_code": "apple_inc",
-            "barcode": "190198794017"
-        }
-    ]
-}
-JSON;
-
-        $this->getSvc()->classify(json_decode($json, true));
-    }
-
-    /**
-     * @covers ::import
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testImport(): void
-    {
-        $json = <<<JSON
-{
-    "items": [
-        {
-            "category_id": "17036198",
-            "description": "Description for item",
-            "offer_id": "16209",
-            "name": "Наушники Apple AirPods 2 (без беспроводной зарядки чехла)",
-            "price": 10110,
-            "vat": 0,
-            "quantity": "3",
-            "vendor_code": "AM016209",
-            "height": "55",
-            "depth": "22",
-            "width": "45",
-            "dimension_unit": "mm",
-            "weight": "8",
-            "weight_unit": "g",
-            "images": [
-                {
-                    "file_name": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MRXJ2?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1551489675083",
-                    "default": true
-                }
-            ],
-            "attributes": [
-                {
-                    "id": 8229,
-                    "value": "193"
-                }
+        $input = [
+            'offer_id'                => '147190464',
+            'shop_category_full_path' => 'Электроника/Телефоны и аксессуары/Смартфоны',
+            'shop_category'           => 'Смартфоны',
+            'shop_category_id'        => 15502,
+            'vendor'                  => 'Apple, Inc',
+            'model'                   => 'iPhone XS 256GB Space Grey',
+            'name'                    => 'Смартфон Apple iPhone XS 256GB Space Grey',
+            'price'                   => '100990',
+            'offer_url'               => 'https://www.ozon.ru/context/detail/id/147190464/',
+            'img_url'                 => 'https://ozon-st.cdn.ngenix.net/multimedia/1024351473.jpg',
+            'vendor_code'             => 'apple_inc',
+            'barcode'                 => '190198794017',
+            // bad options
+            'foo'                     => 'bar',
+            'you'                     => 'shall not pass',
+        ];
+        $this->quickTest(
+            'classify',
+            [$input],
+            [
+                'POST',
+                '/v1/product/classify',
+                ['body' => '{"products":[{"offer_id":"147190464","shop_category_full_path":"\u042d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u0438\u043a\u0430\/\u0422\u0435\u043b\u0435\u0444\u043e\u043d\u044b \u0438 \u0430\u043a\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044b\/\u0421\u043c\u0430\u0440\u0442\u0444\u043e\u043d\u044b","shop_category":"\u0421\u043c\u0430\u0440\u0442\u0444\u043e\u043d\u044b","shop_category_id":15502,"vendor":"Apple, Inc","model":"iPhone XS 256GB Space Grey","name":"\u0421\u043c\u0430\u0440\u0442\u0444\u043e\u043d Apple iPhone XS 256GB Space Grey","price":"100990","offer_url":"https:\/\/www.ozon.ru\/context\/detail\/id\/147190464\/","img_url":"https:\/\/ozon-st.cdn.ngenix.net\/multimedia\/1024351473.jpg","vendor_code":"apple_inc","barcode":"190198794017"}]}'],
             ]
-        }
-    ]
-}
-JSON;
-
-        $this->getSvc()->import(json_decode($json, true), true);
+        );
     }
 
     /**
-     * @covers ::import
-     * @dataProvider dataImportInvalid
-     * @expectedException \Gam6itko\OzonSeller\Exception\ProductValidatorException
+     * @dataProvider dataImport
      */
-    public function testImportInvalid(string $jsonFile): void
+    public function testImport(array $input): void
     {
-        $input = json_decode(file_get_contents($jsonFile), true);
-        $result = $this->getSvc()->import($input, true);
-        self::assertNotEmpty($result);
-        self::assertArrayHasKey('product_id', $result);
-        self::assertArrayHasKey('state', $result);
+        $this->quickTest(
+            'import',
+            [$input],
+            [
+                'POST',
+                '/v1/product/import',
+                ['body' => '{"items":[{"barcode":"8801643566784","description":"Red Samsung Galaxy S9 with 512GB","category_id":17030819,"name":"Samsung Galaxy S9","offer_id":"REDSGS9-512","price":"79990","old_price":"89990","premium_price":"75555","vat":"0","vendor":"Samsung","vendor_code":"SM-G960UZPAXAA","height":77,"depth":11,"width":120,"dimension_unit":"mm","weight":120,"weight_unit":"g","images":[{"file_name":"https:\/\/ozon-st.cdn.ngenix.net\/multimedia\/c1200\/1022555115.jpg","default":true},{"file_name":"https:\/\/ozon-st.cdn.ngenix.net\/multimedia\/c1200\/1022555110.jpg","default":false}],"attributes":[{"id":8229,"value":"4747"},{"id":4413,"collection":["1","2","13"]}]}]}'],
+            ]
+        );
     }
 
-    public function dataImportInvalid(): array
+    public function dataImport()
     {
-        return [
-            [__DIR__.'/../../Resources/V1/Products/create.invalid.0.request.json'],
-            [__DIR__.'/../../Resources/V1/Products/create.invalid.1.request.json'],
+        $item = [
+            'barcode'        => '8801643566784',
+            'description'    => 'Red Samsung Galaxy S9 with 512GB',
+            'category_id'    => 17030819,
+            'name'           => 'Samsung Galaxy S9',
+            'offer_id'       => 'REDSGS9-512',
+            'price'          => '79990',
+            'old_price'      => '89990',
+            'premium_price'  => '75555',
+            'vat'            => '0',
+            'vendor'         => 'Samsung',
+            'vendor_code'    => 'SM-G960UZPAXAA',
+            'height'         => 77,
+            'depth'          => 11,
+            'width'          => 120,
+            'dimension_unit' => 'mm',
+            'weight'         => 120,
+            'weight_unit'    => 'g',
+            'images'         => [
+                ['file_name' => 'https://ozon-st.cdn.ngenix.net/multimedia/c1200/1022555115.jpg', 'default' => true],
+                ['file_name' => 'https://ozon-st.cdn.ngenix.net/multimedia/c1200/1022555110.jpg', 'default' => false],
+            ],
+            'attributes'     => [
+                ['id' => 8229, 'value' => '4747'],
+                ['id' => 4413, 'collection' => ['1', '2', '13']],
+            ],
+        ];
+
+        yield [$item];
+        yield [
+            ['items' => [$item]],
         ];
     }
 
     /**
-     * @covers ::import
+     * @dataProvider dataImportBySku
      */
-    public function testImportException(): void
+    public function testImportBySku(array $input): void
     {
-        try {
-            $this->getSvc()->import([], false);
-        } catch (BadRequestException $exc) {
-            self::assertEmpty($exc->getData()); //todo-ozon-support нет никаких данных
-            self::assertEquals('Invalid JSON payload', $exc->getMessage());
-        }
+        $this->quickTest(
+            'importBySku',
+            [$input],
+            [
+                'POST',
+                '/v1/product/import-by-sku',
+                ['body' => '{"items":[{"sku":1445625485,"name":"Nice boots 1","offer_id":"RED-SHOES-MODEL-1-38-39","price":"7999","old_price":"8999","premium_price":"7555","vat":"0"}]}'],
+            ]
+        );
     }
 
-    /**
-     * @covers ::import
-     * @dataProvider dataImportFail
-     */
-    public function testImportFail(string $jsonFile): void
+    public function dataImportBySku()
     {
-        try {
-            $input = json_decode(file_get_contents($jsonFile), true);
-            $this->getSvc()->import($input, false);
-        } catch (BadRequestException $exc) {
-            self::assertEmpty($exc->getData()); //todo-ozon-support нет никаких данных
-            self::assertEquals('Invalid JSON payload', $exc->getMessage());
-        }
-    }
+        $item = [
+            'sku'           => 1445625485,
+            'name'          => 'Nice boots 1',
+            'offer_id'      => 'RED-SHOES-MODEL-1-38-39',
+            'price'         => '7999',
+            'old_price'     => '8999',
+            'premium_price' => '7555',
+            'vat'           => '0',
+        ];
 
-    public function dataImportFail(): array
-    {
-        return [
-            [__DIR__.'/../../Resources/V1/Products/create.invalid.0.request.json'],
-            [__DIR__.'/../../Resources/V1/Products/create.invalid.1.request.json'],
+        yield [$item];
+        yield [
+            ['items' => [$item]],
         ];
     }
 
-    /**
-     * @covers ::createBySku
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testImportBySku(): void
+    public function testImportInfo(): void
     {
-        $json = <<<JSON
-{
-    "items": [
-        {
-            "sku": 1445625485,
-            "name": "Nice boots 1",
-            "offer_id": "RED-SHOES-MODEL-1-38-39",
-            "price": "7999",
-            "old_price": "8999",
-            "premium_price": "7555",
-            "vat": "0"
-        },
-        {
-            "sku": 1445625485,
-            "name": "Nice boots 2",
-            "offer_id": "RED-SHOES-MODEL-1-38-39",
-            "price": "7999",
-            "old_price": "8999",
-            "premium_price": "7555",
-            "vat": "0"
-        }
-    ]
-}
-JSON;
-
-        $this->getSvc()->importBySku(json_decode($json, true));
+        $this->quickTest(
+            'importInfo',
+            [33919],
+            [
+                'POST',
+                '/v1/product/import/info',
+                ['body' => '{"task_id":33919}'],
+            ]
+        );
     }
 
-    /**
-     * @covers ::importInfo
-     * @depends testImport
-     *
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testCreationStatus(): void
-    {
-        $status = $this->getSvc()->importInfo(1914378);
-        self::assertNotEmpty($status);
-        self::assertArrayHasKey('total', $status);
-        self::assertArrayHasKey('items', $status);
-        self::assertCount(1, $status['items']);
-        self::assertArrayHasKey('offer_id', $status['items'][0]);
-        self::assertArrayHasKey('product_id', $status['items'][0]);
-        self::assertArrayHasKey('status', $status['items'][0]);
-    }
-
-    /**
-     * @covers ::infoStocks
-     *
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testInfoStock(): void
-    {
-        $status = $this->getSvc()->infoStocks();
-        self::assertNotEmpty($status);
-    }
-
-    /**
-     * @covers ::infoPrices
-     *
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testInfoPrices(): void
-    {
-        $status = $this->getSvc()->infoPrices();
-        self::assertNotEmpty($status);
-    }
-
-    /**
-     * @covers ::list
-     *
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testList(): void
-    {
-        $result = $this->getSvc()->list();
-        self::assertNotEmpty($result);
-        self::assertCount(2, $result);
-        self::assertArrayHasKey('items', $result);
-        self::assertArrayHasKey('total', $result);
-        $items = $result['items'];
-        self::assertCount(10, $items);
-        self::assertArrayHasKey('product_id', $items[0]);
-        self::assertArrayHasKey('offer_id', $items[0]);
-    }
-
-    /**
-     * @covers ::update
-     */
-    public function testUpdateException(): void
-    {
-        try {
-            $this->getSvc()->update([], false);
-        } catch (BadRequestException $exc) {
-            self::assertEmpty($exc->getData()); //todo-ozon-support нет никаких данных
-            self::assertEquals('Invalid JSON payload', $exc->getMessage());
-        }
-    }
-
-    /**
-     * @covers ::info
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
     public function testInfo(): void
     {
-        $productInfo = $this->getSvc()->info(507735);
-        self::assertNotEmpty($productInfo);
-        self::assertArrayHasKey('name', $productInfo);
+        $this->quickTest(
+            'info',
+            [7154396],
+            [
+                'POST',
+                '/v1/product/info',
+                ['body' => '{"product_id":7154396}'],
+            ]
+        );
     }
 
-    /**
-     * @covers ::update
-     *
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testUpdate(): void
+    public function testInfoBy(): void
     {
-        $arr = [
-            'product_id' => 507735,
-            'images'     => [
-                [
-                    'file_name' => 'https://images.freeimages.com/images/large-previews/4ad/snare-drum-second-take-1-1564542.jpg',
-                    'default'   => true,
-                ],
-            ],
+        $query = [
+            'product_id' => 7154396,
+            'offer_id'   => 'item_6060091',
+            'sku'        => 150583609,
         ];
-        $result = $this->getSvc()->update($arr, false);
-        self::assertNotEmpty($result);
-        self::assertArrayHasKey('updated', $result);
-        self::assertTrue($result['updated']);
+        $this->quickTest(
+            'infoBy',
+            [$query],
+            [
+                'POST',
+                '/v1/product/info',
+                ['body' => '{"product_id":7154396,"offer_id":"item_6060091","sku":150583609}'],
+            ]
+        );
     }
 
-    /**
-     * @covers ::deactivate
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testDeactivate(): void
+    public function testInfoStocks(): void
     {
-        $result = $this->getSvc()->deactivate(510216);
-        self::assertTrue($result);
+        $this->quickTest(
+            'infoStocks',
+            [],
+            [
+                'POST',
+                '/v1/product/info/stocks',
+                ['body' => '{"page":1,"page_size":100}'],
+            ]
+        );
     }
 
-    /**
-     * @covers ::deactivate
-     * @depends testDeactivate
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testActivate(): void
+    public function testInfoPrices(): void
     {
-        $result = $this->getSvc()->activate(510216);
-        self::assertTrue($result);
+        $this->quickTest(
+            'infoPrices',
+            [],
+            [
+                'POST',
+                '/v1/product/info/prices',
+                ['body' => '{"page":1,"page_size":100}'],
+            ]
+        );
     }
 
-    /**
-     * @covers ::delete
-     * @depends testImport
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testDelete(): void
+    public function testList()
     {
-        $status = $this->getSvc()->delete(510216);
-        self::assertNotEmpty($status);
-    }
-
-    /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
-     */
-    public function testUpdatePricesNotFound(): void
-    {
-        $expectedJson = <<<JSON
-[
-    {
-        "product_id": 120000,
-        "updated": false,
-        "errors": [
-            "not_found"
-        ]
-    },
-    {
+        $responseJson = <<<JSON
+{
+  "result": {
+    "items": [
+      {
         "product_id": 124100,
-        "updated": false,
-        "errors": [
-            "not_found"
-        ]
-    }
-]
+        "offer_id": "REDSGS10-128"
+      },
+      {
+        "product_id": 124201,
+        "offer_id": "REDSGS10-512"
+      }
+    ],
+    "total": 4
+  }
+}
 JSON;
-        $arr = [
-            [
-                'product_id'    => 120000,
-                'offer_id'      => 'offer_1',
-                'price'         => '79990',
-                'old_price'     => '89990',
-                'premium_price' => '69990',
-                'vat'           => '0.1',
-            ],
-            [
-                'product_id'    => 124100,
-                'offer_id'      => 'offer_2',
-                'price'         => '79990',
-                'old_price'     => '89990',
-                'premium_price' => '69990',
-                'vat'           => '0.1',
-            ],
+
+        $filters = [
+            'offer_id'   => ['1255959'],
+            'product_id' => [552526],
+            'visibility' => 'ALL',
         ];
-        $result = $this->getSvc()->importPrices($arr);
-        self::assertNotEmpty($result);
-        self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
+        $paginator = ['page' => 1, 'page_size' => 100];
+        $this->quickTest(
+            'list',
+            [$filters, $paginator],
+            [
+                'POST',
+                '/v1/product/list',
+                ['body' => '{"page":1,"page_size":100,"filter":{"offer_id":["1255959"],"product_id":[552526],"visibility":"ALL"}}'],
+            ],
+            $responseJson
+        );
     }
 
     /**
-     * @covers ::importPrices
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
+     * @dataProvider dataImportPrices
      */
-    public function testUpdatePrices(): void
+    public function testImportPrices(array $prices): void
     {
-        $expectedJson = <<<JSON
-[
-    {
-        "product_id": 508756,
-        "updated": true,
-        "errors": []
-    }
-]
-JSON;
-
-        $arr = [
+        $this->quickTest(
+            'importPrices',
+            [$prices],
             [
-                'product_id'    => 508756,
-                'offer_id'      => 'PRD-1',
-                'price'         => '45000',
-                'old_price'     => '40000',
-                'premium_price' => '35000',
-                'vat'           => '0.2',
-            ],
+                'POST',
+                '/v1/product/import/prices',
+                ['body' => '{"prices":[{"product_id":120000,"offer_id":"PRD-1","price":"79990","old_price":"89990","premium_price":"75555"}]}'],
+            ]
+        );
+    }
+
+    public function dataImportPrices()
+    {
+        $item = [
+            'product_id'    => 120000,
+            'offer_id'      => 'PRD-1',
+            'price'         => '79990',
+            'old_price'     => '89990',
+            'premium_price' => '75555',
         ];
-        $result = $this->getSvc()->importPrices($arr);
-        self::assertNotEmpty($result);
-        self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
+
+        yield [$item];
+        yield [[$item]];
+        yield [['prices' => [$item]]];
     }
 
     /**
-     * @covers ::importStocks
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
+     * @dataProvider dataFailImportPrices
      */
-    public function testUpdateStocks(): void
+    public function testFailImportPrices(array $prices): void
     {
-        $expectedJson = <<<JSON
-[
-    {
-        "product_id": 507735,
-        "updated": true,
-        "errors": []
-    }
-]
-JSON;
+        self::expectException(\InvalidArgumentException::class);
 
-        $arr = [
-            [
-                'product_id' => 507735,
-                'stock'      => 20,
-            ],
+        $svc = new ProductsService(0, '');
+        $svc->importPrices($prices);
+    }
+
+    public function dataFailImportPrices()
+    {
+        $item = [
+            'foo'     => 'far',
+            'bad_key' => 'bad_value',
+            2,
+            3,
         ];
-        $result = $this->getSvc()->importStocks($arr);
-        self::assertNotEmpty($result);
-        self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
+
+        yield [$item];
+        yield [[]];
+        yield [['some_key' => [$item]]];
     }
 
     /**
-     * @expectedException \Gam6itko\OzonSeller\Exception\AccessDeniedException
+     * @dataProvider dataImportStocks
      */
-    public function testPrice()
+    public function testImportStocks(array $stocks): void
     {
-        $this->getSvc()->price([], ['page' => 1, 'page_size' => 10]);
+        $this->quickTest(
+            'importStocks',
+            [$stocks],
+            [
+                'POST',
+                '/v1/product/import/stocks',
+                ['body' => '{"stocks":[{"product_id":120000,"offer_id":"PRD-1","stock":20}]}'],
+            ]
+        );
+    }
+
+    public function dataImportStocks()
+    {
+        $stock = [
+            'product_id' => 120000,
+            'offer_id'   => 'PRD-1',
+            'stock'      => 20,
+        ];
+
+        yield [$stock];
+        yield [[$stock]];
+        yield [['stocks' => [$stock]]];
+    }
+
+    /**
+     * @dataProvider dataFailImportStocks
+     */
+    public function testFailImportStocks(array $prices): void
+    {
+        self::expectException(\InvalidArgumentException::class);
+
+        $svc = new ProductsService(0, '');
+        $svc->importStocks($prices);
+    }
+
+    public function dataFailImportStocks()
+    {
+        $item = [
+            'foo'     => 'far',
+            'bad_key' => 'bad_value',
+            2,
+            3,
+        ];
+
+        yield [$item];
+        yield [[]];
+        yield [['some_key' => [$item]]];
+    }
+
+    public function testUpdate()
+    {
+        $item = [
+            'product_id'     => 124100,
+            'barcode'        => '8801643566784',
+            'description'    => 'Red Samsung Galaxy S10 with 512GB',
+            'name'           => 'Samsung Galaxy S10',
+            'vendor'         => 'Samsung',
+            'vendor_code'    => 'SM-G960UZPAXAA',
+            'height'         => 77,
+            'depth'          => 11,
+            'width'          => 120,
+            'dimension_unit' => 'mm',
+            'weight'         => 120,
+            'weight_unit'    => 'g',
+            'images'         => [
+                ['file_name' => 'http://pic.com/1.jpg', 'default' => true],
+                ['file_name' => 'http://pic.com/2.jpg', 'default' => false],
+            ],
+            'attributes'     => [
+                ['id' => 1, 'value' => 'Samsung Galaxy S10'],
+                ['id' => 2, 'collection' => ['128GB', '512GB']],
+            ],
+        ];
+        $this->quickTest(
+            'update',
+            [$item],
+            [
+                'POST',
+                '/v1/product/update',
+                ['body' => '{"product_id":124100,"barcode":"8801643566784","description":"Red Samsung Galaxy S10 with 512GB","name":"Samsung Galaxy S10","vendor":"Samsung","vendor_code":"SM-G960UZPAXAA","height":77,"depth":11,"width":120,"dimension_unit":"mm","weight":120,"weight_unit":"g","images":[{"file_name":"http:\/\/pic.com\/1.jpg","default":true},{"file_name":"http:\/\/pic.com\/2.jpg","default":false}],"attributes":[{"id":1,"value":"Samsung Galaxy S10"},{"id":2,"collection":["128GB","512GB"]}]}'],
+            ]
+        );
+    }
+
+    public function testSetPayment(): void
+    {
+        $data = [
+            'is_prepayment' => true,
+            'offers_ids'    => ['Offer_RbtbQseqtTeBlHB8AjF9t-23'],
+            'products_ids'  => [5376526],
+        ];
+        $this->quickTest(
+            'setPrepayment',
+            [$data],
+            [
+                'POST',
+                '/v1/product/prepayment/set',
+                ['body' => '{"is_prepayment":true,"offers_ids":["Offer_RbtbQseqtTeBlHB8AjF9t-23"],"products_ids":[5376526]}'],
+            ]
+        );
     }
 }

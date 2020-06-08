@@ -17,15 +17,17 @@ class CategoryService extends AbstractService
      *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_category_attribute
      *
-     * @param string $language [EN, RU]
-     * @param array  $query    [attribute_type]
+     * @param array $query [attribute_type, language]
      *
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
     public function attribute(int $categoryId, array $query = []): array
     {
-        $query = $this->faceControl($query, ['attribute_type']);
-        $query = TypeCaster::castArr($query, ['attribute_type' => 'str']);
+        $query = $this->faceControl($query, ['attribute_type', 'language']);
+        $query = TypeCaster::castArr($query, [
+            'attribute_type' => 'str',
+            'language'       => 'str',
+        ]);
         $query = array_merge([
             'category_id' => $categoryId,
             'language'    => 'RU',

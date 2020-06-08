@@ -48,7 +48,7 @@ class FbsService extends AbstractService
      *
      * @return array|string
      */
-    public function unfulfilledList($status, string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10): array
+    public function unfulfilledList($status, string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10, array $with = []): array
     {
         if (is_string($status)) {
             $status = [$status];
@@ -64,6 +64,7 @@ class FbsService extends AbstractService
             'dir'    => $sort,
             'offset' => $offset,
             'limit'  => $limit,
+            'with'   => $with,
         ];
 
         return $this->request('POST', "{$this->path}/unfulfilled/list", ['body' => \GuzzleHttp\json_encode($body)]);
@@ -182,6 +183,7 @@ class FbsService extends AbstractService
      * @param string|array $postingNumber
      *
      * @return array|string
+     * @todo return true
      */
     public function awaitingDelivery($postingNumber)
     {
