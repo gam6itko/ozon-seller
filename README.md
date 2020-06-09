@@ -7,7 +7,7 @@
 Documentation: <https://cb-api.ozonru.me/apiref/>
 
 # Example
-For more examples look at `tests`
+For more examples look in `tests`
 
 ## Categories
 
