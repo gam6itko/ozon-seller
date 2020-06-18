@@ -30,7 +30,7 @@ class FboService extends AbstractService
             'limit'  => $limit,
         ];
 
-        return $this->request('POST', "{$this->path}/list", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/list", $body);
     }
 
     /**
@@ -38,6 +38,6 @@ class FboService extends AbstractService
      */
     public function get(string $postingNumber): array
     {
-        return $this->request('POST', "{$this->path}/get", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
+        return $this->request('POST', "{$this->path}/get", ['posting_number' => $postingNumber]);
     }
 }

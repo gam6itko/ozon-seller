@@ -27,7 +27,7 @@ class CategoriesService extends AbstractService
             'language'    => strtoupper($language),
         ]);
 
-        return $this->request('POST', '/v1/category/tree', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/category/tree', $query);
     }
 
     /**
@@ -48,6 +48,6 @@ class CategoriesService extends AbstractService
             'language'    => strtoupper($language),
         ], $query);
 
-        return $this->request('POST', '/v1/category/attribute', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/category/attribute', $query);
     }
 }

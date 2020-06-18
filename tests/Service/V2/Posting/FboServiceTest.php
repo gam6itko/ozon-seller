@@ -37,7 +37,7 @@ class FboServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbo/list',
-                ['body' => '{"filter":{"since":"2018-11-18T11:27:45+00:00","to":"2019-11-18T11:27:45+00:00","status":"awaiting_approve"},"dir":"asc","offset":0,"limit":10}'],
+                '{"filter":{"since":"2018-11-18T11:27:45+00:00","to":"2019-11-18T11:27:45+00:00","status":"awaiting_approve"},"dir":"asc","offset":0,"limit":10}',
             ]
         );
     }
@@ -50,7 +50,7 @@ class FboServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbo/get',
-                ['body' => '{"posting_number":"39268230-0002-3"}'],
+                '{"posting_number":"39268230-0002-3"}',
             ]
         );
     }

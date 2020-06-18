@@ -29,7 +29,7 @@ class ChatServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/chat/list',
-                ['body' => '{"chat_id_list":["6639ec81-616e-480d-82b6-111dec41f674","3cdf5407-9f90-4752-8105-8f1d4cd427f5"],"page":1,"page_size":100}'],
+                '{"chat_id_list":["6639ec81-616e-480d-82b6-111dec41f674","3cdf5407-9f90-4752-8105-8f1d4cd427f5"],"page":1,"page_size":100}',
             ]
         );
     }
@@ -45,7 +45,7 @@ class ChatServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/chat/history',
-                ['body' => '{"from_message_id":"986714","limit":10,"chat_id":"3cdf5407-9f90-4752-8105-8f1d4cd427f5"}'],
+                '{"from_message_id":"986714","limit":10,"chat_id":"3cdf5407-9f90-4752-8105-8f1d4cd427f5"}',
             ]
         );
     }
@@ -61,7 +61,7 @@ class ChatServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/chat/send/message',
-                ['body' => '{"chat_id":"3cdf5407-9f90-4752-8105-8f1d4cd427f5","text":"Test Message"}'],
+                '{"chat_id":"3cdf5407-9f90-4752-8105-8f1d4cd427f5","text":"Test Message"}',
             ],
             '{"result": "success"}',
             static function ($result): void {
@@ -82,7 +82,7 @@ class ChatServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/chat/send/file',
-                ['body' => '{"chat_id":"3cdf5407-9f90-4752-8105-8f1d4cd427f5","base64_content":"MSwgMiwgMwo=","name":"test.txt"}'],
+                '{"chat_id":"3cdf5407-9f90-4752-8105-8f1d4cd427f5","base64_content":"MSwgMiwgMwo=","name":"test.txt"}',
             ],
             '{"result": "success"}',
             static function ($result): void {
@@ -99,7 +99,7 @@ class ChatServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/chat/start',
-                ['body' => '{"order_id":598586936}'],
+                '{"order_id":598586936}',
             ],
             '{"result": {"chat_id": "3cdf5407-9f90-4752-8105-8f1d4cd427f5"}}',
             static function ($result): void {

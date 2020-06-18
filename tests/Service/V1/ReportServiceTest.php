@@ -26,7 +26,7 @@ class ReportServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/report/list',
-                ['body' => '{"page":1,"page_size":100,"report_type":"SELLER_TRANSACTIONS"}'],
+                '{"page":1,"page_size":100,"report_type":"SELLER_TRANSACTIONS"}',
             ]
         );
     }
@@ -39,7 +39,7 @@ class ReportServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/report/info',
-                ['body' => '{"code":"63d60fd4-1959-4087-89fa-2afa320eb2fb"}'],
+                '{"code":"63d60fd4-1959-4087-89fa-2afa320eb2fb"}',
             ]
         );
     }
@@ -59,7 +59,7 @@ class ReportServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/report/products/create',
-                ['body' => '{"offer_id":["GJ5O52T5"],"search":"SAMSUNG","sku":[555929582],"visibility":"VISIBLE"}'],
+                '{"offer_id":["GJ5O52T5"],"search":"SAMSUNG","sku":[555929582],"visibility":"VISIBLE"}',
             ]
         );
     }
@@ -72,7 +72,7 @@ class ReportServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/report/transactions/create',
-                ['body' => '{"date_from":"2019-01-01","date_to":"2019-01-15","search":"MEIZU","transaction_type":"ALL"}'],
+                '{"date_from":"2019-01-01","date_to":"2019-01-15","search":"MEIZU","transaction_type":"ALL"}',
             ]
         );
     }

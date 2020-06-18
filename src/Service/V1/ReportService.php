@@ -25,7 +25,7 @@ class ReportService extends AbstractService
     {
         $query = $this->faceControl($query, ['page', 'page_size', 'report_type']);
 
-        return $this->request('POST', '/v1/report/list', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/report/list', $query);
     }
 
     /**
@@ -39,7 +39,7 @@ class ReportService extends AbstractService
     {
         $query = array_filter(['code' => $code]);
 
-        return $this->request('POST', '/v1/report/info', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/report/info', $query);
     }
 
     /**
@@ -56,7 +56,7 @@ class ReportService extends AbstractService
         $query = $this->faceControl($query, ['offer_id', 'search', 'sku', 'visibility']);
         $query = array_filter($query);
 
-        return $this->request('POST', '/v1/report/products/create', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/report/products/create', $query);
     }
 
     /**
@@ -75,6 +75,6 @@ class ReportService extends AbstractService
             'transaction_type' => $transactionType,
         ]);
 
-        return $this->request('POST', '/v1/report/transactions/create', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/report/transactions/create', $query);
     }
 }

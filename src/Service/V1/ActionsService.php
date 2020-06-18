@@ -13,9 +13,9 @@ class ActionsService extends AbstractService
 {
     private $path = '/v1/actions';
 
-    public function __construct(int $clientId, string $apiKey, string $host = 'https://seller-api.ozon.ru/')
+    protected function getDefaultHost(): string
     {
-        parent::__construct($clientId, $apiKey, $host);
+        return 'https://seller-api.ozon.ru/';
     }
 
     /**
@@ -41,7 +41,7 @@ class ActionsService extends AbstractService
             'limit'     => $limit,
         ];
 
-        return $this->request('POST', "{$this->path}/candidates", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/candidates", $body);
     }
 
     /**
@@ -57,7 +57,7 @@ class ActionsService extends AbstractService
             'limit'     => $limit,
         ];
 
-        return $this->request('POST', "{$this->path}/products", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/products", $body);
     }
 
     /**
@@ -78,7 +78,7 @@ class ActionsService extends AbstractService
             'products'  => $products,
         ];
 
-        return $this->request('POST', "{$this->path}/products/activate", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/products/activate", $body);
     }
 
     /**
@@ -93,6 +93,6 @@ class ActionsService extends AbstractService
             'product_ids' => $productIds,
         ];
 
-        return $this->request('POST', "{$this->path}/products/deactivate", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/products/deactivate", $body);
     }
 }

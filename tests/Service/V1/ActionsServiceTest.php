@@ -20,7 +20,7 @@ class ActionsServiceTest extends AbstractTestCase
             [
                 'GET',
                 '/v1/actions',
-                [],
+                null,
             ]
         );
     }
@@ -33,7 +33,7 @@ class ActionsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/actions/candidates',
-                ['body' => '{"action_id":2422,"offset":0,"limit":1}'],
+                '{"action_id":2422,"offset":0,"limit":1}',
             ]
         );
     }
@@ -46,7 +46,7 @@ class ActionsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/actions/products',
-                ['body' => '{"action_id":2422,"offset":0,"limit":1}'],
+                '{"action_id":2422,"offset":0,"limit":1}',
             ]
         );
     }
@@ -65,7 +65,7 @@ class ActionsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/actions/products/activate',
-                ['body' => '{"action_id":2422,"products":[{"product_id":15323889,"action_price":931}]}'],
+                '{"action_id":2422,"products":[{"product_id":15323889,"action_price":931}]}',
             ]
         );
     }
@@ -81,7 +81,7 @@ class ActionsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/actions/products/deactivate',
-                ['body' => '{"action_id":2422,"product_ids":[15323889]}'],
+                '{"action_id":2422,"product_ids":[15323889]}',
             ]
         );
     }

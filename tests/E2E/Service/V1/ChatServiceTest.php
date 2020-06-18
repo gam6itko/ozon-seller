@@ -4,6 +4,8 @@ namespace Gam6itko\OzonSeller\Tests\E2E\Service\V1;
 
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Service\V1\ChatService;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,11 +20,11 @@ class ChatServiceTest extends TestCase
     /** @var ChatService */
     private static $svc;
 
-    private static $chatId;
-
     public static function setUpBeforeClass(): void
     {
-        self::$svc = new ChatService((int) $_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
+        $config = [$_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']];
+        $adapter = new GuzzleAdapter(new GuzzleClient());
+        self::$svc = new ChatService($config, $adapter);
     }
 
     protected function setUp(): void

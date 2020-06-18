@@ -23,7 +23,7 @@ class CategoryServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/category/attribute',
-                ['body' => '{"category_id":17036076,"language":"EN","attribute_type":"required"}'],
+                '{"category_id":17036076,"language":"EN","attribute_type":"required"}',
             ]
         );
     }
@@ -40,7 +40,7 @@ class CategoryServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/category/attribute/values',
-                ['body' => '{"category_id":17036076,"attribute_id":8229,"limit":1,"last_value_id":0,"language":"EN"}'],
+                '{"category_id":17036076,"attribute_id":8229,"limit":1,"last_value_id":0,"language":"EN"}',
             ]
         );
     }
@@ -56,7 +56,7 @@ class CategoryServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/category/attribute/value/by-option',
-                ['body' => '{"language":"RU","options":[{"attribute_id":8229,"option_id":400}]}'],
+                '{"language":"RU","options":[{"attribute_id":8229,"option_id":400}]}',
             ]
         );
     }

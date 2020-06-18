@@ -31,7 +31,7 @@ class CrossborderServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/crossborder/list',
-                ['body' => '{"filter":{"since":"2018-11-18T11:27:45+00:00","to":"2019-11-18T11:27:45+00:00","status":"awaiting_approve"},"dir":"asc","offset":0,"limit":10}'],
+                '{"filter":{"since":"2018-11-18T11:27:45+00:00","to":"2019-11-18T11:27:45+00:00","status":"awaiting_approve"},"dir":"asc","offset":0,"limit":10}',
             ]
         );
     }
@@ -44,7 +44,7 @@ class CrossborderServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/crossborder/get',
-                ['body' => '{"posting_number":"39268230-0002-3"}'],
+                '{"posting_number":"39268230-0002-3"}',
             ]
         );
     }
@@ -62,7 +62,7 @@ class CrossborderServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/crossborder/unfulfilled/list',
-                ['body' => '{"status":["awaiting_approve"],"dir":"asc","offset":0,"limit":10}'],
+                '{"status":["awaiting_approve"],"dir":"asc","offset":0,"limit":10}',
             ]
         );
     }
@@ -82,7 +82,7 @@ class CrossborderServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/crossborder/ship',
-                ['body' => '{"posting_number":"39268230-0002-3","tracking_number":"AB123456CD","shipping_provider_id":15109877837000,"items":[{"quantity":2,"sku":100056}]}'],
+                '{"posting_number":"39268230-0002-3","tracking_number":"AB123456CD","shipping_provider_id":15109877837000,"items":[{"quantity":2,"sku":100056}]}',
             ]
         );
     }
@@ -95,7 +95,7 @@ class CrossborderServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/crossborder/shipping-provider/list',
-                ['body' => '{}'],
+                '{}',
             ]
         );
     }
@@ -108,7 +108,7 @@ class CrossborderServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/crossborder/approve',
-                ['body' => '{"posting_number":"13009555-0001-1"}'],
+                '{"posting_number":"13009555-0001-1"}',
             ],
             '{"result": true}',
             static function ($result): void {
@@ -130,7 +130,7 @@ class CrossborderServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/crossborder/cancel',
-                ['body' => '{"posting_number":"39268230-0002-3","sku":149123456,"cancel_reason_id":361,"cancel_reason_message":"Cancel it!"}'],
+                '{"posting_number":"39268230-0002-3","sku":149123456,"cancel_reason_id":361,"cancel_reason_message":"Cancel it!"}',
             ],
             '{"result": true}',
             static function ($result): void {
@@ -147,7 +147,7 @@ class CrossborderServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/crossborder/cancel-reason/list',
-                ['body' => '{}'],
+                '{}',
             ]
         );
     }

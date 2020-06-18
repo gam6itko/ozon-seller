@@ -52,7 +52,7 @@ class ProductService extends AbstractService
             }
         }
 
-        return $this->request('POST', "{$this->path}/import", ['body' => \GuzzleHttp\json_encode($income)]);
+        return $this->request('POST', "{$this->path}/import", $income);
     }
 
     /**
@@ -67,7 +67,7 @@ class ProductService extends AbstractService
         $query = $this->faceControl($query, ['product_id', 'sku', 'offer_id']);
         $query = TypeCaster::castArr($query, ['product_id' => 'int', 'sku' => 'int', 'offer_id' => 'str']);
 
-        return $this->request('POST', "{$this->path}/info", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', "{$this->path}/info", $query);
     }
 
     /**
@@ -94,6 +94,6 @@ class ProductService extends AbstractService
             'page_size' => $pageSize,
         ];
 
-        return $this->request('POST', '/v2/products/info/attributes', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v2/products/info/attributes', $query);
     }
 }

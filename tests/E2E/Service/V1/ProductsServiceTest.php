@@ -6,6 +6,8 @@ use Gam6itko\OzonSeller\Exception\AccessDeniedException;
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Exception\ProductValidatorException;
 use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -24,7 +26,10 @@ class ProductsServiceTest extends TestCase
 
     public function getSvc(): ProductsService
     {
-        return new ProductsService((int) $_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);
+        $config = [$_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']];
+        $adapter = new GuzzleAdapter(new GuzzleClient());
+
+        return new ProductsService($config, $adapter);
     }
 
     /**
@@ -32,7 +37,7 @@ class ProductsServiceTest extends TestCase
      */
     public function testClassify(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->expectException(BadRequestException::class);
         $json = <<<JSON
 {
     "products": [
@@ -60,9 +65,8 @@ JSON;
     /**
      * @covers ::import
      */
-    public function testImport(): void
+    public function testImport()
     {
-        $this->expectException(AccessDeniedException::class);
         $json = <<<JSON
 {
     "items": [
@@ -98,7 +102,12 @@ JSON;
 }
 JSON;
 
-        $this->getSvc()->import(json_decode($json, true), true);
+        $result = $this->getSvc()->import(json_decode($json, true), true);
+        self::assertIsArray($result);
+        self::assertArrayHasKey('task_id', $result);
+        self::assertIsInt($result['task_id']);
+
+        return $result['task_id'];
     }
 
     /**
@@ -258,7 +267,6 @@ JSON;
      */
     public function testImportBySku(): void
     {
-        $this->expectException(AccessDeniedException::class);
         $json = <<<JSON
 {
     "items": [
@@ -284,17 +292,18 @@ JSON;
 }
 JSON;
 
-        $this->getSvc()->importBySku(json_decode($json, true));
+        $result = $this->getSvc()->importBySku(json_decode($json, true));
+        self::assertIsArray($result);
+        self::assertArrayHasKey('task_id', $result);
     }
 
     /**
      * @covers ::importInfo
      * @depends testImport
      */
-    public function testCreationStatus(): void
+    public function testCreationStatus(int $taskId): void
     {
-        $this->expectException(AccessDeniedException::class);
-        $status = $this->getSvc()->importInfo(1914378);
+        $status = $this->getSvc()->importInfo($taskId);
         self::assertNotEmpty($status);
         self::assertArrayHasKey('total', $status);
         self::assertArrayHasKey('items', $status);
@@ -309,9 +318,10 @@ JSON;
      */
     public function testInfoStock(): void
     {
-        $this->expectException(AccessDeniedException::class);
         $status = $this->getSvc()->infoStocks();
         self::assertNotEmpty($status);
+        self::assertArrayHasKey('total', $status);
+        self::assertArrayHasKey('items', $status);
     }
 
     /**
@@ -319,17 +329,17 @@ JSON;
      */
     public function testInfoPrices(): void
     {
-        $this->expectException(AccessDeniedException::class);
         $status = $this->getSvc()->infoPrices();
         self::assertNotEmpty($status);
+        self::assertArrayHasKey('total', $status);
+        self::assertArrayHasKey('items', $status);
     }
 
     /**
      * @covers ::list
      */
-    public function testList(): void
+    public function testList(): int
     {
-        $this->expectException(AccessDeniedException::class);
         $result = $this->getSvc()->list();
         self::assertNotEmpty($result);
         self::assertCount(2, $result);
@@ -339,6 +349,8 @@ JSON;
         self::assertCount(10, $items);
         self::assertArrayHasKey('product_id', $items[0]);
         self::assertArrayHasKey('offer_id', $items[0]);
+
+        return $items[0]['product_id'];
     }
 
     /**
@@ -356,11 +368,11 @@ JSON;
 
     /**
      * @covers ::info
+     * @depends testImport
      */
-    public function testInfo(): void
+    public function testInfo(int $taskId): void
     {
-        $this->expectException(AccessDeniedException::class);
-        $productInfo = $this->getSvc()->info(507735);
+        $productInfo = $this->getSvc()->info($taskId);
         self::assertNotEmpty($productInfo);
         self::assertArrayHasKey('name', $productInfo);
     }
@@ -388,52 +400,60 @@ JSON;
 
     /**
      * @covers ::deactivate
+     * @depends testList
      */
-    public function testDeactivate(): void
+    public function testDeactivate(int $productId): void
     {
-        $this->expectException(AccessDeniedException::class);
-        $result = $this->getSvc()->deactivate(510216);
+        $this->expectException(BadRequestException::class);
+        $result = $this->getSvc()->deactivate($productId);
         self::assertTrue($result);
     }
 
     /**
      * @covers ::activate
+     * @depends testList
      */
-    public function testActivate(): void
+    public function testActivate(int $productId): void
     {
-        $this->expectException(AccessDeniedException::class);
-        $result = $this->getSvc()->activate(510216);
+        $this->expectException(BadRequestException::class);
+        $result = $this->getSvc()->activate($productId);
         self::assertTrue($result);
     }
 
     /**
      * @covers ::delete
-     * @depends testImport
      */
     public function testDelete(): void
     {
-        $this->expectException(AccessDeniedException::class);
-        $status = $this->getSvc()->delete(510216);
+        $this->expectException(BadRequestException::class);
+        $status = $this->getSvc()->delete(123);
         self::assertNotEmpty($status);
     }
 
     public function testUpdatePricesNotFound(): void
     {
-        $this->expectException(AccessDeniedException::class);
         $expectedJson = <<<JSON
 [
     {
         "product_id": 120000,
+        "offer_id": "offer_1",
         "updated": false,
         "errors": [
-            "not_found"
+            {
+                "code": "NOT_FOUND_ERROR",
+                "message": "Product not found"
+            }
         ]
     },
     {
         "product_id": 124100,
+        "offer_id": "offer_2",
         "updated": false,
         "errors": [
-            "not_found"
+            {
+                "code": "NOT_FOUND_ERROR",
+                "message": "Product not found"
+            }
         ]
     }
 ]
@@ -466,13 +486,18 @@ JSON;
      */
     public function testUpdatePrices(): void
     {
-        $this->expectException(AccessDeniedException::class);
         $expectedJson = <<<JSON
 [
     {
         "product_id": 508756,
-        "updated": true,
-        "errors": []
+         "offer_id": "PRD-1",
+        "updated": false,
+        "errors": [
+            {
+                "code": "NOT_FOUND_ERROR",
+                "message": "Product not found"
+            }
+        ]
     }
 ]
 JSON;
@@ -497,13 +522,18 @@ JSON;
      */
     public function testUpdateStocks(): void
     {
-        $this->expectException(AccessDeniedException::class);
         $expectedJson = <<<JSON
 [
     {
+        "errors": [
+            {
+                "code": "NOT_FOUND",
+                "message": "Product not found"
+            }
+        ],
+        "offer_id": "",
         "product_id": 507735,
-        "updated": true,
-        "errors": []
+        "updated": false
     }
 ]
 JSON;
@@ -519,9 +549,9 @@ JSON;
         self::assertJsonStringEqualsJsonString($expectedJson, \GuzzleHttp\json_encode($result));
     }
 
-    public function testPrice()
+    public function testPrice(): void
     {
-        $this->expectException(AccessDeniedException::class);
-        $this->getSvc()->price([], ['page' => 1, 'page_size' => 10]);
+        $result = $this->getSvc()->price([], ['page' => 1, 'page_size' => 10]);
+        self::assertNotEmpty($result);
     }
 }

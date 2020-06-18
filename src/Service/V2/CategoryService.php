@@ -33,7 +33,7 @@ class CategoryService extends AbstractService
             'language'    => 'RU',
         ], $query);
 
-        return $this->request('POST', "{$this->path}/attribute", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', "{$this->path}/attribute", $query);
     }
 
     /**
@@ -59,7 +59,7 @@ class CategoryService extends AbstractService
             'language'      => 'str',
         ]);
 
-        return $this->request('POST', "{$this->path}/attribute/values", ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', "{$this->path}/attribute/values", $query);
     }
 
     public function attributeValueByOption(string $language = 'RU', array $options = [])
@@ -75,6 +75,6 @@ class CategoryService extends AbstractService
             'options'  => $options,
         ];
 
-        return $this->request('POST', "{$this->path}/attribute/value/by-option", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/attribute/value/by-option", $body);
     }
 }

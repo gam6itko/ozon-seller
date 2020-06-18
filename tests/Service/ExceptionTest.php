@@ -7,8 +7,8 @@ use Gam6itko\OzonSeller\Exception\AccessDeniedException;
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Exception\NotFoundException;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\BadResponseException;
+use Http\Client\Exception\HttpException;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -36,7 +36,7 @@ class ExceptionTest extends AbstractTestCase
             ->method('getBody')
             ->willReturn($stream);
 
-        $exception = $this->createMock(BadResponseException::class);
+        $exception = $this->createMock(HttpException::class);
         $exception
             ->expects(self::once())
             ->method('getResponse')
@@ -45,7 +45,7 @@ class ExceptionTest extends AbstractTestCase
         $client = $this->createMock(ClientInterface::class);
         $client
             ->expects(self::once())
-            ->method('request')
+            ->method('sendRequest')
             ->willThrowException($exception);
 
         try {

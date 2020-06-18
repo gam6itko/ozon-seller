@@ -4,6 +4,8 @@ namespace Gam6itko\OzonSeller\Tests\E2E\Service\V1;
 
 use Gam6itko\OzonSeller\Exception\NotFoundException;
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,7 +22,9 @@ class CategoriesServiceTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$svc = new CategoriesService((int) $_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
+        $config = [$_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']];
+        $adapter = new GuzzleAdapter(new GuzzleClient());
+        self::$svc = new CategoriesService($config, $adapter);
     }
 
     protected function setUp(): void

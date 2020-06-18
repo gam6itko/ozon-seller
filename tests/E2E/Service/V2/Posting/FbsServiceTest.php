@@ -6,8 +6,9 @@ use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Exception\NotFoundException;
 use Gam6itko\OzonSeller\Exception\NotFoundInSortingCenterException;
-use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,12 +20,14 @@ use PHPUnit\Framework\TestCase;
  */
 class FbsServiceTest extends TestCase
 {
-    /** @var CategoriesService */
+    /** @var FbsService */
     private static $svc;
 
     public static function setUpBeforeClass(): void
     {
-        self::$svc = new FbsService((int) $_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']);
+        $config = [$_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']];
+        $adapter = new GuzzleAdapter(new GuzzleClient());
+        self::$svc = new FbsService($config, $adapter);
     }
 
     protected function setUp(): void

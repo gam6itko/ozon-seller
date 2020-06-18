@@ -19,11 +19,8 @@ class ChatService extends AbstractService
     public function list(array $query = [])
     {
         $query = $this->faceControl($query, ['chat_id_list', 'page', 'page_size']);
-        $options = [
-            'body' => $query ? \GuzzleHttp\json_encode($query) : '{}',
-        ];
 
-        return $this->request('POST', '/v1/chat/list', $options);
+        return $this->request('POST', '/v1/chat/list', $query ? $query : '{}');
     }
 
     /**
@@ -37,7 +34,7 @@ class ChatService extends AbstractService
 
         $query['chat_id'] = $chatId;
 
-        return $this->request('POST', '/v1/chat/history', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/chat/history', $query);
     }
 
     /**
@@ -50,7 +47,7 @@ class ChatService extends AbstractService
             'text'    => $text,
         ];
 
-        $response = $this->request('POST', '/v1/chat/send/message', ['body' => \GuzzleHttp\json_encode($arr)]);
+        $response = $this->request('POST', '/v1/chat/send/message', $arr);
 
         return 'success' === $response;
     }
@@ -71,7 +68,7 @@ class ChatService extends AbstractService
             'base64_content' => $base64Content,
             'name'           => $name,
         ];
-        $response = $this->request('POST', '/v1/chat/send/file', ['body' => \GuzzleHttp\json_encode($arr)]);
+        $response = $this->request('POST', '/v1/chat/send/file', $arr);
 
         return 'success' === $response;
     }
@@ -88,6 +85,6 @@ class ChatService extends AbstractService
             'order_id' => $orderId,
         ];
 
-        return $this->request('POST', '/v1/chat/start', ['body' => \GuzzleHttp\json_encode($arr)])['chat_id'];
+        return $this->request('POST', '/v1/chat/start', $arr)['chat_id'];
     }
 }

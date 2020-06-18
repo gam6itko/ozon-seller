@@ -31,7 +31,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/list',
-                ['body' => '{"filter":{"since":"2018-11-18T11:27:45+00:00","to":"2019-11-18T11:27:45+00:00","status":"awaiting_approve"},"dir":"asc","offset":0,"limit":10}'],
+                '{"filter":{"since":"2018-11-18T11:27:45+00:00","to":"2019-11-18T11:27:45+00:00","status":"awaiting_approve"},"dir":"asc","offset":0,"limit":10}',
             ]
         );
     }
@@ -44,7 +44,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/get',
-                ['body' => '{"posting_number":"39268230-0002-3"}'],
+                '{"posting_number":"39268230-0002-3"}',
             ]
         );
     }
@@ -63,7 +63,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/unfulfilled/list',
-                ['body' => '{"status":["awaiting_approve"],"dir":"asc","offset":0,"limit":10,"with":["barcodes"]}'],
+                '{"status":["awaiting_approve"],"dir":"asc","offset":0,"limit":10,"with":["barcodes"]}',
             ]
         );
     }
@@ -79,7 +79,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/ship',
-                ['body' => '{"packages":[{"items":[{"quantity":3,"sku":123065}]}],"posting_number":"13076543-0001-1"}'],
+                '{"packages":[{"items":[{"quantity":3,"sku":123065}]}],"posting_number":"13076543-0001-1"}',
             ]
         );
     }
@@ -92,7 +92,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/act/create',
-                ['body' => '{}'],
+                '{}',
             ],
             '{"result": { "id": 15684442104000 }}',
             static function ($result) {
@@ -109,7 +109,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/act/check-status',
-                ['body' => '{"id":15684442104000}'],
+                '{"id":15684442104000}',
             ]
         );
     }
@@ -122,7 +122,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/act/get-pdf',
-                ['body' => '{"id":15684442104000}'],
+                '{"id":15684442104000}',
             ],
             'pdf_content',
             static function ($string) {
@@ -139,7 +139,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/package-label',
-                ['body' => '{"posting_number":["13076543-0001-1"]}'],
+                '{"posting_number":["13076543-0001-1"]}',
             ],
             'pdf_content',
             static function ($string) {
@@ -156,7 +156,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/arbitration',
-                ['body' => '{"posting_number":["13076543-0001-1"]}'],
+                '{"posting_number":["13076543-0001-1"]}',
             ],
             '{"result":"true"}',
             static function ($result) {
@@ -175,7 +175,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/awaiting-delivery',
-                ['body' => '{"posting_number":["13076543-0001-1"]}'],
+                '{"posting_number":["13076543-0001-1"]}',
             ]
         );
 
@@ -187,7 +187,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/awaiting-delivery',
-                ['body' => '{"posting_number":["13076543-0001-1","02898753-0009-2"]}'],
+                '{"posting_number":["13076543-0001-1","02898753-0009-2"]}',
             ]
         );
     }
@@ -204,7 +204,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/cancel',
-                ['body' => '{"posting_number":"39268230-0002-3","cancel_reason_id":361,"cancel_reason_message":"Cancel it!"}'],
+                '{"posting_number":"39268230-0002-3","cancel_reason_id":361,"cancel_reason_message":"Cancel it!"}',
             ],
             '{"result": "true"}',
             static function ($result): void {
@@ -221,7 +221,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/cancel-reason/list',
-                ['body' => '{}'],
+                '{}',
             ]
         );
     }

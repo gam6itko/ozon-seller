@@ -30,7 +30,7 @@ class CrossborderService extends AbstractService
             'limit'  => $limit,
         ];
 
-        return $this->request('POST', "{$this->path}/list", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/list", $body);
     }
 
     /**
@@ -38,7 +38,7 @@ class CrossborderService extends AbstractService
      */
     public function get(string $postingNumber): array
     {
-        return $this->request('POST', "{$this->path}/get", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
+        return $this->request('POST', "{$this->path}/get", ['posting_number' => $postingNumber]);
     }
 
     /**
@@ -60,7 +60,7 @@ class CrossborderService extends AbstractService
             'limit'  => $limit,
         ];
 
-        return $this->request('POST', "{$this->path}/unfulfilled/list", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/unfulfilled/list", $body);
     }
 
     /**
@@ -68,7 +68,7 @@ class CrossborderService extends AbstractService
      */
     public function approve(string $postingNumber): bool
     {
-        return $this->request('POST', "{$this->path}/approve", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
+        return $this->request('POST', "{$this->path}/approve", ['posting_number' => $postingNumber]);
     }
 
     /**
@@ -88,12 +88,12 @@ class CrossborderService extends AbstractService
             'cancel_reason_message' => $cancelReasonMessage,
         ];
 
-        return $this->request('POST', "{$this->path}/cancel", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/cancel", $body);
     }
 
     public function cancelReasons(): array
     {
-        return $this->request('POST', "{$this->path}/cancel-reason/list", ['body' => '{}']);
+        return $this->request('POST', "{$this->path}/cancel-reason/list", '{}');
     }
 
     /**
@@ -114,7 +114,7 @@ class CrossborderService extends AbstractService
             'items'                => $items,
         ];
 
-        return $this->request('POST', "{$this->path}/ship", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/ship", $body);
     }
 
     /**
@@ -122,6 +122,6 @@ class CrossborderService extends AbstractService
      */
     public function shippingProviders(): array
     {
-        return $this->request('POST', "{$this->path}/shipping-provider/list", ['body' => '{}']);
+        return $this->request('POST', "{$this->path}/shipping-provider/list", '{}');
     }
 }

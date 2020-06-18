@@ -5,7 +5,6 @@ namespace Gam6itko\OzonSeller\Service\V2\Posting;
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\AbstractService;
-use GuzzleHttp\Exception\BadResponseException;
 
 class FbsService extends AbstractService
 {
@@ -32,7 +31,7 @@ class FbsService extends AbstractService
             'limit'  => $limit,
         ];
 
-        return $this->request('POST', "{$this->path}/list", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/list", $body);
     }
 
     /**
@@ -40,7 +39,7 @@ class FbsService extends AbstractService
      */
     public function get(string $postingNumber): array
     {
-        return $this->request('POST', "{$this->path}/get", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
+        return $this->request('POST', "{$this->path}/get", ['posting_number' => $postingNumber]);
     }
 
     /**
@@ -64,10 +63,13 @@ class FbsService extends AbstractService
             'dir'    => $sort,
             'offset' => $offset,
             'limit'  => $limit,
-            'with'   => $with,
         ];
 
-        return $this->request('POST', "{$this->path}/unfulfilled/list", ['body' => \GuzzleHttp\json_encode($body)]);
+        if (!empty($with)) {
+            $body['with'] = $with;
+        }
+
+        return $this->request('POST', "{$this->path}/unfulfilled/list", $body);
     }
 
     /**
@@ -86,7 +88,7 @@ class FbsService extends AbstractService
             'posting_number' => $postingNumber,
         ];
 
-        return $this->request('POST', "{$this->path}/ship", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/ship", $body);
     }
 
     /**
@@ -94,7 +96,7 @@ class FbsService extends AbstractService
      */
     public function actCreate(): int
     {
-        $result = $this->request('POST', "{$this->path}/act/create", ['body' => '{}']);
+        $result = $this->request('POST', "{$this->path}/act/create", '{}');
 
         return $result['id'];
     }
@@ -104,7 +106,7 @@ class FbsService extends AbstractService
      */
     public function actCheckStatus(int $id): array
     {
-        return $this->request('POST', "{$this->path}/act/check-status", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
+        return $this->request('POST', "{$this->path}/act/check-status", ['id' => $id]);
     }
 
     /**
@@ -114,13 +116,7 @@ class FbsService extends AbstractService
      */
     public function actGetPdf(int $id): string
     {
-        try {
-            $response = $this->getClient()->request('POST', "{$this->path}/act/get-pdf", ['body' => \GuzzleHttp\json_encode(['id' => $id])]);
-
-            return $response->getBody()->getContents();
-        } catch (BadResponseException $exc) {
-            $this->adaptException($exc);
-        }
+        return $this->request('POST', "{$this->path}/act/get-pdf", ['id' => $id], false);
     }
 
     /**
@@ -134,13 +130,7 @@ class FbsService extends AbstractService
             $postingNumber = [$postingNumber];
         }
 
-        try {
-            $response = $this->getClient()->request('POST', "{$this->path}/package-label", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
-
-            return $response->getBody()->getContents();
-        } catch (BadResponseException $exc) {
-            $this->adaptException($exc);
-        }
+        return $this->request('POST', "{$this->path}/package-label", ['posting_number' => $postingNumber], false);
     }
 
     /**
@@ -154,7 +144,7 @@ class FbsService extends AbstractService
             $postingNumber = [$postingNumber];
         }
 
-        $result = $this->request('POST', "{$this->path}/arbitration", ['body' => \GuzzleHttp\json_encode(['posting_number' => $postingNumber])]);
+        $result = $this->request('POST', "{$this->path}/arbitration", ['posting_number' => $postingNumber]);
 
         return 'true' === $result;
     }
@@ -169,14 +159,14 @@ class FbsService extends AbstractService
             'cancel_reason_id'      => $cancelReasonId,
             'cancel_reason_message' => $cancelReasonMessage,
         ];
-        $result = $this->request('POST', "{$this->path}/cancel", ['body' => \GuzzleHttp\json_encode($body)]);
+        $result = $this->request('POST', "{$this->path}/cancel", $body);
 
         return 'true' === $result;
     }
 
     public function cancelReasons(): array
     {
-        return $this->request('POST', "{$this->path}/cancel-reason/list", ['body' => '{}']); //todo свериться с исправленной документацией
+        return $this->request('POST', "{$this->path}/cancel-reason/list", '{}'); //todo свериться с исправленной документацией
     }
 
     /**
@@ -196,6 +186,6 @@ class FbsService extends AbstractService
             'posting_number' => $postingNumber,
         ];
 
-        return $this->request('POST', "{$this->path}/awaiting-delivery", ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', "{$this->path}/awaiting-delivery", $body);
     }
 }

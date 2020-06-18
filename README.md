@@ -4,21 +4,72 @@
 
 [![Latest Stable Version](https://poser.pugx.org/gam6itko/ozon-seller/v)](//packagist.org/packages/gam6itko/ozon-seller) [![Total Downloads](https://poser.pugx.org/gam6itko/ozon-seller/downloads)](//packagist.org/packages/gam6itko/ozon-seller) [![Latest Unstable Version](https://poser.pugx.org/gam6itko/ozon-seller/v/unstable)](//packagist.org/packages/gam6itko/ozon-seller) [![License](https://poser.pugx.org/gam6itko/ozon-seller/license)](//packagist.org/packages/gam6itko/ozon-seller)
 
-Documentation: <https://cb-api.ozonru.me/apiref/>
+Документация Ozon Api: <https://cb-api.ozonru.me/apiref/>
 
-# Example
-For more examples look in `tests`
+## Установка
+
+```shell
+composer require gam6itko/ozon-seller
+```
+
+Для взаимодействия библиотеки с Ozon-Api используют [psr-18-client](https://packagist.org/explore/?tags=psr-18~client).
+
+### Использование с Symfony
+https://symfony.com/doc/current/components/http_client.html#psr-18-and-psr-17
+
+```shell
+composer require symfony/http-client
+composer require nyholm/psr7
+```
+
+```php
+use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use Symfony\Component\HttpClient\Psr18Client;
+
+$config = [$_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']];
+$client = new Psr18Client();
+$svc = new ProductsService($config, $client);
+//do stuff
+```
+
+### Использование без Symfony
+
+```shell
+composer require php-http/guzzle6-adapter
+```
+
+```php
+use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+
+$config = [
+    'clientId' => '<ozon seller client-id>',
+    'apiKey' => '<ozon seller api-key>',
+    'host' => 'http://cb-api.ozonru.me/'
+];
+$adapter = new GuzzleAdapter(new GuzzleClient());
+$svc = new CategoriesService($config, $adapter);
+//do stuff
+```
+
+## Примеры использования
+Больше примеров смотрите в папке `tests`
 
 ## Categories
 
 ```php
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 
-$clientId = '<ozon seller client-id>';
-$apiKey = '<ozon seller api-key>';
-$sandboxHost = 'http://cb-api.ozonru.me/';
-
-$svc = new CategoriesService($clientId, $apiKey, $sandboxHost);
+$config = [
+    'clientId' => '<ozon seller client-id>',
+    'apiKey' => '<ozon seller api-key>',
+    'host' => 'http://cb-api.ozonru.me/' //sandbox
+];
+$adapter = new GuzzleAdapter(new GuzzleClient());
+$svc = new CategoriesService($config, $adapter);
 
 //Server Response example: https://cb-api.ozonru.me/apiref/en/#t-title_categories
 $categoryTree = $svc->tree();
@@ -35,8 +86,16 @@ $attributes = $svc->attributes(17038826);
 
 ```php
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 
-$svc = new CrossborderService($clientId, $apiKey, $sandboxHost);
+$config = [
+    'clientId' => '<ozon seller client-id>',
+    'apiKey' => '<ozon seller api-key>',
+    'host' => 'http://cb-api.ozonru.me/'
+];
+$adapter = new GuzzleAdapter(new GuzzleClient());
+$svc = new CrossborderService($config, $adapter);
 
 $postingNumber = '39268230-0002-3';
 $orderArr = $svc->get($postingNumber);
@@ -92,8 +151,16 @@ echo json_encode($orderArr);
 
 ```php
 use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 
-$svcProduct = new ProductsService($clientId, $apiKey, $sandboxHost);
+$config = [
+    'clientId' => '<ozon seller client-id>',
+    'apiKey' => '<ozon seller api-key>',
+    // use prod host by default
+];
+$adapter = new GuzzleAdapter(new GuzzleClient());
+$svcProduct = new ProductsService($config, $adapter);
 $product = [
     'barcode'        => '8801643566784',
     'description'    => 'Red Samsung Galaxy S9 with 512GB',

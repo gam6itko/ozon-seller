@@ -20,7 +20,7 @@ class CategoriesServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/category/tree',
-                ['body' => '{"category_id":17036076,"language":"EN"}'],
+                '{"category_id":17036076,"language":"EN"}',
             ]
         );
     }
@@ -37,7 +37,7 @@ class CategoriesServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/category/attribute',
-                ['body' => '{"category_id":17036076,"language":"EN","attribute_type":"required"}'],
+                '{"category_id":17036076,"language":"EN","attribute_type":"required"}',
             ]
         );
     }

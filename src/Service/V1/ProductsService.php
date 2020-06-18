@@ -45,7 +45,7 @@ class ProductsService extends AbstractService
             ]);
         }
 
-        return $this->request('POST', '/v1/product/classify', ['body' => \GuzzleHttp\json_encode($income)]);
+        return $this->request('POST', '/v1/product/classify', $income);
     }
 
     /**
@@ -87,7 +87,7 @@ class ProductsService extends AbstractService
             }
         }
 
-        return $this->request('POST', '/v1/product/import', ['body' => \GuzzleHttp\json_encode($income)]);
+        return $this->request('POST', '/v1/product/import', $income);
     }
 
     /**
@@ -116,7 +116,7 @@ class ProductsService extends AbstractService
             );
         }
 
-        return $this->request('POST', '/v1/product/import-by-sku', ['body' => \GuzzleHttp\json_encode($income)]);
+        return $this->request('POST', '/v1/product/import-by-sku', $income);
     }
 
     /**
@@ -132,7 +132,7 @@ class ProductsService extends AbstractService
     {
         $query = ['task_id' => $taskId];
 
-        return $this->request('POST', '/v1/product/import/info', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/product/import/info', $query);
     }
 
     /**
@@ -149,7 +149,7 @@ class ProductsService extends AbstractService
         $query = ['product_id' => $productId];
         $query = TypeCaster::castArr($query, ['product_id' => 'int']);
 
-        return $this->request('POST', '/v1/product/info', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/product/info', $query);
     }
 
     /**
@@ -166,7 +166,7 @@ class ProductsService extends AbstractService
         $query = $this->faceControl($query, ['product_id', 'sku', 'offer_id']);
         $query = TypeCaster::castArr($query, ['product_id' => 'int', 'sku' => 'int', 'offer_id' => 'str']);
 
-        return $this->request('POST', '/v1/product/info', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/product/info', $query);
     }
 
     /**
@@ -185,7 +185,7 @@ class ProductsService extends AbstractService
             $this->faceControl($pagination, ['page', 'page_size'])
         );
 
-        return $this->request('POST', '/v1/product/info/stocks', ['body' => \GuzzleHttp\json_encode($pagination)]);
+        return $this->request('POST', '/v1/product/info/stocks', $pagination);
     }
 
     /**
@@ -204,7 +204,7 @@ class ProductsService extends AbstractService
             $this->faceControl($pagination, ['page', 'page_size'])
         );
 
-        return $this->request('POST', '/v1/product/info/prices', ['body' => \GuzzleHttp\json_encode($pagination)]);
+        return $this->request('POST', '/v1/product/info/prices', $pagination);
     }
 
     /**
@@ -226,7 +226,7 @@ class ProductsService extends AbstractService
         }
         $query = array_filter(array_merge($pagination, ['filter' => $filter]));
 
-        return $this->request('POST', '/v1/product/list', ['body' => \GuzzleHttp\json_encode($query)]);
+        return $this->request('POST', '/v1/product/list', $query);
     }
 
     /**
@@ -273,7 +273,7 @@ class ProductsService extends AbstractService
             );
         }
 
-        return $this->request('POST', '/v1/product/import/prices', ['body' => \GuzzleHttp\json_encode($input)]);
+        return $this->request('POST', '/v1/product/import/prices', $input);
     }
 
     /**
@@ -318,7 +318,7 @@ class ProductsService extends AbstractService
             );
         }
 
-        return $this->request('POST', '/v1/product/import/stocks', ['body' => \GuzzleHttp\json_encode($input)]);
+        return $this->request('POST', '/v1/product/import/stocks', $input);
     }
 
     /**
@@ -340,7 +340,7 @@ class ProductsService extends AbstractService
             $product = $pv->validateItem($product);
         }
 
-        return $this->request('POST', '/v1/product/update', ['body' => \GuzzleHttp\json_encode($product)]);
+        return $this->request('POST', '/v1/product/update', $product);
     }
 
     /**
@@ -354,7 +354,7 @@ class ProductsService extends AbstractService
      */
     public function activate(int $productId): bool
     {
-        $response = $this->request('POST', '/v1/product/activate', ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+        $response = $this->request('POST', '/v1/product/activate', ['product_id' => $productId]);
 
         return 'success' === $response;
     }
@@ -372,7 +372,7 @@ class ProductsService extends AbstractService
      */
     public function deactivate(int $productId): bool
     {
-        $response = $this->request('POST', '/v1/product/deactivate', ['body' => \GuzzleHttp\json_encode(['product_id' => $productId])]);
+        $response = $this->request('POST', '/v1/product/deactivate', ['product_id' => $productId]);
 
         return 'success' === $response;
     }
@@ -390,7 +390,7 @@ class ProductsService extends AbstractService
             'product_id' => $productId,
             'offer_id'   => $offerId,
         ]);
-        $response = $this->request('POST', '/v1/product/delete', ['body' => \GuzzleHttp\json_encode($query)]);
+        $response = $this->request('POST', '/v1/product/delete', $query);
 
         return 'deleted' === $response;
     }
@@ -413,7 +413,7 @@ class ProductsService extends AbstractService
 //            'filter' => $filter,
         ]);
 
-        return $this->request('POST', '/v1/product/list/price', ['body' => \GuzzleHttp\json_encode($body)]);
+        return $this->request('POST', '/v1/product/list/price', $body);
     }
 
     /**
@@ -427,6 +427,6 @@ class ProductsService extends AbstractService
     {
         $data = $this->faceControl($data, ['is_prepayment', 'offers_ids', 'products_ids']);
 
-        return $this->request('POST', '/v1/product/prepayment/set', ['body' => \GuzzleHttp\json_encode($data)]);
+        return $this->request('POST', '/v1/product/prepayment/set', $data);
     }
 }

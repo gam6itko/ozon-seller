@@ -5,6 +5,8 @@ namespace Gam6itko\OzonSeller\Tests\E2E\Service\V2;
 use Gam6itko\OzonSeller\Exception\AccessDeniedException;
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Service\V2\ProductService;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,7 +24,10 @@ class ProductServiceTest extends TestCase
 
     public function getSvc(): ProductService
     {
-        return new ProductService((int) $_SERVER['CLIENT_ID'], $_SERVER['API_KEY']/*, $_SERVER['API_URL']*/);
+        $config = [$_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']];
+        $adapter = new GuzzleAdapter(new GuzzleClient());
+
+        return new ProductService($config, $adapter);
     }
 
     public function testImport()

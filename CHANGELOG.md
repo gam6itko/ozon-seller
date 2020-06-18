@@ -1,5 +1,13 @@
 # Changelog
 
+# 0.3.0 
+- Удалены `deprecated` методы.
+- declare(strict_types=1);
+- Поддержка сервисов API-V2.
+- #17
+- #18
+
+
 # 0.2.4
 - Удален класс `OrderService` т.к. сервер больше не поддерживает запросы `/v1/order`
 - ProductsService.updateStocks учитывает параметр `offer_id`

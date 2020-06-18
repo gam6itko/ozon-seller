@@ -3,8 +3,9 @@
 namespace Gam6itko\OzonSeller\Tests\Service;
 
 use Gam6itko\OzonSeller\Service\V1\ProductsService;
-use GuzzleHttp\ClientInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -15,16 +16,14 @@ abstract class AbstractTestCase extends TestCase
     protected function createSvc(ClientInterface $client)
     {
         $class = new \ReflectionClass($this->getClass());
-        $svc = $class->newInstance(0, '', '');
-        $parentClass = $class->getParentClass();
-        $prop = $parentClass->getProperty('client');
-        $prop->setAccessible(true);
-        $prop->setValue($svc, $client);
 
-        return $svc;
+        return $class->newInstance([123, 'api-key', 'https://packagist.org/packages/gam6itko/ozon-seller'], $client);
     }
 
-    protected function createClient(string $method, string $path, array $options, string $contents): ClientInterface
+    /**
+     * @param array|string|null $body
+     */
+    protected function createClient(string $method, string $path, $body, string $contents): ClientInterface
     {
         $stream = $this->createMock(StreamInterface::class);
         $stream
@@ -37,13 +36,18 @@ abstract class AbstractTestCase extends TestCase
             ->expects(self::once())
             ->method('getBody')
             ->willReturn($stream);
+
         $client = $this->createMock(ClientInterface::class);
         $client
             ->expects(self::once())
-            ->method('request')
-            ->willReturnMap([
-                [$method, $path, $options, $response],
-            ]);
+            ->method('sendRequest')
+            ->willReturnCallback(static function (RequestInterface $request) use ($method, $path, $body, $response): ResponseInterface {
+                self::assertEquals($method, $request->getMethod());
+                self::assertEquals($path, $request->getUri()->getPath());
+                self::assertEquals($body, $request->getBody()->getContents());
+
+                return $response;
+            });
 
         return $client;
     }
