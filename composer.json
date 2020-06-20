@@ -18,7 +18,8 @@
     "require": {
         "php": ">=7.1",
         "ext-json": "*",
-        "guzzlehttp/psr7": "^1.6"
+        "guzzlehttp/psr7": "^1.6",
+        "psr/http-client": "^1.0"
     },
     "suggest": {
         "php-http/guzzle6-adapter": "For use not with Symfony",
