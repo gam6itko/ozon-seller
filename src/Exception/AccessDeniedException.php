@@ -2,6 +2,6 @@
 
 namespace Gam6itko\OzonSeller\Exception;
 
-class AccessDeniedException extends AbstractOzonSellerException
+class AccessDeniedException extends OzonSellerException
 {
 }

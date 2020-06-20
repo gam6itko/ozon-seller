@@ -2,6 +2,6 @@
 
 namespace Gam6itko\OzonSeller\Exception;
 
-class ValidationException extends AbstractOzonSellerException
+class ValidationException extends OzonSellerException
 {
 }

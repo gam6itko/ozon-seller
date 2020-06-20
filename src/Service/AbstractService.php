@@ -2,6 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Service;
 
+use Gam6itko\OzonSeller\Exception\OzonSellerException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\RequestExceptionInterface;
@@ -96,8 +97,7 @@ abstract class AbstractService
 
             // nyholm/psr7
             if ($response->getStatusCode() >= 400) {
-                $body = $responseBody->getContents();
-                $this->throwOzonException($body);
+                $this->throwOzonException($responseBody->getContents());
             }
 
             if (!$parseIsJson) {
@@ -116,19 +116,22 @@ abstract class AbstractService
             return $arr;
         } catch (RequestExceptionInterface $exc) {
             // guzzle
-            $data = $exc->getResponse()->getBody()->getContents();
-            $this->throwOzonException($data);
+            $contents = $exc->getResponse()->getBody()->getContents();
+            $this->throwOzonException($contents);
         }
     }
 
-    protected function throwOzonException(string $responseBody)
+    protected function throwOzonException(string $responseBodyContents): void
     {
-        $errorData = json_decode($responseBody, true)['error'];
+        $errorData = json_decode($responseBodyContents, true)['error'];
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new \RuntimeException('Invalid json error response: '.$errorData);
         }
 
-        $className = $this->getExceptionClassByName($errorData['code']);
+        if (!class_exists($className = $this->getExceptionClassByName($errorData['code']))) {
+            throw new OzonSellerException($responseBodyContents);
+        }
+
         $errorData = array_merge([
             'message' => '',
             'data'    => [],
@@ -142,7 +145,8 @@ abstract class AbstractService
 
     private function getExceptionClassByName(string $code): string
     {
-        $parts = explode('_', strtolower($code));
+        $parts = array_filter(explode('_', strtolower($code)));
+        // 'error' будет заменен на Exception
         if ('error' === end($parts)) {
             unset($parts[key($parts)]);
         }

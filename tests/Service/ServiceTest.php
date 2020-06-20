@@ -3,6 +3,7 @@
 namespace Gam6itko\OzonSeller\Tests\Service;
 
 use Gam6itko\OzonSeller\Exception\BadRequestException;
+use Gam6itko\OzonSeller\Exception\OzonSellerException;
 use Gam6itko\OzonSeller\Service\V1\ProductsService;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
@@ -95,10 +96,29 @@ class ServiceTest extends TestCase
         $this->expectException(BadRequestException::class);
         $this->expectExceptionMessage('API method /v1/product/delete is unavailable');
 
+        $jsonError = '{"error":{"code":"BAD_REQUEST","message":"API method /v1/product/delete is unavailable","data":[]}}';
+        $client = $this->createMockClientWithErrorResponse($jsonError);
+        $svc = new ProductsService([1, 'a'], $client);
+        $svc->importInfo(123);
+    }
+
+    public function testThrowUnknownErrorCode(): void
+    {
+        $this->expectException(OzonSellerException::class);
+        $this->expectExceptionMessage('{"error":{"code":"YOU_dont_kNOw_me_","message":"your test will fall!","data":[]}}');
+
+        $jsonError = '{"error":{"code":"YOU_dont_kNOw_me_","message":"your test will fall!","data":[]}}';
+        $client = $this->createMockClientWithErrorResponse($jsonError);
+        $svc = new ProductsService([1, 'a'], $client);
+        $svc->importInfo(123);
+    }
+
+    private function createMockClientWithErrorResponse(string $json): ClientInterface
+    {
         $stream = $this->createMock(StreamInterface::class);
         $stream
             ->method('getContents')
-            ->willReturn('{"error":{"code":"BAD_REQUEST","message":"API method /v1/product/delete is unavailable","data":[]}}');
+            ->willReturn($json);
         $response = $this->createMock(ResponseInterface::class);
         $response
             ->method('getBody')
@@ -112,7 +132,6 @@ class ServiceTest extends TestCase
             ->method('sendRequest')
             ->willReturn($response);
 
-        $svc = new ProductsService([1, 'a'], $client);
-        $svc->importInfo(123);
+        return $client;
     }
 }

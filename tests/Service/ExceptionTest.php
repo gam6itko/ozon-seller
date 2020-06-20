@@ -2,7 +2,7 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service;
 
-use Gam6itko\OzonSeller\Exception\AbstractOzonSellerException;
+use Gam6itko\OzonSeller\Exception\OzonSellerException;
 use Gam6itko\OzonSeller\Exception\AccessDeniedException;
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Exception\NotFoundException;
@@ -52,7 +52,7 @@ class ExceptionTest extends AbstractTestCase
             /** @var FbsService $svc */
             $svc = $this->createSvc($client);
             $svc->get('');
-        } catch (AbstractOzonSellerException $exc) {
+        } catch (OzonSellerException $exc) {
             self::assertInstanceOf($class, $exc);
             self::assertEquals($expectedData, $exc->getData());
             self::assertTrue(false !== strpos((string) $exc, 'Data:'));

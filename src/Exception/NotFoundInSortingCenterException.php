@@ -2,6 +2,6 @@
 
 namespace Gam6itko\OzonSeller\Exception;
 
-class NotFoundInSortingCenterException extends AbstractOzonSellerException
+class NotFoundInSortingCenterException extends OzonSellerException
 {
 }

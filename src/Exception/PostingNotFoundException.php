@@ -2,6 +2,6 @@
 
 namespace Gam6itko\OzonSeller\Exception;
 
-class PostingNotFoundException extends AbstractOzonSellerException
+class PostingNotFoundException extends OzonSellerException
 {
 }

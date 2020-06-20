@@ -2,6 +2,6 @@
 
 namespace Gam6itko\OzonSeller\Exception;
 
-class NotFoundException extends AbstractOzonSellerException
+class NotFoundException extends OzonSellerException
 {
 }
