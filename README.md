@@ -57,7 +57,7 @@ $svc = new CategoriesService($config, $adapter);
 ```
 
 ## Примеры использования
-Больше примеров смотрите в папке `tests`
+Больше примеров смотрите в папке `tests/E2E/Service/`
 
 ## Categories
 
