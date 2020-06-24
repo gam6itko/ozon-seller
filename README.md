@@ -2,7 +2,10 @@
 [![Build Status](https://travis-ci.com/gam6itko/ozon-seller.svg?branch=master)](https://travis-ci.com/gam6itko/ozon-seller)
 [![Coverage Status](https://coveralls.io/repos/github/gam6itko/ozon-seller/badge.svg?branch=master)](https://coveralls.io/github/gam6itko/ozon-seller?branch=master)
 
-[![Latest Stable Version](https://poser.pugx.org/gam6itko/ozon-seller/v)](//packagist.org/packages/gam6itko/ozon-seller) [![Total Downloads](https://poser.pugx.org/gam6itko/ozon-seller/downloads)](//packagist.org/packages/gam6itko/ozon-seller) [![Latest Unstable Version](https://poser.pugx.org/gam6itko/ozon-seller/v/unstable)](//packagist.org/packages/gam6itko/ozon-seller) [![License](https://poser.pugx.org/gam6itko/ozon-seller/license)](//packagist.org/packages/gam6itko/ozon-seller)
+[![Latest Stable Version](https://poser.pugx.org/gam6itko/ozon-seller/v)](//packagist.org/packages/gam6itko/ozon-seller) 
+[![Total Downloads](https://poser.pugx.org/gam6itko/ozon-seller/downloads)](//packagist.org/packages/gam6itko/ozon-seller) 
+[![Latest Unstable Version](https://poser.pugx.org/gam6itko/ozon-seller/v/unstable)](//packagist.org/packages/gam6itko/ozon-seller) 
+[![License](https://poser.pugx.org/gam6itko/ozon-seller/license)](//packagist.org/packages/gam6itko/ozon-seller)
 
 Документация Ozon Api: <https://cb-api.ozonru.me/apiref/>
 
