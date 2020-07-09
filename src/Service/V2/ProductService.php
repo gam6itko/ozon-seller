@@ -32,13 +32,14 @@ class ProductService extends AbstractService
         $income = $this->faceControl($income, ['items']);
 
         if ($validateBeforeSend) {
-            $pv = new ProductValidator('create');
+            $pv = new ProductValidator('create', 2);
             foreach ($income['items'] as &$item) {
                 $item = $pv->validateItem($item);
             }
         }
 
         // cast attributes types.
+        //todo type attributes collection
         foreach ($income['items'] as &$item) {
             if (isset($item['attributes']) && is_array($item['attributes']) && count($item['attributes']) > 0) {
                 foreach ($item['attributes'] as &$attribute) {

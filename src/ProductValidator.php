@@ -11,31 +11,8 @@ class ProductValidator
 {
     private const MAX_IMAGES_COUNT = 10;
 
-    public const PROPERTIES = [
-        'product_id'     => ['type' => 'int', 'requiredCreate' => false, 'requiredUpdate' => true],
-        'barcode'        => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'description'    => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'category_id'    => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'name'           => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'offer_id'       => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'price'          => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'old_price'      => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'premium_price'  => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'vat'            => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'vendor'         => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'vendor_code'    => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'attributes'     => ['type' => 'array', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'image_group_id' => ['type' => 'str', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'images'         => ['type' => 'array', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'images360'      => ['type' => 'array', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'pdf_list'       => ['type' => 'array', 'requiredCreate' => false, 'requiredUpdate' => false],
-        'height'         => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'depth'          => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'width'          => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'dimension_unit' => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false, 'options' => ['mm', 'cm', 'in']],
-        'weight'         => ['type' => 'int', 'requiredCreate' => true, 'requiredUpdate' => false],
-        'weight_unit'    => ['type' => 'str', 'requiredCreate' => true, 'requiredUpdate' => false, 'options' => ['g', 'kg', 'lb']],
-    ];
+    /** @var array */
+    private $config;
 
     /** @var array */
     private $requiredKeys;
@@ -49,32 +26,50 @@ class ProductValidator
     /**
      * ProductValidator constructor.
      */
-    public function __construct(string $mode = 'create')
+    public function __construct(string $mode = 'create', int $version = 1)
     {
         if (!in_array($mode, ['create', 'update'])) {
-            throw new \LogicException('Mode must be [create, update]');
+            throw new \LogicException('Mode must be in [create, update]');
         }
+
+        if (!in_array($version, [1, 2])) {
+            throw new \LogicException('Version must be in [1, 2]');
+        }
+
+        if (!file_exists($configFile = __DIR__."/config/product_validator_v{$version}.php")) {
+            throw new \LogicException("No config found for version $version");
+        }
+
+        $this->config = include $configFile;
 
         $this->requiredKeys = array_keys(array_filter(array_map(function ($arr) use ($mode) {
             return $arr['required'.ucfirst($mode)] ?? false;
-        }, self::PROPERTIES)));
+        }, $this->config)));
 
         $this->optProps = array_filter(array_map(function ($arr) {
             return $arr['options'] ?? null;
-        }, self::PROPERTIES));
+        }, $this->config));
 
         $this->typeCast = array_map(function ($arr) {
             return $arr['type'];
-        }, self::PROPERTIES);
+        }, $this->config);
     }
 
     public function validateItem(array $item)
     {
+        // remove unexpected keys
+        if ($extraKeys = array_diff(array_keys($item), array_keys($this->config))) {
+            foreach ($extraKeys as $key) {
+                @trigger_error("ProductValidator noticed unexpected item key '$key'");
+                unset($item[$key]);
+            }
+        }
+
         foreach ($this->requiredKeys as $key) {
             if (!array_key_exists($key, $item)) {
                 throw new ProductValidatorException("Required property not defined: $key", $item);
             }
-            if ('string' === TypeCaster::normalizeType(self::PROPERTIES[$key]['type']) && '' === $item[$key]) {
+            if ('string' === TypeCaster::normalizeType($this->config[$key]['type']) && '' === $item[$key]) {
                 throw new ProductValidatorException("Empty value for property: $key", $item);
             }
         }

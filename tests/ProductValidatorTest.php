@@ -224,4 +224,74 @@ class ProductValidatorTest extends TestCase
         $pv = new ProductValidator('boom');
         $pv->validateItem([]);
     }
+
+    /**
+     * @dataProvider dataV2
+     */
+    public function testV2(array $item, array $expected): void
+    {
+        $pv = new ProductValidator('create', 2);
+        self::assertSame($expected, $pv->validateItem($item));
+    }
+
+    public function dataV2()
+    {
+        yield [
+            [
+                'product_id'  => 123,
+                'description' => 'Description for item',
+                'name'        => 'Наушники Apple AirPods 2 (без беспроводной зарядки чехла)',
+                'vendor_code' => 'AM016209',
+                'quantity'    => '3',
+
+                'offer_id'       => '16209',
+                'category_id'    => '17036198',
+                'price'          => 10110,
+                'vat'            => 0,
+                'height'         => '55',
+                'depth'          => '22',
+                'width'          => '45',
+                'dimension_unit' => 'mm',
+                'weight'         => '8',
+                'weight_unit'    => 'g',
+                'images'         => [
+                    [
+                        'file_name' => 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MRXJ2?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1551489675083',
+                        'default'   => true,
+                    ],
+                ],
+                'attributes'     => [
+                    [
+                        'id'    => 8229,
+                        'value' => '193',
+                    ],
+                ],
+            ],
+
+            [
+                'offer_id'       => 16209,
+                'category_id'    => 17036198,
+                'price'          => '10110',
+                'vat'            => '0',
+                'height'         => 55,
+                'depth'          => 22,
+                'width'          => 45,
+                'dimension_unit' => 'mm',
+                'weight'         => 8,
+                'weight_unit'    => 'g',
+                'images'         => [
+                    [
+                        'file_name' => 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MRXJ2?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1551489675083',
+                        'default'   => true,
+                    ],
+                ],
+                'attributes'     => [
+                    [
+                        'id'    => 8229,
+                        'value' => '193',
+                    ],
+                ],
+            ],
+        ];
+    }
 }

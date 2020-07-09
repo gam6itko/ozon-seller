@@ -23,7 +23,7 @@ class ProductServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/product/import',
-                '{"items":[{"description":"text of description","barcode":"string","category_id":0,"depth":0,"dimension_unit":"cm","height":0,"image_group_id":"string","images":["string"],"images360":["string"],"name":"string","offer_id":"string","old_price":"string","pdf_list":[{"index":0,"name":"string","src_url":"string"}],"premium_price":"string","price":"string","vat":"string","weight":0,"weight_unit":"g","width":0,"attributes":[{"complex_id":0,"id":0,"values":[{"dictionary_value_id":0,"value":"string"}]}],"complex_attributes":[{"attributes":[{"complex_id":0,"id":0,"values":[{"dictionary_value_id":0,"value":"string"}]}]}]}]}',
+                '{"items":[{"barcode":"string","category_id":0,"depth":0,"dimension_unit":"cm","height":0,"image_group_id":"string","images":["string"],"images360":["string"],"offer_id":0,"old_price":"string","pdf_list":[{"index":0,"name":"string","src_url":"string"}],"premium_price":"string","price":"string","vat":"string","weight":0,"weight_unit":"g","width":0,"attributes":[{"complex_id":0,"id":0,"values":[{"dictionary_value_id":0,"value":"string"}]}],"complex_attributes":[{"attributes":[{"complex_id":0,"id":0,"values":[{"dictionary_value_id":0,"value":"string"}]}]}]}]}',
             ]
         );
     }
