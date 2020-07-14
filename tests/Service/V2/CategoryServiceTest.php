@@ -30,6 +30,20 @@ class CategoryServiceTest extends AbstractTestCase
 
     public function testAttributeValues()
     {
+        $responseJson = <<<JSON
+{
+  "result": [
+    {
+      "id": 115845746,
+      "value": "President",
+      "picture": "http://cdn1.ozone.ru/multimedia/1029443311.jpg",
+      "info": "Продукты питания"
+    }
+  ],
+  "has_next": true
+}
+JSON;
+
         $this->quickTest(
             'attributeValues',
             [
@@ -41,7 +55,12 @@ class CategoryServiceTest extends AbstractTestCase
                 'POST',
                 '/v2/category/attribute/values',
                 '{"category_id":17036076,"attribute_id":8229,"limit":1,"last_value_id":0,"language":"EN"}',
-            ]
+            ],
+            $responseJson,
+            function (array $result) {
+                self::assertArrayHasKey('result', $result);
+                self::assertArrayHasKey('has_next', $result);
+            }
         );
     }
 

@@ -1,5 +1,14 @@
 # Changelog
 
+# 0.4.1
+- ProductValidator для экспорта товаров V2. При создании экземпляра объекта необходимо передать вторым аргументом версию API.
+- CategoryService::attributeValues возвращает массив содержащий ключи [result, has_next]. 
+
+
+# 0.4.0 
+- При создании экземпляра Service-класса необходимо передать объект класса `Psr\Http\Client\ClientInterface`.
+
+
 # 0.3.0 
 - Удалены `deprecated` методы.
 - declare(strict_types=1);
