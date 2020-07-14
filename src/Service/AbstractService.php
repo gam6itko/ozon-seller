@@ -88,7 +88,7 @@ abstract class AbstractService
      *
      * @return string|array
      */
-    protected function request(string $method, string $uri = '', $body = null, bool $parseIsJson = true)
+    protected function request(string $method, string $uri = '', $body = null, bool $parseIsJson = true, bool $returnOnlyResult = true)
     {
         try {
             $request = $this->createRequest($method, $uri, $body);
@@ -109,7 +109,7 @@ abstract class AbstractService
                 throw new \RuntimeException('Invalid json response: '.$arr);
             }
 
-            if (isset($arr['result'])) {
+            if (isset($arr['result']) && $returnOnlyResult) {
                 return $arr['result'];
             }
 

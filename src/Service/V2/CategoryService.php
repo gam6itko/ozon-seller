@@ -40,6 +40,8 @@ class CategoryService extends AbstractService
      * Check the dictionary for attributes or options by theirs IDs.
      *
      * @param array $query [last_value_id, limit, language]
+     *
+     * @return array [result, has_next]
      */
     public function attributeValues(int $categoryId, int $attrId, array $query = []): array
     {
@@ -59,7 +61,7 @@ class CategoryService extends AbstractService
             'language'      => 'str',
         ]);
 
-        return $this->request('POST', "{$this->path}/attribute/values", $query);
+        return $this->request('POST', "{$this->path}/attribute/values", $query, true, false);
     }
 
     public function attributeValueByOption(string $language = 'RU', array $options = [])
