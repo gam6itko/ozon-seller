@@ -391,6 +391,36 @@ class ProductsService extends AbstractService
     }
 
     /**
+     * Place product to archive.
+     *
+     * @see https://docs.ozon.ru/api/seller#/archive-post
+     *
+     * @param int $productId
+     * @return bool
+     */
+    public function archive(int $productId): bool
+    {
+        $query = ['product_id' => [$productId]];
+
+        return $this->request('POST', '/v1/product/archive', $query);
+    }
+
+    /**
+     * Returns product from archive to store.
+     *
+     * @see https://docs.ozon.ru/api/seller#/unarchive-post
+     *
+     * @param int $productId
+     * @return bool
+     */
+    public function unarchive(int $productId): bool
+    {
+        $query = ['product_id' => [$productId]];
+
+        return $this->request('POST', '/v1/product/unarchive', $query);
+    }
+
+    /**
      * @see  https://github.com/gam6itko/ozon-seller/issues/6
      *
      * @param array $filter     ["offer_id": [], "product_id": [], "visibility": "ALL"]
