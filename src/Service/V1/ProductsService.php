@@ -5,6 +5,7 @@ namespace Gam6itko\OzonSeller\Service\V1;
 use Gam6itko\OzonSeller\ProductValidator;
 use Gam6itko\OzonSeller\Service\AbstractService;
 use Gam6itko\OzonSeller\TypeCaster;
+use Gam6itko\OzonSeller\Exception\BadRequestException;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -344,37 +345,31 @@ class ProductsService extends AbstractService
     }
 
     /**
-     * Mark the product as in stock.
+     * @deprecated Mark the product as in stock.
      *
-     * @see        http://cb-api.ozonru.me/apiref/en/#t-title_post_products_activate
-     *
+     * @param int $productId
      * @return bool success
-     *
-     * @todo       Documentation missed
+     * @throws BadRequestException
      */
     public function activate(int $productId): bool
     {
-        $response = $this->request('POST', '/v1/product/activate', ['product_id' => $productId]);
-
-        return 'success' === $response;
+        throw new BadRequestException(
+            'API method /v1/product/activate is unavailable'
+        );
     }
 
     /**
-     * Mark the product as not in stock.
+     * @deprecated Mark the product as not in stock.
      *
-     * @see        http://cb-api.ozonru.me/apiref/en/#t-title_post_products_deactivate
-     *
-     * @param int $productId Ozon Product Id
-     *
+     * @param int $productId
      * @return bool success
-     *
-     * @todo       Documentation missed
+     * @throws BadRequestException
      */
     public function deactivate(int $productId): bool
     {
-        $response = $this->request('POST', '/v1/product/deactivate', ['product_id' => $productId]);
-
-        return 'success' === $response;
+        throw new BadRequestException(
+            'API method /v1/product/deactivate is unavailable'
+        );
     }
 
     /**
