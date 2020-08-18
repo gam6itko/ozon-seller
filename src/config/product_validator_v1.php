@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 return [
     'product_id'     => ['type' => 'int', 'requiredCreate' => false, 'requiredUpdate' => true],

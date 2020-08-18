@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 return [
     'offer_id' => ['type' => 'int', 'requiredCreate' => true],

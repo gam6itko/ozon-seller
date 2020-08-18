@@ -220,6 +220,14 @@ class ProductsService extends AbstractService
     public function list(array $filter = [], array $pagination = [])
     {
         $filter = $this->faceControl($filter, ['offer_id', 'product_id', 'visibility']);
+        // normalize offer_id data
+        if (isset($filter['offer_id'])) {
+            if (!is_array($filter['offer_id'])) {
+                $filter['offer_id'] = [$filter['offer_id']];
+            }
+            $filter['offer_id'] = array_map('strval', $filter['offer_id']);
+        }
+
         $pagination = $this->faceControl($pagination, ['page', 'page_size']);
         if (empty($pagination)) {
             $pagination = ['page' => 1, 'page_size' => 10];

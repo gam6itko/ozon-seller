@@ -6,6 +6,11 @@ use Gam6itko\OzonSeller\Service\V1\ProductsService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
 use Psr\Http\Client\ClientInterface;
 
+/**
+ * @author Alexander Strizhak <gam6itko@gmail.com>
+ *
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\ProductsService
+ */
 class ProductsServiceTest extends AbstractTestCase
 {
     protected function getClass(): string
@@ -199,7 +204,10 @@ class ProductsServiceTest extends AbstractTestCase
         );
     }
 
-    public function testList()
+    /**
+     * @covers ::list
+     */
+    public function testList(): void
     {
         $responseJson = <<<JSON
 {
@@ -214,7 +222,7 @@ class ProductsServiceTest extends AbstractTestCase
         "offer_id": "REDSGS10-512"
       }
     ],
-    "total": 4
+    "total": 2
   }
 }
 JSON;
@@ -231,6 +239,48 @@ JSON;
                 'POST',
                 '/v1/product/list',
                 '{"page":1,"page_size":10,"filter":{"offer_id":["1255959"],"product_id":[552526],"visibility":"ALL"}}',
+            ],
+            $responseJson
+        );
+    }
+
+    /**
+     * @covers ::list
+     */
+    public function testListOfferIdType(): void
+    {
+        $responseJson = <<<JSON
+{
+  "result": {
+    "items": [
+      {
+        "product_id": 1,
+        "offer_id": "1"
+      },
+      {
+        "product_id": 2,
+        "offer_id": "2"
+      },
+      {
+        "product_id": 3,
+        "offer_id": "3"
+      }
+    ],
+    "total": 3
+  }
+}
+JSON;
+
+        $filters = [
+            'offer_id' => [1, 2, 3],
+        ];
+        $this->quickTest(
+            'list',
+            [$filters],
+            [
+                'POST',
+                '/v1/product/list',
+                '{"page":1,"page_size":10,"filter":{"offer_id":["1","2","3"]}}',
             ],
             $responseJson
         );

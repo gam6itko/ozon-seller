@@ -2,10 +2,10 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service;
 
-use Gam6itko\OzonSeller\Exception\OzonSellerException;
 use Gam6itko\OzonSeller\Exception\AccessDeniedException;
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Exception\NotFoundException;
+use Gam6itko\OzonSeller\Exception\OzonSellerException;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use Http\Client\Exception\HttpException;
 use Psr\Http\Client\ClientInterface;
