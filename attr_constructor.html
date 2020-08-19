@@ -12,124 +12,336 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/5.26.0/jsoneditor.min.js"></script>
 </head>
 <body>
+
 <div class="container-fluid">
-    <div class="form-inline">
-        <input class="form-control" type="number" name="client-id" value="41955" placeholder="ClientId">
-        <input class="form-control" type="text" name="api-key" value="9753260e-2324-fde7-97f1-7848ed7ed097"
-               placeholder="ApiKey">
-        <button class="btn btn-primary" id="btnGo">Go</button>
+    <div class="form-inline mt-1">
+        <div class="form-group mx-sm-1">
+            <input class="form-control" type="number" name="client-id" value="836" placeholder="ClientId">
+        </div>
+        <div class="form-group mx-sm-1">
+            <input class="form-control" type="text" name="api-key" value="0296d4f2-70a1-4c09-b507-904fd05567b9"
+                   placeholder="ApiKey">
+        </div>
+        <div class="form-group mx-sm-1">
+            <select class="form-control" name="host" id="select-host">
+                <option value="http://cb-api.ozonru.me" selected>dev</option>
+                <option value="http://api-seller.ozon.ru">prod</option>
+            </select>
+        </div>
+        <div class="form-group mx-sm-1">
+            <select class="form-control" name="host" id="select-version">
+                <option value="v1" selected>v1</option>
+                <option value="v2">v2</option>
+            </select>
+        </div>
+        <div class="form-group mx-sm-1">
+            <button class="btn btn-primary" id="btn-submit">Go</button>
+        </div>
     </div>
     <div class="row">
         <div class="col">
             <h2>Category</h2>
-            <div id="treeCategory" style="height: 90vh; overflow-y: scroll"></div>
+            <div id="tree-category" style="height: 90vh; overflow-y: scroll"></div>
         </div>
         <div class="col">
-            <h2>Attributes congigurator</h2>
-            <div id="attributesControls" style="height: 90vh; overflow-y: scroll"></div>
+            <h2>Attributes configurator</h2>
+            <div id="attributes-controls" style="height: 90vh; overflow-y: scroll"></div>
         </div>
         <div class="col">
             <h2>JSON Result</h2>
-            <div id="jsoneditor" style="height: 90vh; overflow-y: scroll"></div>
+            <div id="json-editor" style="height: 90vh; overflow-y: scroll"></div>
         </div>
     </div>
 </div>
 
-<script id="templateOptions" type="text/x-underscore-template">
+<!-- @formatter:off -->
+<script id="template-attributes-v1" type="text/x-underscore-template">
     <h2><%= obj.categoryId %></h2>
     <% for (let attr of obj.data.result) { %>
-    <div>
-        <strong>[<%= attr.id %>] <%= attr.name %></strong>
-        <small class="badge badge-success"><%= attr.type %></small>
-        <% if (attr.is_collection) { %>
-        <small class="badge badge-info">is_collection</small>
-        <% } %>
-        <% if (attr.required) { %>
-        <small class="badge badge-danger">required</small>
-        <% } %>
-        <% if (attr.description) { %><p><%= attr.description %></p><% } %>
-
-        <div class="form-group">
-            <% if ('option' === attr.type) { %>
-            <select class="form-control form-control-sm" name="<%= attr.id %>">
-                <% for (let o of attr.option) { %>
-                <option value="<%= o.id %>"><%= o.value %></option>
-                <% } %>
-            </select>
-            <% } else if ('text' === attr.type) { %>
-            <input class="form-control form-control-sm" name="<%= attr.id %>" type="text">
+        <div>
+            <strong>[<%= attr.id %>] <%= attr.name %></strong>
+            <small class="badge badge-success"><%= attr.type %></small>
+            <% if (attr.is_collection) { %>
+                <small class="badge badge-info">is_collection</small>
             <% } %>
-        </div>
+            <% if (attr.required) { %>
+                <small class="badge badge-danger">required</small>
+            <% } %>
+            <% if (attr.description) { %><p><%= attr.description %></p><% } %>
 
-        <% if (attr.child && attr.child.length > 0) { %>
-        <% for (let c of attr.child) { %>
-        <div class="form-group">
-            [<%= c.id %>] <%= c.name %>
-            <small class="badge badge-success"><%= c.type %></small>
-            <input class="form-control form-control-sm" name="<%= c.id %>" data-parent="<%= attr.id %>">
+            <div class="form-group">
+                <% if ('option' === attr.type) { %>
+                    <select class="form-control form-control-sm" name="<%= attr.id %>">
+                        <% for (let o of attr.option) { %>
+                        <option value="<%= o.id %>"><%= o.value %></option>
+                        <% } %>
+                    </select>
+                <% } else if ('text' === attr.type) { %>
+                    <input class="form-control form-control-sm" name="<%= attr.id %>" type="text">
+                <% } %>
+            </div>
+
+            <% if (attr.child && attr.child.length > 0) { %>
+                <% for (let c of attr.child) { %>
+                    <div class="form-group">
+                        [<%= c.id %>] <%= c.name %>
+                        <small class="badge badge-success"><%= c.type %></small>
+                        <input class="form-control form-control-sm" name="<%= c.id %>" data-parent="<%= attr.id %>">
+                    </div>
+                <% } %>
+            <% } %>
+            <button class="btn btn-sm _btn_add" data-attr-id="<%= attr.id %>">Add</button>
+            <button class="btn btn-sm _btn_clear" data-attr-id="<%= attr.id %>">Dispose</button>
         </div>
-        <% } %>
-        <% } %>
-        <button class="btn btn-sm _btn_add" data-attr-id="<%= attr.id %>">Add</button>
-        <button class="btn btn-sm _btn_clear" data-attr-id="<%= attr.id %>">Dispose</button>
-    </div>
-    <hr>
+        <hr>
     <% } %>
 </script>
+<!-- @formatter:on -->
+
+<!-- @formatter:off -->
+<script id="template-attributes-v2" type="text/x-underscore-template">
+    <h2><%= obj.categoryId %></h2>
+    <% for (let attr of obj.data.result) { %>
+        <div>
+            <div>
+                <strong>[<%= attr.id %>] <%= attr.name %></strong>
+                <small class="badge badge-success" title="type"><%= attr.type %></small>
+                <% if (attr.is_collection) { %>
+                    <small class="badge badge-info" title="is_collection">is_collection</small>
+                <% } %>
+                <% if (attr.required) { %>
+                    <small class="badge badge-danger" title="required">required</small>
+                <% } %>
+
+                <% for (let name of ['group_id', 'group_name', 'dictionary_id']) { %>
+                    <% if (attr[name]) { %>
+                        <small class="badge badge-secondary" title="<%= name %>"><%= name %>: <%= attr[name] %></small>
+                    <% } %>
+                <% } %>
+            </div>
+
+            <% if (attr.description) { %>
+                <details>
+                    <summary>Description</summary>
+                    <%= attr.description %>
+                </details>
+            <% } %>
+
+            <div class="form-group">
+                <% if (attr.dictionary) { %>
+                    <select class="form-control form-control-sm" name="<%= attr.id %>">
+                        <% for (let o of attr.dictionary.result) { %>
+                            <option value="<%= o.id %>"><%= o.value %></option>
+                        <% } %>
+                    </select>
+                    <% if (attr.dictionary.has_next) { %>
+                        <span class="badge badge-danger">has_next</span>
+                    <% } %>
+                <% } else { %>
+                    <input class="form-control form-control-sm" name="<%= attr.id %>" type="text">
+                <% } %>
+            </div>
+
+            <div>
+                <button class="btn btn-sm _btn_add" data-attr-id="<%= attr.id %>">Add</button>
+                <button class="btn btn-sm _btn_clear" data-attr-id="<%= attr.id %>">Dispose</button>
+            </div>
+        </div>
+        <hr>
+    <% } %>
+</script>
+<!-- @formatter:on -->
 
 <script>
-    var HOST = 'http://cb-api.ozonru.me';
-    var ATTRIBUTES = [];
+    /**
+     * @author Alexander Strizhak <gam6itko@gmail.com>
+     */
 
-    $(function () {
-        // create the editor
+    class ConstructorFactory {
+        static create (version) {
+            switch (version) {
+                case 'v1':
+                    return new V1Constructor();
+                case 'v2':
+                    return new V2Constructor();
+                default:
+                    throw new Error('Unexpected version: ' + version);
+            }
+        }
+    }
 
-        var EDITOR = new JSONEditor(document.getElementById("jsoneditor"), {mode: 'code'});
-
-        $('#btnGo').click(loadCategories);
-
-        loadCategories();
-
-        $(document).on('click', 'a.cn', function () {
-            $('#attributesControls').html('');
-            let id = location.hash.replace('#', '');
-            $.ajax({
-                url: `${HOST}/v1/categories/${id}/attributes`,
-                method: 'GET',
-                headers: {
-                    'Client-Id': $('[name="client-id"]').val(),
-                    'Api-Key': $('[name="api-key"]').val(),
-                    'Content-Type': 'application/json'
-                },
-                success: function (data) {
-                    ATTRIBUTES = data.result;
-                    drawAttributeInfo(id, data);
-                }
-            });
-        });
-
-        function getComplexValue (attrId) {
-            let result = [];
-            $(`[data-parent=${attrId}]`).each(function () {
-                let $input = $(this);
-                result.push({
-                    id: $input.attr('name'),
-                    value: $input.val()
-                })
-            });
-            return result;
+    class AbstractConstructor {
+        get host () {
+            return $('#select-host').val();
         }
 
-        $(document).on('click', '._btn_add', function () {
-            let attrId = $(this).data('attrId');
-            let attrObj = findAttrById(attrId);
+        get clientId () {
+            return $('[name="client-id"]').val();
+        }
+
+        get apiKey () {
+            return $('[name="api-key"]').val();
+        }
+
+        get version () {
+            return null;
+        }
+
+        clearAttributeControls () {
+            $('#attributes-controls').html('');
+        }
+
+        drawCategoryTree (result) {
+            let html = this.buildCategoryNode(result);
+            $('#tree-category').html(`<ul>${html}</ul>`);
+        }
+
+        constructor () {
+            this.ATTRIBUTES = [];
+            this.jsonEditor = new JSONEditor(document.getElementById('json-editor'), {mode: 'code'});
+
+            this.loadCategories();
+            this.bindListeners();
+        }
+
+        bindListeners () {
+            $(document).on('click', 'a.cn', _.bind(this.onCategoryClick, this));
+
+            $(document).on('click', '._btn_add', _.bind(this.addAttribute, this));
+
+            $(document).on('click', '._btn_clear', _.bind(this.clearAttribute, this));
+        }
+
+        addAttribute () {
+            throw 'override me';
+        }
+
+        loadCategories () {
+            let _this = this;
+            $.ajax({
+                url: `${this.host}/v1/category/tree`,
+                method: 'POST',
+                headers: {
+                    'Client-Id': _this.clientId,
+                    'Api-Key': this.apiKey,
+                    'Content-Type': 'application/json'
+                },
+                data: '{}',
+                success (data) {
+                    let end = data.result.splice(0, 1);
+                    data.result.push(end[0]);
+                    _this.drawCategoryTree(data.result);
+                }
+            });
+        }
+
+        loadAttributes () {
+            throw 'override me';
+        }
+
+        onCategoryClick () {
+            this.clearAttributeControls();
+
+            let id = location.hash.replace('#', '');
+            if (!id) {
+                console.warn('Fail to extract hash id')
+                return;
+            }
+
+            this.loadAttributes(id);
+        }
+
+        buildCategoryNode (children) {
+            let html = '';
+            for (let i in children) {
+                let nodeHtml = `${children[i]['category_id']} <a class="cn" href="#${children[i]['category_id']}">${children[i]['title']}</a>`;
+                let innerNodes = '';
+                if (children[i]['children']) {
+                    innerNodes = this.buildCategoryNode(children[i]['children']);
+                    innerNodes = `<ul>${innerNodes}</ul>`;
+                }
+                html += `<li>${nodeHtml}${innerNodes}</li>`;
+            }
+            return html;
+        }
+
+        drawAttributeInfo (id, data) {
+            // this.jsonEditor.set(data);
+            let t = $(`#template-attributes-${this.version}`).html().trim();
+            let compiled = _.template(t);
+            $('#attributes-controls').html(compiled({categoryId: id, data: data}));
+        }
+
+        findAttrById (id) {
+            return _.findWhere(this.ATTRIBUTES, {id});
+
+            // for (let a of this.ATTRIBUTES) {
+            //     if (a.id === id) {
+            //         return a;
+            //     }
+            // }
+            // return null;
+        }
+
+        findAttrValueIndex (currentJson, attrId) {
+            for (let i in currentJson.attributes) {
+                let cAttr = currentJson.attributes[i];
+                if (cAttr.id === attrId) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        clearAttribute (event) {
+            let attrId = $(event.target).data('attrId');
+            let attrObj = this.findAttrById(attrId);
+            let currentJson = this.jsonEditor.get();
+            if (!currentJson.attributes) {
+                currentJson.attributes = [];
+            }
+            let replaceIndex = this.findAttrValueIndex(currentJson, attrId);
+            if (-1 === replaceIndex) {
+                return;
+            }
+
+            currentJson.attributes.splice(replaceIndex, 1);
+            this.jsonEditor.set(currentJson);
+        }
+    }
+
+    class V1Constructor extends AbstractConstructor {
+        get version () {
+            return 'v1';
+        }
+
+        loadAttributes (id) {
+            let _this = this;
+            $.ajax({
+                url: `${_this.host}/${_this.version}/categories/${id}/attributes`,
+                method: 'GET',
+                headers: {
+                    'Client-Id': _this.clientId,
+                    'Api-Key': _this.apiKey,
+                    'Content-Type': 'application/json'
+                },
+                success (data) {
+                    _this.ATTRIBUTES = data.result;
+                    _this.drawAttributeInfo(id, data);
+                }
+            });
+        }
+
+        addAttribute (event) {
+            let attrId = $(event.target).data('attrId');
+            let attrObj = this.findAttrById(attrId);
 
             if (null === attrObj) {
                 //console.warn('not found');
                 return;
             }
 
-            let currentJson = EDITOR.get();
+            let currentJson = this.jsonEditor.get();
             if (!currentJson.attributes) {
                 currentJson.attributes = [];
             }
@@ -138,7 +350,7 @@
                 id: attrId
             };
             // ищем текущее
-            let replaceIndex = findAttrValueIndex(currentJson, attrId);
+            let replaceIndex = this.findAttrValueIndex(currentJson, attrId);
             if (-1 !== replaceIndex) {
                 attrValNew = currentJson.attributes[replaceIndex];
             }
@@ -146,14 +358,14 @@
             let token = attrObj.type + (attrObj.is_collection ? '_collection' : '');
             switch (token) {
                 case 'child':
-                    attrValNew.complex = getComplexValue(attrId);
+                    attrValNew.complex = this.getComplexValue(attrId);
                     break;
 
                 case 'child_collection':
                     if (!attrValNew.complex_collection) {
                         attrValNew.complex_collection = [];
                     }
-                    let complex = getComplexValue(attrId);
+                    let complex = this.getComplexValue(attrId);
                     attrValNew.complex_collection.push(complex);
                     break;
 
@@ -191,84 +403,197 @@
                 currentJson.attributes[replaceIndex] = attrValNew;
             }
 
-            EDITOR.set(currentJson);
-        });
+            this.jsonEditor.set(currentJson);
+        }
 
-        $(document).on('click', '._btn_clear', function () {
-            let attrId = $(this).data('attrId');
-            let attrObj = findAttrById(attrId);
-            let currentJson = EDITOR.get();
+        getComplexValue (attrId) {
+            let result = [];
+            $(`[data-parent=${attrId}]`).each(function () {
+                let $input = $(this);
+                result.push({
+                    id: $input.attr('name'),
+                    value: $input.val()
+                })
+            });
+            return result;
+        }
+    }
+
+    class V2Constructor extends AbstractConstructor {
+        get version () {
+            return 'v2';
+        }
+
+        loadAttributes (categoryId) {
+            let loader = new V2DictionaryLoader(this.host, this.clientId, this.apiKey);
+
+            let _this = this;
+            $.ajax({
+                url: `${_this.host}/${_this.version}/category/attribute`,
+                method: 'POST',
+                headers: {
+                    'Client-Id': _this.clientId,
+                    'Api-Key': _this.apiKey,
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({category_id: categoryId}),
+                success (data) {
+                    data.result = _.sortBy(data.result, 'id');
+
+                    loader.loadForAttributes(categoryId, data.result, function (dictionaryData) {
+
+                        for (let attr of data.result) {
+                            if (attr.dictionary_id !== 0) {
+                                let d = _.findWhere(dictionaryData, {dictionaryId: attr.dictionary_id});
+                                if (d.dictionary) {
+                                    attr.dictionary = d.dictionary;
+                                }
+                            }
+                        }
+
+                        _this.ATTRIBUTES = data.result;
+                        _this.drawAttributeInfo(categoryId, data);
+                    });
+                }
+            });
+        }
+
+        addAttribute (event) {
+            let attrId = $(event.target).data('attrId');
+            let $input = $(`[name="${attrId}"]`);
+            let attrObj = this.findAttrById(attrId);
+
+            if (null === attrObj) {
+                //console.warn('not found');
+                return;
+            }
+
+            let currentJson = this.jsonEditor.get();
             if (!currentJson.attributes) {
                 currentJson.attributes = [];
             }
-            let replaceIndex = findAttrValueIndex(currentJson, attrId);
+
+            let attrValNew = {
+                id: attrId,
+                values: [],
+            };
+            // ищем текущее
+            let replaceIndex = this.findAttrValueIndex(currentJson, attrId);
+            if (-1 !== replaceIndex) {
+                attrValNew = currentJson.attributes[replaceIndex];
+            }
+
+            //todo is_collection
+            attrValNew.values = [
+                this.buildAttributeValue(attrObj, $input.val())
+            ];
+
             if (-1 === replaceIndex) {
+                currentJson.attributes.push(attrValNew);
+            } else {
+                currentJson.attributes[replaceIndex] = attrValNew;
+            }
+
+            this.jsonEditor.set(currentJson);
+        }
+
+        buildAttributeValue (attrObj, value) {
+            if (attrObj.dictionary_id !== 0) {
+                return {
+                    dictionary_value_id: parseInt(value)
+                };
+            }
+
+            return {
+                value
+            };
+        }
+    }
+
+    class V2DictionaryLoader {
+        constructor (host, clientId, apiKey) {
+            this.host = host;
+            this.clientId = clientId;
+            this.apiKey = apiKey;
+        }
+
+        loadForAttributes (categoryId, attributes, onSuccess) {
+            this.dictionaries = [];
+            this.loadDictIndex = 0;
+
+            for (let attr of attributes) {
+                if (attr.dictionary_id !== 0) {
+                    this.dictionaries.push({
+                        dictionaryId: attr.dictionary_id,
+                        categoryId: categoryId,
+                        attributeId: attr.id,
+                    });
+                }
+            }
+
+            this._load(onSuccess);
+        }
+
+        _loop (fnLoop) {
+            let data = this.dictionaries[this.loadDictIndex];
+
+            let response = localStorage.getItem(`dictionary.${data.dictionaryId}`);
+            if (null !== response) {
+                fnLoop(JSON.parse(response));
                 return;
             }
-            currentJson.attributes.splice(replaceIndex, 1);
-            EDITOR.set(currentJson);
+
+            this.requestDictionary(data.categoryId, data.attributeId, fnLoop);
+        }
+
+        _load (onSuccess) {
+            //todo setTimeout
+            let fnLoop = _.bind(function (response) {
+                response.result = _.sortBy(response.result, 'value');
+
+                let data = this.dictionaries[this.loadDictIndex];
+                data['dictionary'] = response;
+
+                let cacheKey = `dictionary.${data.dictionaryId}`;
+                if (!localStorage.hasOwnProperty(cacheKey)) {
+                    localStorage.setItem(`dictionary.${data.dictionaryId}`, JSON.stringify(response));
+                }
+
+                if (++this.loadDictIndex < this.dictionaries.length) {
+                    this._loop(fnLoop);
+                } else {
+                    onSuccess(this.dictionaries);
+                }
+            }, this);
+
+            //first run
+            this._loop(fnLoop);
+        }
+
+        requestDictionary (categoryId, attributeId, onSuccess) {
+            return $.ajax({
+                url: `${this.host}/v2/category/attribute/values`,
+                method: 'POST',
+                headers: {
+                    'Client-Id': this.clientId,
+                    'Api-Key': this.apiKey,
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({
+                    category_id: categoryId,
+                    attribute_id: attributeId,
+                    limit: 1000
+                }),
+                success: onSuccess
+            });
+        }
+    }
+
+    $(function () {
+        $('#btn-submit').click(function () {
+            let constructor = ConstructorFactory.create($('#select-version').val());
         });
     });
-
-    function loadCategories () {
-        $.ajax({
-            url: `${HOST}/v1/category/tree`,
-            method: 'POST',
-            headers: {
-                'Client-Id': $('[name="client-id"]').val(),
-                'Api-Key': $('[name="api-key"]').val(),
-                'Content-Type': 'application/json'
-            },
-            data: '{}',
-            success: function (data) {
-                let end = data.result.splice(0, 1);
-                data.result.push(end[0]);
-                let html = buildNodes(data.result);
-                $('#treeCategory').html(`<ul>${html}</ul>`);
-            }
-        });
-    }
-
-    function buildNodes (children) {
-        let html = '';
-        for (var i in children) {
-            let nodeHtml = `${children[i]['category_id']} <a class="cn" href="#${children[i]['category_id']}">${children[i]['title']}</a>`;
-            let innerNodes = '';
-            if (children[i]['children']) {
-                innerNodes = buildNodes(children[i]['children']);
-                innerNodes = `<ul>${innerNodes}</ul>`;
-            }
-            html += `<li>${nodeHtml}${innerNodes}</li>`;
-        }
-        return html;
-    }
-
-    function drawAttributeInfo (id, data) {
-//        $('#jsonAttributes').html(JSON.stringify(data, null, 2));
-        let t = $('#templateOptions').html().trim();
-        let compiled = _.template(t);
-        $('#attributesControls').html(compiled({categoryId: id, data: data}));
-    }
-
-    function findAttrById (id) {
-        for (let a of ATTRIBUTES) {
-            if (a.id === id) {
-                return a;
-            }
-        }
-        return null;
-    }
-
-    function findAttrValueIndex (currentJson, attrId) {
-        for (let i in currentJson.attributes) {
-            let cAttr = currentJson.attributes[i];
-            if (cAttr.id === attrId) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
 </script>
 </body>
 </html>
