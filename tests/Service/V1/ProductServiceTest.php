@@ -2,20 +2,20 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service\V1;
 
-use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use Gam6itko\OzonSeller\Service\V1\ProductService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
 use Psr\Http\Client\ClientInterface;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
  *
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\ProductsService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\ProductService
  */
-class ProductsServiceTest extends AbstractTestCase
+class ProductServiceTest extends AbstractTestCase
 {
     protected function getClass(): string
     {
-        return ProductsService::class;
+        return ProductService::class;
     }
 
     public function testClassify(): void
@@ -326,7 +326,7 @@ JSON;
 
         $config = [123, 'api-key'];
         $client = $this->createMock(ClientInterface::class);
-        $svc = new ProductsService($config, $client);
+        $svc = new ProductService($config, $client);
         $svc->importPrices($prices);
     }
 
@@ -382,7 +382,7 @@ JSON;
 
         $config = [123, 'api-key'];
         $client = $this->createMock(ClientInterface::class);
-        $svc = new ProductsService($config, $client);
+        $svc = new ProductService($config, $client);
         $svc->importStocks($prices);
     }
 

@@ -5,31 +5,31 @@ namespace Gam6itko\OzonSeller\Tests\E2E\Service\V1;
 use Gam6itko\OzonSeller\Exception\AccessDeniedException;
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Exception\ProductValidatorException;
-use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use Gam6itko\OzonSeller\Service\V1\ProductService;
 use GuzzleHttp\Client as GuzzleClient;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\ProductsService
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V1\ProductService
  * @group  v1
  * @group  e2e
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
  */
-class ProductsServiceTest extends TestCase
+class ProductServiceTest extends TestCase
 {
     protected function setUp(): void
     {
         sleep(1); //fix 429 Too Many Requests
     }
 
-    public function getSvc(): ProductsService
+    public function getSvc(): ProductService
     {
         $config = [$_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']];
         $adapter = new GuzzleAdapter(new GuzzleClient());
 
-        return new ProductsService($config, $adapter);
+        return new ProductService($config, $adapter);
     }
 
     /**

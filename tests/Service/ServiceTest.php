@@ -4,7 +4,7 @@ namespace Gam6itko\OzonSeller\Tests\Service;
 
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Exception\OzonSellerException;
-use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use Gam6itko\OzonSeller\Service\V1\ProductService;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -23,7 +23,7 @@ class ServiceTest extends TestCase
     public function testConstructor(array $config, array $expected)
     {
         $client = $this->createMock(ClientInterface::class);
-        $svc = new ProductsService($config, $client);
+        $svc = new ProductService($config, $client);
         $class = new \ReflectionClass($svc);
         $parent = $class->getParentClass();
         $prop = $parent->getProperty('config');
@@ -79,7 +79,7 @@ class ServiceTest extends TestCase
         $this->expectExceptionMessage('To many config parameters');
 
         $client = $this->createMock(ClientInterface::class);
-        new ProductsService([0, 1, 2, 3, 4], $client);
+        new ProductService([0, 1, 2, 3, 4], $client);
     }
 
     public function testThrowEmptyConfig()
@@ -88,7 +88,7 @@ class ServiceTest extends TestCase
         $this->expectExceptionMessage('Not defined mandatory config parameters `clientId` or `apiKey`');
 
         $client = $this->createMock(ClientInterface::class);
-        new ProductsService([], $client);
+        new ProductService([], $client);
     }
 
     public function testBadResponseWithoutThrow()
@@ -98,7 +98,7 @@ class ServiceTest extends TestCase
 
         $jsonError = '{"error":{"code":"BAD_REQUEST","message":"API method /v1/product/delete is unavailable","data":[]}}';
         $client = $this->createMockClientWithErrorResponse($jsonError);
-        $svc = new ProductsService([1, 'a'], $client);
+        $svc = new ProductService([1, 'a'], $client);
         $svc->importInfo(123);
     }
 
@@ -109,7 +109,7 @@ class ServiceTest extends TestCase
 
         $jsonError = '{"error":{"code":"YOU_dont_kNOw_me_","message":"your test will fall!","data":[]}}';
         $client = $this->createMockClientWithErrorResponse($jsonError);
-        $svc = new ProductsService([1, 'a'], $client);
+        $svc = new ProductService([1, 'a'], $client);
         $svc->importInfo(123);
     }
 

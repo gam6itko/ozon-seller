@@ -26,12 +26,12 @@ composer require nyholm/psr7
 ```
 
 ```php
-use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use Gam6itko\OzonSeller\Service\V1\ProductService;
 use Symfony\Component\HttpClient\Psr18Client;
 
 $config = [$_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']];
 $client = new Psr18Client();
-$svc = new ProductsService($config, $client);
+$svc = new ProductService($config, $client);
 //do stuff
 ```
 
@@ -153,7 +153,7 @@ echo json_encode($orderArr);
 `/v1/product/import`
 
 ```php
-use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use Gam6itko\OzonSeller\Service\V1\ProductService;
 use GuzzleHttp\Client as GuzzleClient;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 
@@ -163,7 +163,7 @@ $config = [
     // use prod host by default
 ];
 $adapter = new GuzzleAdapter(new GuzzleClient());
-$svcProduct = new ProductsService($config, $adapter);
+$svcProduct = new ProductService($config, $adapter);
 $product = [
     'barcode'        => '8801643566784',
     'description'    => 'Red Samsung Galaxy S9 with 512GB',

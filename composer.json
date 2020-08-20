@@ -34,7 +34,6 @@
     "require-dev": {
         "ext-curl": "*",
         "phpunit/phpunit": "^7.4||^8.0||^9.0",
-        "paquettg/php-html-parser": "^2.1",
         "php-coveralls/php-coveralls": "^2.2",
         "php-http/guzzle6-adapter": "^2.0",
         "symfony/http-client": "^4.1||^5.1",

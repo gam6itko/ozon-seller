@@ -87,4 +87,15 @@ class ChatService extends AbstractService
 
         return $this->request('POST', '/v1/chat/start', $arr)['chat_id'];
     }
+
+    public function updates(string $chatId, string $fromMessageId, int $limit = 100)
+    {
+        $arr = [
+            'chat_id'         => $chatId,
+            'from_message_id' => $fromMessageId,
+            'limit'           => $limit,
+        ];
+
+        return $this->request('POST', '/v1/chat/updates', $arr);
+    }
 }

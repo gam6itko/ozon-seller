@@ -85,10 +85,8 @@ abstract class AbstractService
 
     /**
      * @param array|string|null $body
-     *
-     * @return string|array
      */
-    protected function request(string $method, string $uri = '', $body = null, bool $parseIsJson = true, bool $returnOnlyResult = true)
+    protected function request(string $method, string $uri = '', $body = null, bool $parseResultAsJson = true, bool $returnOnlyResult = true)
     {
         try {
             $request = $this->createRequest($method, $uri, $body);
@@ -100,7 +98,7 @@ abstract class AbstractService
                 $this->throwOzonException($responseBody->getContents());
             }
 
-            if (!$parseIsJson) {
+            if (!$parseResultAsJson) {
                 return $responseBody->getContents();
             }
 

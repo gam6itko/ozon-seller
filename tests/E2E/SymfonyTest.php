@@ -3,7 +3,7 @@
 namespace Gam6itko\OzonSeller\Tests\E2E;
 
 use Gam6itko\OzonSeller\Exception\BadRequestException;
-use Gam6itko\OzonSeller\Service\V1\ProductsService;
+use Gam6itko\OzonSeller\Service\V1\ProductService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -18,7 +18,7 @@ class SymfonyTest extends TestCase
     {
         $config = [$_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']];
         $client = new Psr18Client();
-        $svc = new ProductsService($config, $client);
+        $svc = new ProductService($config, $client);
         $products = $svc->list(
             [],
             ['page' => 1, 'page_size' => 1]
@@ -34,7 +34,7 @@ class SymfonyTest extends TestCase
 
         $config = [$_SERVER['CLIENT_ID'], $_SERVER['API_KEY'], $_SERVER['API_URL']];
         $client = new Psr18Client();
-        $svc = new ProductsService($config, $client);
+        $svc = new ProductService($config, $client);
         $status = $svc->delete(123);
         self::assertNotEmpty($status);
     }

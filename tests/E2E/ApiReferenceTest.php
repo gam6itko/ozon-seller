@@ -2,17 +2,10 @@
 
 namespace Gam6itko\OzonSeller\Tests\E2E;
 
-use Gam6itko\OzonSeller\Service\V1\ActionsService;
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
-use Gam6itko\OzonSeller\Service\V1\ChatService;
-use Gam6itko\OzonSeller\Service\V1\ProductsService;
-use Gam6itko\OzonSeller\Service\V1\ReportService;
-use Gam6itko\OzonSeller\Service\V2\CategoryService as V2CategoryService;
+use Gam6itko\OzonSeller\Service\V1\ProductService as V1ProductService;
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
-use Gam6itko\OzonSeller\Service\V2\Posting\FboService;
-use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
-use Gam6itko\OzonSeller\Service\V2\ProductService as V2ProductService;
-use PHPHtmlParser\Dom;
+use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,122 +15,117 @@ use PHPUnit\Framework\TestCase;
  */
 class ApiReferenceTest extends TestCase
 {
-    const IGNORE_PREFIXES = [
-        '/v1/order',
-    ];
+//    const IGNORE_PREFIXES = [
+//        '/v1/order',
+//    ];
 
-    const CONFIG = [
-        CategoriesService::class  => [
-            'prefix'  => '/v1/category',
-            'mapping' => [
-                'attribute' => 'attributes',
-            ],
-        ],
-        ChatService::class        => ['prefix' => '/v1/chat'],
-        ProductsService::class    => [
-            'prefix'  => '/v1/product',
-            'mapping' => [
-                'prepayment/set' => 'setPrepayment',
-            ],
-        ],
-        ReportService::class      => [
-            'prefix'  => '/v1/report',
-            'mapping' => [
-                'products/create'     => 'products',
-                'transactions/create' => 'transaction', //todo rename
-            ],
-        ],
-        //Seller
-        ActionsService::class     => [
-            'prefix'  => '/v1/actions',
-            'mapping' => [
-                '' => 'list',
-            ],
-        ],
-        // V2
-        // Posting
-        CrossborderService::class => [
-            'prefix'  => '/v2/posting/crossborder',
-            'mapping' => [
-                'cancel-reason/list'     => 'cancelReasons',
-                'shipping-provider/list' => 'shippingProviders',
-            ],
-        ],
-        FboService::class         => [
-            'prefix' => '/v2/posting/fbo',
-        ],
-        FbsService::class         => [
-            'prefix'  => '/v2/posting/fbs',
-            'mapping' => [
-                'cancel-reason/list' => 'cancelReasons',
-            ],
-        ],
-        V2CategoryService::class  => [
-            'prefix' => '/v2/category',
-        ],
-        V2ProductService::class   => [
-            'prefix' => '/v2/product',
-        ],
+    const MAPPING = [
+        '/v1/categories/tree/{category_id}'              => null,
+        '/v1/categories/{category_id}/attributes'        => null,
+        '/v1/category/tree'                              => [CategoriesService::class, 'tree'],
+        '/v1/category/attribute'                         => [CategoriesService::class, 'attributes'],
+        '/v1/product/info/description'                   => null, //todo
+        '/v1/product/list/price'                         => [V1ProductService::class, 'price'],
+        '/v1/product/prepayment/set'                     => [V1ProductService::class, 'setPrepayment'],
+        '/v1/products/info/{product_id}'                 => [V1ProductService::class, 'info'],
+        '/v1/products/list'                              => null,
+        '/v1/products/prices'                            => null,
+        '/v1/products/stocks'                            => null,
+        '/v1/products/update'                            => null,
+        '/v2/posting/crossborder/cancel-reason/list'     => [CrossborderService::class, 'cancelReasons'],
+        '/v2/posting/crossborder/shipping-provider/list' => [CrossborderService::class, 'shippingProviders'],
     ];
 
     /**
      * Check for new api methods.
      */
-    public function testActualRealization()
+    public function testActualRealization(): void
     {
-        $dom = new Dom();
-        $dom->loadFromUrl('https://cb-api.ozonru.me/apiref/en/');
-        $tabs = $dom->find('.highlight.http.tab-http');
-        self::assertNotEmpty($tabs->count());
+        $client = new Client();
+        $response = $client->get('https://api-seller.ozon.ru/swagger.json');
+        $json = $response->getBody()->getContents();
+        $swagger = json_decode($json, true);
 
-        $theirMethods = [];
-        /** @var Dom\HtmlNode $tab */
-        foreach ($tabs as $tab) {
-            $path = $tab->find('.nn')[0]->text;
-            if ('/' === $path) {
+        foreach ($swagger['paths'] as $path => $confArr) {
+            if (array_key_exists($path, self::MAPPING)) {
                 continue;
             }
 
-            if (in_array($path, $theirMethods)) {
+            $conf = reset($confArr);
+            if (!empty($conf['deprecated'])) {
+                self::assertTrue($this->isDeprecated($path), 'You should delete or mark method as deprecated. '.$path);
                 continue;
             }
-            $theirMethods[] = $path;
-        }
-        asort($theirMethods);
-        $theirMethods = array_values($theirMethods);
-        self::assertNotEmpty($theirMethods);
 
-        foreach ($theirMethods as $path) {
+//            if (!$this->isRealized($path)) {
+//                echo "Method `$path` not realized".PHP_EOL;
+//            }
             self::assertTrue($this->isRealized($path), "Method `$path` not realized");
         }
     }
 
-    private function isRealized(string $path): bool
+    private function isDeprecated(string $path): bool
     {
-        $path = preg_replace('/[^-|_|\/|0-9|a-z]/', '', $path);
-
-        foreach (self::IGNORE_PREFIXES as $ignore) {
-            if (0 === strpos($path, $ignore)) {
-                return true;
-            }
+        if (null === ($arr = $this->findMethod($path))) {
+            return true;
         }
 
-        foreach (self::CONFIG as $class => $config) {
-            if (0 !== $p = strpos($path, $config['prefix'])) {
-                continue;
-            }
+        [$class, $method] = $arr;
 
-            $method = ltrim(substr($path, strlen($config['prefix'])), '/');
-            if (isset($config['mapping']) && array_key_exists($method, $config['mapping'])) {
-                $method = $config['mapping'][$method];
-            }
+        $refClass = new \ReflectionClass($class);
+        $refMethod = $refClass->getMethod($method);
+        if (!$docComment = $refMethod->getDocComment()) {
+            return false;
+        }
 
-            // to camelCase
-            $canonicalMethodName = lcfirst(implode('', array_map('ucfirst', explode('_', preg_replace('/\/|-|_/', '_', $method)))));
+        return false !== strpos($docComment, '@deprecated');
+    }
 
-            return method_exists($class, $canonicalMethodName);
+    private function isRealized(string $path): bool
+    {
+//        $path = preg_replace('/[^-|{|}|_|\/|0-9|a-z]/', '', $path);
+
+//        if (array_key_exists($path, self::MAPPING)) {
+//            return true;
+//        }
+
+        if (null !== $this->findMethod($path)) {
+            return true;
         }
 
         return false;
+    }
+
+    /**
+     * @return array|null
+     */
+    private function findMethod(string $path)
+    {
+        $prefix = 'Gam6itko\\OzonSeller\\Service\\';
+        $arr = array_map('ucfirst', array_filter(explode('/', $path)));
+        do {
+            $key = array_shift($arr);
+            $class = $prefix.$key.'Service';
+            if (class_exists($class)) {
+                break;
+            }
+
+            $prefix .= $key.'\\';
+        } while (!empty($arr));
+
+        if (empty($arr)) {
+            return null;
+        }
+
+        $arr = array_map(static function (string $string): string {
+            return implode('', array_map('ucfirst', preg_split('/(_|-)/', $string)));
+        }, $arr);
+        $method = lcfirst(implode('', $arr));
+
+        if (method_exists($class, $method)) {
+            return [$class, $method];
+        }
+
+        return null;
     }
 }
