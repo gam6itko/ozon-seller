@@ -38,21 +38,6 @@ class ProductService extends AbstractService
             }
         }
 
-        // cast attributes types.
-        //todo type attributes collection
-        foreach ($income['items'] as &$item) {
-            if (isset($item['attributes']) && is_array($item['attributes']) && count($item['attributes']) > 0) {
-                foreach ($item['attributes'] as &$attribute) {
-                    $attribute = TypeCaster::castArr($attribute, ['value' => 'str']);
-                    if (isset($item['collection']) && is_array($attribute['collection']) && count($attribute['collection']) > 0) {
-                        foreach ($attribute['collection'] as &$collectionItem) {
-                            $collectionItem = (string) $collectionItem;
-                        }
-                    }
-                }
-            }
-        }
-
         return $this->request('POST', "{$this->path}/import", $income);
     }
 
