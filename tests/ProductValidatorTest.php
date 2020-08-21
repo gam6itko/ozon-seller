@@ -269,7 +269,7 @@ class ProductValidatorTest extends TestCase
             ],
 
             [
-                'offer_id'       => 16209,
+                'offer_id'       => '16209',
                 'category_id'    => 17036198,
                 'price'          => '10110',
                 'vat'            => '0',
