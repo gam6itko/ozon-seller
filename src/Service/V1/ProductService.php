@@ -498,6 +498,6 @@ class ProductService extends AbstractService
      */
     public function certificateTypes(): array
     {
-        return $this->request('POST', '/v1/product/certificate/types', '{}');
+        return $this->request('GET', '/v1/product/certificate/types');
     }
 }
