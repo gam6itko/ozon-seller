@@ -92,8 +92,8 @@ class ExceptionTest extends AbstractTestCase
 </html>
 HTML;
 
-        self::expectException(OzonSellerException::class);
-        self::expectErrorMessage($content);
+        $this->expectException(OzonSellerException::class);
+        $this->expectErrorMessage($content);
 
         $stream = $this->createMock(StreamInterface::class);
         $stream
