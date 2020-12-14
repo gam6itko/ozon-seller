@@ -121,19 +121,19 @@ abstract class AbstractService
 
     protected function throwOzonException(string $responseBodyContents): void
     {
-        $errorData = json_decode($responseBodyContents, true)['error'];
+        $errorData = json_decode($responseBodyContents, true);
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \RuntimeException('Invalid json error response: '.$errorData);
+            throw new OzonSellerException($responseBodyContents);
         }
 
-        if (!class_exists($className = $this->getExceptionClassByName($errorData['code']))) {
+        if (!class_exists($className = $this->getExceptionClassByName($errorData['error']['code']))) {
             throw new OzonSellerException($responseBodyContents);
         }
 
         $errorData = array_merge([
             'message' => '',
             'data'    => [],
-        ], $errorData);
+        ], $errorData['error']);
 
         $refClass = new \ReflectionClass($className);
         /** @var \Throwable $instance */

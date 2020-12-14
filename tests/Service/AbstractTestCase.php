@@ -2,7 +2,6 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service;
 
-use Gam6itko\OzonSeller\Service\V1\ProductService;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -56,7 +55,6 @@ abstract class AbstractTestCase extends TestCase
     {
         [$method, $path, $expectedOptions] = $expectedRequest;
         $client = $this->createClient($method, $path, $expectedOptions, $responseJson);
-        /** @var ProductService $svc */
         $svc = $this->createSvc($client);
         self::assertTrue(method_exists($svc, $methodName), "No method `$methodName`");
         $result = call_user_func_array([$svc, $methodName], $arguments);

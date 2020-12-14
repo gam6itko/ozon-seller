@@ -79,4 +79,46 @@ class ExceptionTest extends AbstractTestCase
             ],
         ];
     }
+
+    public function test502(): void
+    {
+        $content = <<<HTML
+<html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+HTML;
+
+        self::expectException(OzonSellerException::class);
+        self::expectErrorMessage($content);
+
+        $stream = $this->createMock(StreamInterface::class);
+        $stream
+            ->expects(self::once())
+            ->method('getContents')
+            ->willReturn($content);
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response
+            ->expects(self::once())
+            ->method('getStatusCode')
+            ->willReturn(502);
+        $response
+            ->expects(self::once())
+            ->method('getBody')
+            ->willReturn($stream);
+
+        $client = $this->createMock(ClientInterface::class);
+        $client
+            ->expects(self::once())
+            ->method('sendRequest')
+            ->willReturn($response);
+
+        /** @var FbsService $svc */
+        $svc = $this->createSvc($client);
+        $svc->get('');
+    }
 }
