@@ -7,7 +7,12 @@
 [![Latest Unstable Version](https://poser.pugx.org/gam6itko/ozon-seller/v/unstable)](//packagist.org/packages/gam6itko/ozon-seller) 
 [![License](https://poser.pugx.org/gam6itko/ozon-seller/license)](//packagist.org/packages/gam6itko/ozon-seller)
 
-Документация Ozon Api: <https://cb-api.ozonru.me/apiref/>
+## Документация Ozon Api 
+
+<https://docs.ozon.ru/api/seller> 
+
+<https://cb-api.ozonru.me/apiref/>
+
 
 ## Установка
 
@@ -56,10 +61,26 @@ $svc = new CategoriesService($config, $adapter);
 //do stuff
 ```
 
+## Реализованные методы
+
+Чтобы узнать какой класс и метод реализуют запрос на нужный URL воспользуйтесь скриптом `bin/is_realized.php`
+
+```shell script
+php bin/is_realized.php | grep /v2/posting/fbs/get
+```
+output
+```shell script
+/v2/posting/fbs/get: Gam6itko\OzonSeller\Service\V2\Posting\FbsService::get
+/v2/posting/fbs/get-by-barcode: NotRealized
+```
+
+Автор не всегда успевает добавлять реализации новых методов.
+Если нужного вам метода нет в библиотеке, то не стесняйтесь открыть issue или PR.
+
 ## Примеры использования
 Больше примеров смотрите в папке `tests/E2E/Service/`
 
-## Categories
+### Categories
 
 ```php
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
@@ -81,9 +102,9 @@ $categoryTree = $svc->tree();
 $attributes = $svc->attributes(17038826);
 ```
 
-## Posting Crossborder
+### Posting Crossborder
 
-### get info 
+#### get info 
 
 `/v2/posting/crossborder/get`
 
@@ -146,9 +167,9 @@ echo json_encode($orderArr);
 }
 ```
 
-## Products
+### Products
 
-### import
+#### import
 
 `/v1/product/import`
 

@@ -34,16 +34,25 @@ foreach ($swagger['paths'] as $path => $confArr) {
         continue;
     }
 
+    echo "$path: ";
+
+    //mark as deprecated
     $conf = reset($confArr);
     if (!empty($conf['deprecated']) && isDeprecated($path)) {
-        echo "\033[01;33m Deprecated\033[0m: ".$path.PHP_EOL;
-        continue;
+        echo "\033[01;33mdeprecated \033[0m";
     }
 
-    if (isRealized($path)) {
-        echo "\033[01;31mNotRealized\033[0m: ".$path.PHP_EOL;
+    $classMethod = findMethod($path);
+    if (empty($classMethod)) {
+        echo "\033[01;31mNotRealized\033[0m";
+    } else {
+        //show class::method
+        echo "\033[01;32m".implode('::', $classMethod)."\033[0m";
     }
+
+    echo PHP_EOL;
 }
+
 
 function isDeprecated(string $path): bool
 {
@@ -60,21 +69,6 @@ function isDeprecated(string $path): bool
     }
 
     return false !== strpos($docComment, '@deprecated');
-}
-
-function isRealized(string $path): bool
-{
-//        $path = preg_replace('/[^-|{|}|_|\/|0-9|a-z]/', '', $path);
-
-//        if (array_key_exists($path, MAPPING)) {
-//            return true;
-//        }
-
-    if (null !== findMethod($path)) {
-        return true;
-    }
-
-    return false;
 }
 
 /**
