@@ -5,6 +5,7 @@ require dirname(__DIR__).'/vendor/autoload.php';
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use Gam6itko\OzonSeller\Service\V1\ProductService as V1ProductService;
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
+use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use GuzzleHttp\Client;
 
 const MAPPING = [
@@ -22,6 +23,11 @@ const MAPPING = [
     '/v1/products/update'                            => null,
     '/v2/posting/crossborder/cancel-reason/list'     => [CrossborderService::class, 'cancelReasons'],
     '/v2/posting/crossborder/shipping-provider/list' => [CrossborderService::class, 'shippingProviders'],
+    '/v2/posting/fbs/cancel-reason/list'             => [FbsService::class.'cancelReasons'],
+    '/v2/fbs/posting/delivered'                      => [FbsService::class.'delivered'],
+    '/v2/fbs/posting/delivering'                     => [FbsService::class.'delivering'],
+    '/v2/fbs/posting/last-mile'                      => [FbsService::class.'lastMile'],
+    '/v2/fbs/posting/tracking-number/set'            => [FbsService::class.'setTrackingNumber'],
 ];
 
 $client = new Client();
@@ -52,7 +58,6 @@ foreach ($swagger['paths'] as $path => $confArr) {
 
     echo PHP_EOL;
 }
-
 
 function isDeprecated(string $path): bool
 {

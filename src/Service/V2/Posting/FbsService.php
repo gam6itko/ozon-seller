@@ -92,34 +92,6 @@ class FbsService extends AbstractService
     }
 
     /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-section_postings_fbs_act_create_title
-     */
-    public function actCreate(): int
-    {
-        $result = $this->request('POST', "{$this->path}/act/create", '{}');
-
-        return $result['id'];
-    }
-
-    /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-section_postings_fbs_act_check_title
-     */
-    public function actCheckStatus(int $id): array
-    {
-        return $this->request('POST', "{$this->path}/act/check-status", ['id' => $id]);
-    }
-
-    /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-section_postings_fbs_act_get_title
-     *
-     * @return array|string
-     */
-    public function actGetPdf(int $id): string
-    {
-        return $this->request('POST', "{$this->path}/act/get-pdf", ['id' => $id], false);
-    }
-
-    /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_package_label
      *
      * @param array|string $postingNumber
@@ -188,4 +160,113 @@ class FbsService extends AbstractService
 
         return $this->request('POST', "{$this->path}/awaiting-delivery", $body);
     }
+
+    public function getByBarcode(string $barcode): array
+    {
+        return $this->request('POST', "{$this->path}/get-by-barcode", ['barcode' => $barcode]);
+    }
+
+    //<editor-fold desc="/act">
+
+    /**
+     * @see https://cb-api.ozonru.me/apiref/en/#t-section_postings_fbs_act_create_title
+     */
+    public function actCreate(): int
+    {
+        $result = $this->request('POST', "{$this->path}/act/create", '{}');
+
+        return $result['id'];
+    }
+
+    /**
+     * @see https://cb-api.ozonru.me/apiref/en/#t-section_postings_fbs_act_check_title
+     */
+    public function actCheckStatus(int $id): array
+    {
+        return $this->request('POST', "{$this->path}/act/check-status", ['id' => $id]);
+    }
+
+    /**
+     * @see https://cb-api.ozonru.me/apiref/en/#t-section_postings_fbs_act_get_title
+     */
+    public function actGetPdf(int $id): string
+    {
+        return $this->request('POST', "{$this->path}/act/get-pdf", ['id' => $id], false);
+    }
+
+    public function actGetContainerLabels(int $id): string
+    {
+        return $this->request('POST', "{$this->path}/act/get-container-labels", ['id' => $id], false);
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="/v2/fbs/posting">
+
+    /**
+     * @param array|string $postingNumber
+     */
+    public function delivered($postingNumber): array
+    {
+        if (is_string($postingNumber)) {
+            $postingNumber = [$postingNumber];
+        }
+
+        $body = [
+            'posting_number' => $postingNumber,
+        ];
+
+        return $this->request('POST', '/v2/fbs/posting/delivered', $body);
+    }
+
+    /**
+     * @param array|string $postingNumber
+     */
+    public function delivering($postingNumber): array
+    {
+        if (is_string($postingNumber)) {
+            $postingNumber = [$postingNumber];
+        }
+
+        $body = [
+            'posting_number' => $postingNumber,
+        ];
+
+        return $this->request('POST', '/v2/fbs/posting/delivering', $body);
+    }
+
+    /**
+     * @param array|string $postingNumber
+     */
+    public function lastMile($postingNumber): array
+    {
+        if (is_string($postingNumber)) {
+            $postingNumber = [$postingNumber];
+        }
+
+        $body = [
+            'posting_number' => $postingNumber,
+        ];
+
+        return $this->request('POST', '/v2/fbs/posting/last-mile', $body);
+    }
+
+    public function setTrackingNumber(array $trackingNumbers): array
+    {
+        if (isset($trackingNumbers['posting_number']) || isset($trackingNumbers['tracking_number'])) {
+            $trackingNumbers = [$trackingNumbers];
+        }
+
+        foreach ($trackingNumbers as &$tn) {
+            $tn = $this->faceControl($tn, ['posting_number', 'tracking_number']);
+        }
+
+        $body = [
+            'tracking_numbers' => $trackingNumbers,
+        ];
+
+        return $this->request('POST', '/v2/fbs/posting/tracking-number/set', $body);
+    }
+
+    //</editor-fold>
 }
