@@ -32,6 +32,11 @@ const MAPPING = [
     '/v2/posting/crossborder/shipping-provider/list' => [CrossborderService::class, 'shippingProviders'],
     '/v2/posting/fbs/cancel-reason/list'             => [FbsService::class.'cancelReasons'],
     '/v2/products/info/attributes'                   => [V2ProductService::class, 'infoAttributes'],
+    '/v2/posting/fbs/cancel-reason/list'             => [FbsService::class.'cancelReasons'],
+    '/v2/fbs/posting/delivered'                      => [FbsService::class.'delivered'],
+    '/v2/fbs/posting/delivering'                     => [FbsService::class.'delivering'],
+    '/v2/fbs/posting/last-mile'                      => [FbsService::class.'lastMile'],
+    '/v2/fbs/posting/tracking-number/set'            => [FbsService::class.'setTrackingNumber'],
 ];
 
 $client = new Client();
