@@ -5,8 +5,10 @@ namespace Gam6itko\OzonSeller\Service\V2\Posting;
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\AbstractService;
+use Gam6itko\OzonSeller\Service\HasOrdersInterface;
+use Gam6itko\OzonSeller\Service\HasUnfulfilledOrdersInterface;
 
-class FbsService extends AbstractService
+class FbsService extends AbstractService implements HasOrdersInterface, HasUnfulfilledOrdersInterface
 {
     private $path = '/v2/posting/fbs';
 
@@ -15,23 +17,55 @@ class FbsService extends AbstractService
      *
      * @param array $filter [since, to, status]
      */
-    public function list(string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10, array $filter = []): array
+    public function list(array $requestData = []): array
     {
-        $filter = $this->faceControl($filter, ['since', 'to', 'status']);
+        $default = [
+            'filter' => [],
+            'dir'    => SortDirection::ASC,
+            'offset' => 0,
+            'limit'  => 10,
+        ];
+
+        $requestData = array_merge(
+            $default,
+            $this->faceControl($requestData, array_keys($default))
+        );
+
+        $filter = $this->faceControl($requestData['filter'], ['since', 'to', 'status']);
         foreach (['since', 'to'] as $key) {
             if (isset($filter[$key]) && $filter[$key] instanceof \DateTimeInterface) {
                 $filter[$key] = $filter[$key]->format(DATE_RFC3339);
             }
         }
+        $requestData['filter'] = $filter;
 
-        $body = [
-            'filter' => $filter,
-            'dir'    => $sort,
-            'offset' => $offset,
-            'limit'  => $limit,
+        return $this->request('POST', "{$this->path}/list", $requestData);
+    }
+
+    /**
+     * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_unfulfilled_list
+     */
+    public function unfulfilledList(array $requestData = []): array
+    {
+        $default = [
+            'with'    => [],
+            'status'  => Status::getList(),
+            'sort_by' => 'updated_at',
+            'dir'     => SortDirection::ASC,
+            'offset'  => 0,
+            'limit'   => 10,
         ];
 
-        return $this->request('POST', "{$this->path}/list", $body);
+        $requestData = array_merge(
+            $default,
+            $this->faceControl($requestData, array_keys($default))
+        );
+
+        if (is_string($requestData['status'])) {
+            $requestData['status'] = [$requestData['status']];
+        }
+
+        return $this->request('POST', "{$this->path}/unfulfilled/list", $requestData);
     }
 
     /**
@@ -40,36 +74,6 @@ class FbsService extends AbstractService
     public function get(string $postingNumber): array
     {
         return $this->request('POST', "{$this->path}/get", ['posting_number' => $postingNumber]);
-    }
-
-    /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_unfulfilled_list
-     *
-     * @return array|string
-     */
-    public function unfulfilledList($status, string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10, array $with = []): array
-    {
-        if (is_string($status)) {
-            $status = [$status];
-        }
-        foreach ($status as $s) {
-            if (!in_array($s, Status::getList())) {
-                throw new \LogicException("Incorrect status `$s`");
-            }
-        }
-
-        $body = [
-            'status' => $status,
-            'dir'    => $sort,
-            'offset' => $offset,
-            'limit'  => $limit,
-        ];
-
-        if (!empty($with)) {
-            $body['with'] = $with;
-        }
-
-        return $this->request('POST', "{$this->path}/unfulfilled/list", $body);
     }
 
     /**

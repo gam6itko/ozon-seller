@@ -2,7 +2,6 @@
 
 namespace Gam6itko\OzonSeller\Tests\Service\V2\Posting;
 
-use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
@@ -19,13 +18,12 @@ class FbsServiceTest extends AbstractTestCase
         $this->quickTest(
             'list',
             [
-                SortDirection::ASC,
-                0,
-                10,
                 [
-                    'since'  => new \DateTime('2018-11-18T11:27:45.154Z'),
-                    'to'     => new \DateTime('2019-11-18T11:27:45.154Z'),
-                    'status' => Status::AWAITING_APPROVE,
+                    'filter' => [
+                        'since'  => new \DateTime('2018-11-18T11:27:45.154Z'),
+                        'to'     => new \DateTime('2019-11-18T11:27:45.154Z'),
+                        'status' => Status::AWAITING_APPROVE,
+                    ],
                 ],
             ],
             [
@@ -54,16 +52,17 @@ class FbsServiceTest extends AbstractTestCase
         $this->quickTest(
             'unfulfilledList',
             [
-                Status::AWAITING_APPROVE,
-                SortDirection::ASC,
-                0,
-                10,
-                ['barcodes'],
+                [
+                    'status' => [
+                        Status::AWAITING_APPROVE,
+                    ],
+                    'with'   => ['barcodes' => true],
+                ],
             ],
             [
                 'POST',
                 '/v2/posting/fbs/unfulfilled/list',
-                '{"status":["awaiting_approve"],"dir":"asc","offset":0,"limit":10,"with":["barcodes"]}',
+                '{"with":{"barcodes":true},"status":["awaiting_approve"],"sort_by":"updated_at","dir":"asc","offset":0,"limit":10}',
             ]
         );
     }

@@ -3,42 +3,41 @@
 namespace Gam6itko\OzonSeller\Service\V2\Posting;
 
 use Gam6itko\OzonSeller\Enum\SortDirection;
+use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\AbstractService;
+use Gam6itko\OzonSeller\Service\HasOrdersInterface;
+use Gam6itko\OzonSeller\Service\HasUnfulfilledOrdersInterface;
 
-class CrossborderService extends AbstractService
+class CrossborderService extends AbstractService implements HasOrdersInterface, HasUnfulfilledOrdersInterface
 {
     private $path = '/v2/posting/crossborder';
 
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-cb_list
-     *
-     * @param array $filter [since, to, status]
      */
-    public function list(string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10, array $filter = []): array
+    public function list(array $requestData = []): array
     {
-        $filter = $this->faceControl($filter, ['since', 'to', 'status']);
+        $default = [
+            'filter' => [],
+            'dir'    => SortDirection::ASC,
+            'offset' => 0,
+            'limit'  => 10,
+        ];
+
+        $requestData = array_merge(
+            $default,
+            $this->faceControl($requestData, array_keys($default))
+        );
+
+        $filter = $this->faceControl($requestData['filter'], ['since', 'to', 'status']);
         foreach (['since', 'to'] as $key) {
             if (isset($filter[$key]) && $filter[$key] instanceof \DateTimeInterface) {
                 $filter[$key] = $filter[$key]->format(DATE_RFC3339);
             }
         }
+        $requestData['filter'] = $filter;
 
-        $body = [
-            'filter' => $filter,
-            'dir'    => $sort,
-            'offset' => $offset,
-            'limit'  => $limit,
-        ];
-
-        return $this->request('POST', "{$this->path}/list", $body);
-    }
-
-    /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-cb_get
-     */
-    public function get(string $postingNumber): array
-    {
-        return $this->request('POST', "{$this->path}/get", ['posting_number' => $postingNumber]);
+        return $this->request('POST', "{$this->path}/list", $requestData);
     }
 
     /**
@@ -48,19 +47,33 @@ class CrossborderService extends AbstractService
      *
      * @todo fix {"error":{"code":"BAD_REQUEST","message":"Invalid request payload","data":[{"name":"status","code":"TOO_FEW_ELEMENTS","value":"[]","message":""}]}}
      */
-    public function unfulfilledList($status, string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10): array
+    public function unfulfilledList(array $requestData = []): array
     {
-        if (is_string($status)) {
-            $status = [$status];
-        }
-        $body = [
-            'status' => $status,
-            'dir'    => $sort,
-            'offset' => $offset,
-            'limit'  => $limit,
+        $default = [
+            'status' => Status::getList(),
+            'dir'    => SortDirection::ASC,
+            'offset' => 0,
+            'limit'  => 10,
         ];
 
-        return $this->request('POST', "{$this->path}/unfulfilled/list", $body);
+        $requestData = array_merge(
+            $default,
+            $this->faceControl($requestData, array_keys($default))
+        );
+
+        if (is_string($requestData['status'])) {
+            $requestData['status'] = [$requestData['status']];
+        }
+
+        return $this->request('POST', "{$this->path}/unfulfilled/list", $requestData);
+    }
+
+    /**
+     * @see https://cb-api.ozonru.me/apiref/en/#t-cb_get
+     */
+    public function get(string $postingNumber): array
+    {
+        return $this->request('POST', "{$this->path}/get", ['posting_number' => $postingNumber]);
     }
 
     /**

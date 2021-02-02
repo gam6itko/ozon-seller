@@ -19,13 +19,15 @@ class CrossborderServiceTest extends AbstractTestCase
         $this->quickTest(
             'list',
             [
-                SortDirection::ASC,
-                0,
-                10,
                 [
-                    'since'  => new \DateTime('2018-11-18T11:27:45.154Z'),
-                    'to'     => new \DateTime('2019-11-18T11:27:45.154Z'),
-                    'status' => Status::AWAITING_APPROVE,
+                    'dir'    => SortDirection::ASC,
+                    'offset' => 0,
+                    'limit'  => 10,
+                    'filter' => [
+                        'since'  => new \DateTime('2018-11-18T11:27:45.154Z'),
+                        'to'     => new \DateTime('2019-11-18T11:27:45.154Z'),
+                        'status' => Status::AWAITING_APPROVE,
+                    ],
                 ],
             ],
             [
@@ -54,15 +56,22 @@ class CrossborderServiceTest extends AbstractTestCase
         $this->quickTest(
             'unfulfilledList',
             [
-                Status::AWAITING_APPROVE,
-                SortDirection::ASC,
-                0,
-                10,
+                [
+                    'status' => Status::AWAITING_APPROVE,
+                    'dir'    => SortDirection::DESC,
+                    'offset' => 0,
+                    'limit'  => 10,
+                    'filter' => [
+                        'since'  => new \DateTime('2018-11-18T11:27:45.154Z'),
+                        'to'     => new \DateTime('2019-11-18T11:27:45.154Z'),
+                        'status' => Status::AWAITING_APPROVE,
+                    ],
+                ],
             ],
             [
                 'POST',
                 '/v2/posting/crossborder/unfulfilled/list',
-                '{"status":["awaiting_approve"],"dir":"asc","offset":0,"limit":10}',
+                '{"status":["awaiting_approve"],"dir":"desc","offset":0,"limit":10}',
             ]
         );
     }
