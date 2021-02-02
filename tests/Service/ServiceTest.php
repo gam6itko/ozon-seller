@@ -59,6 +59,22 @@ class ServiceTest extends TestCase
             ],
         ];
 
+        yield [
+            [
+                'clientId' => '123',
+                'apiKey'   => 'api-key',
+                'host'     => 'https://github.com',
+                'foo'      => 1,
+                'bar'      => 2,
+                'baz'      => 3,
+            ],
+            [
+                'clientId' => '123',
+                'apiKey'   => 'api-key',
+                'host'     => 'https://github.com',
+            ],
+        ];
+
         // default host
         yield [
             [
