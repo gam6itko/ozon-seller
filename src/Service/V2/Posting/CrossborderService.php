@@ -14,23 +14,41 @@ class CrossborderService extends AbstractService
      *
      * @param array $filter [since, to, status]
      */
-    public function list(string $sort = SortDirection::ASC, int $offset = 0, int $limit = 10, array $filter = []): array
+    public function list($sort = SortDirection::ASC, int $offset = 0, int $limit = 10, array $filter = []): array
     {
-        $filter = $this->faceControl($filter, ['since', 'to', 'status']);
+        if (is_array($sort)) {
+            $requestData = $sort;
+            @trigger_error('You should pass array as first argument');
+        } else {
+            $requestData = [
+                'filter' => $filter,
+                'dir'    => $sort,
+                'offset' => $offset,
+                'limit'  => $limit,
+            ];
+        }
+
+        $default = [
+            'filter' => [],
+            'dir'    => SortDirection::ASC,
+            'offset' => 0,
+            'limit'  => 10,
+        ];
+
+        $requestData = array_merge(
+            $default,
+            $this->faceControl($requestData, array_keys($default))
+        );
+
+        $filter = $this->faceControl($requestData['filter'], ['since', 'to', 'status']);
         foreach (['since', 'to'] as $key) {
             if (isset($filter[$key]) && $filter[$key] instanceof \DateTimeInterface) {
                 $filter[$key] = $filter[$key]->format(DATE_RFC3339);
             }
         }
+        $requestData['filter'] = $filter;
 
-        $body = [
-            'filter' => $filter,
-            'dir'    => $sort,
-            'offset' => $offset,
-            'limit'  => $limit,
-        ];
-
-        return $this->request('POST', "{$this->path}/list", $body);
+        return $this->request('POST', "{$this->path}/list", $requestData);
     }
 
     /**

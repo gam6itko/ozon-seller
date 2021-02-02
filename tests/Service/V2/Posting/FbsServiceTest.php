@@ -36,6 +36,27 @@ class FbsServiceTest extends AbstractTestCase
         );
     }
 
+    public function testListNew()
+    {
+        $this->quickTest(
+            'list',
+            [
+                [
+                    'filter' => [
+                        'since'  => new \DateTime('2018-11-18T11:27:45.154Z'),
+                        'to'     => new \DateTime('2019-11-18T11:27:45.154Z'),
+                        'status' => Status::AWAITING_APPROVE,
+                    ],
+                ],
+            ],
+            [
+                'POST',
+                '/v2/posting/fbs/list',
+                '{"filter":{"since":"2018-11-18T11:27:45+00:00","to":"2019-11-18T11:27:45+00:00","status":"awaiting_approve"},"dir":"asc","offset":0,"limit":10}',
+            ]
+        );
+    }
+
     public function testGet(): void
     {
         $this->quickTest(
