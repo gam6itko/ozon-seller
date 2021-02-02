@@ -35,12 +35,13 @@ abstract class AbstractService
 
     private function parseConfig(array $config): void
     {
-        if (count($config) > 3) {
-            throw new \LogicException('To many config parameters');
-        }
+        $keys = ['clientId', 'apiKey', 'host'];
 
         if (!$this->isAssoc($config)) {
-            $config = array_combine(['clientId', 'apiKey', 'host'], array_pad($config, 3, null));
+            if (count($config) > 3) {
+                throw new \LogicException('To many config parameters');
+            }
+            $config = array_combine($keys, array_pad($config, 3, null));
         }
 
         if (empty($config['clientId']) || empty($config['apiKey'])) {
@@ -54,7 +55,7 @@ abstract class AbstractService
             $config['host'] = rtrim($this->getDefaultHost(), '/');
         }
 
-        $this->config = $config;
+        $this->config = $this->faceControl($config, $keys);
     }
 
     /**
