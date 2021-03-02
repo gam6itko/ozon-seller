@@ -7,9 +7,6 @@ class OzonSellerException extends \Exception
     /** @var array|null */
     protected $data;
 
-    /**
-     * ValidationException constructor.
-     */
     public function __construct(string $messages, array $data = [])
     {
         parent::__construct($messages);
