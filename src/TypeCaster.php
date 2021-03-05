@@ -16,7 +16,7 @@ class TypeCaster
     public static function castArr(array $data, array $config, bool $force = true)
     {
         foreach ($data as $key => &$val) {
-            if (array_key_exists($key, $config)) {
+            if (array_key_exists($key, $config) && null !== $val) {
                 switch (self::normalizeType($config[$key])) {
                     case 'boolean':
                         $val = (bool) $val;

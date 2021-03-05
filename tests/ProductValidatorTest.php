@@ -23,11 +23,9 @@ class ProductValidatorTest extends TestCase
         self::assertTrue(true);
     }
 
-    public function dataValidCreate()
+    public function dataValidCreate(): iterable
     {
-        return [
-            ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"PRAGA – элегантное поло","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"cm","weight":0.146,"weight_unit":"kg","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}'],
-        ];
+        yield ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"PRAGA – элегантное поло","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"cm","weight":0.146,"weight_unit":"kg","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}'];
     }
 
     /**
@@ -42,13 +40,11 @@ class ProductValidatorTest extends TestCase
         self::assertTrue(true);
     }
 
-    public function dataInvalid()
+    public function dataInvalid(): iterable
     {
-        return [
-            ['{"offer_id":"1563"}'],
-            ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"PRAGA – элегантное поло","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"m","weight":0.146,"weight_unit":"ton","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}'],
-            ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"cm","weight":0.146,"weight_unit":"kg","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}'],
-        ];
+        yield ['{"offer_id":"1563"}'];
+        yield ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"PRAGA – элегантное поло","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"m","weight":0.146,"weight_unit":"ton","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}'];
+        yield ['{"offer_id":"1563","price":2590,"barcode":"8056225253563","description":"","name":"Футболка-поло PRAGA","vendor":"Errea","height":2,"depth":38,"width":29,"dimension_unit":"cm","weight":0.146,"weight_unit":"kg","category_id":15621031,"vat":0,"images":[{"file_name":"https://avatars1.githubusercontent.com/u/3841197?s=460&v=4","default":true}]}'];
     }
 
     /**
@@ -61,14 +57,9 @@ class ProductValidatorTest extends TestCase
         self::assertTrue(true);
     }
 
-    /**
-     * @return array
-     */
-    public function dataValidUpdate()
+    public function dataValidUpdate(): iterable
     {
-        return [
-            ['{"product_id":"123", "name": "name"}'],
-        ];
+        yield ['{"product_id":"123", "name": "name"}'];
     }
 
     /**
@@ -81,14 +72,9 @@ class ProductValidatorTest extends TestCase
         self::assertTrue(true);
     }
 
-    /**
-     * @return array
-     */
-    public function dataInvalidUpdate()
+    public function dataInvalidUpdate(): iterable
     {
-        return [
-            ['{"name": "name"}'],
-        ];
+        yield ['{"name": "name"}'];
     }
 
     /**
@@ -103,14 +89,10 @@ class ProductValidatorTest extends TestCase
         self::assertCount(10, $array['images']);
     }
 
-    /**
-     * @return array
-     */
-    public function dataImages()
+    public function dataImages(): iterable
     {
-        return [
-            [
-                '{
+        yield [
+            '{
   "product_id": 15728170,
   "description": "description",
   "category_id": 35853052,
@@ -213,11 +195,10 @@ class ProductValidatorTest extends TestCase
     }
   ]
 }',
-            ],
         ];
     }
 
-    public function testFail()
+    public function testFail(): void
     {
         $this->expectException(\LogicException::class);
 
@@ -234,7 +215,7 @@ class ProductValidatorTest extends TestCase
         self::assertSame($expected, $pv->validateItem($item));
     }
 
-    public function dataV2()
+    public function dataV2(): iterable
     {
         yield [
             [
@@ -244,23 +225,29 @@ class ProductValidatorTest extends TestCase
                 'vendor_code' => 'AM016209',
                 'quantity'    => '3',
 
-                'offer_id'       => '16209',
-                'category_id'    => '17036198',
-                'price'          => 10110,
-                'vat'            => 0,
+                'offer_id'    => '16209',
+                'category_id' => '17036198',
+                'price'       => 10110,
+                'vat'         => 0,
+                'barcode'     => null,
+
                 'height'         => '55',
                 'depth'          => '22',
                 'width'          => '45',
                 'dimension_unit' => 'mm',
-                'weight'         => '8',
-                'weight_unit'    => 'g',
-                'images'         => [
+
+                'weight'      => '8',
+                'weight_unit' => 'g',
+
+                'image_group_id' => null,
+
+                'images'     => [
                     [
                         'file_name' => 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MRXJ2?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1551489675083',
                         'default'   => true,
                     ],
                 ],
-                'attributes'     => [
+                'attributes' => [
                     [
                         'id'    => 8229,
                         'value' => '193',
@@ -269,23 +256,29 @@ class ProductValidatorTest extends TestCase
             ],
 
             [
-                'offer_id'       => '16209',
-                'category_id'    => 17036198,
-                'price'          => '10110',
-                'vat'            => '0',
+                'offer_id'    => '16209',
+                'category_id' => 17036198,
+                'price'       => '10110',
+                'vat'         => '0',
+                'barcode'     => null,
+
                 'height'         => 55,
                 'depth'          => 22,
                 'width'          => 45,
                 'dimension_unit' => 'mm',
-                'weight'         => 8,
-                'weight_unit'    => 'g',
-                'images'         => [
+
+                'weight'      => 8,
+                'weight_unit' => 'g',
+
+                'image_group_id' => null,
+
+                'images'     => [
                     [
                         'file_name' => 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MRXJ2?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1551489675083',
                         'default'   => true,
                     ],
                 ],
-                'attributes'     => [
+                'attributes' => [
                     [
                         'id'    => 8229,
                         'value' => '193',

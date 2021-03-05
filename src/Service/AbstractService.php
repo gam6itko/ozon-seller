@@ -19,9 +19,6 @@ abstract class AbstractService
     /** @var ClientInterface */
     protected $client;
 
-    /**
-     * CategoriesService constructor.
-     */
     public function __construct(array $config, ClientInterface $client)
     {
         $this->parseConfig($config);

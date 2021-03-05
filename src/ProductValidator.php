@@ -23,9 +23,6 @@ class ProductValidator
     /** @var array */
     private $typeCast;
 
-    /**
-     * ProductValidator constructor.
-     */
     public function __construct(string $mode = 'create', int $version = 1)
     {
         if (!in_array($mode, ['create', 'update'])) {
