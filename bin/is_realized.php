@@ -1,6 +1,16 @@
 <?php declare(strict_types=1);
 
-require dirname(__DIR__).'/vendor/autoload.php';
+$whereIsAutoloader = [
+    dirname(__DIR__).'/vendor/autoload.php',
+    dirname(__DIR__).'/autoload.php',
+];
+
+foreach ($whereIsAutoloader as $filepath) {
+    if (file_exists($filepath)) {
+        require_once $filepath;
+        break;
+    }
+}
 
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use Gam6itko\OzonSeller\Service\V1\ProductService as V1ProductService;

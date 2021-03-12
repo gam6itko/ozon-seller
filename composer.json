@@ -39,6 +39,9 @@
         "symfony/http-client": "^4.1||^5.1",
         "nyholm/psr7": "^1.3"
     },
+    "config": {
+        "bin-dir": "bin"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.5.x-dev"
