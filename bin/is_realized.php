@@ -51,7 +51,9 @@ $swagger = json_decode($json, true);
 
 foreach ($swagger['paths'] as $path => $confArr) {
     if (array_key_exists($path, MAPPING)) {
-        continue;
+        $classMethod = MAPPING[$path];
+    } else {
+        $classMethod = findMethod($path);
     }
 
     echo "$path: ";
@@ -62,7 +64,6 @@ foreach ($swagger['paths'] as $path => $confArr) {
         echo "\033[01;33mdeprecated \033[0m";
     }
 
-    $classMethod = findMethod($path);
     if (empty($classMethod)) {
         echo "\033[01;31mNotRealized\033[0m";
     } else {
