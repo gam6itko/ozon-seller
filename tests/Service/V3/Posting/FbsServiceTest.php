@@ -25,7 +25,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v3/posting/fbs/list',
-                '{"with":{"analytics_data":true,"barcodes":true,"financial_data":true},"filter":[],"dir":"asc","offset":0,"limit":10}',
+                '{"with":{"analytics_data":false,"barcodes":false,"financial_data":false},"filter":[],"dir":"asc","offset":0,"limit":10}',
             ]
         );
     }
