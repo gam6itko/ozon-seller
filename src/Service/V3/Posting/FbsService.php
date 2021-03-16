@@ -54,7 +54,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
             $this->faceControl($requestData, array_keys($default))
         );
 
-        $requestData['filters'] = $this->faceControl($requestData['filters'], [
+        $requestData['filter'] = $this->faceControl($requestData['filter'], [
             'cutoff_from',
             'cutoff_to',
             'delivering_date_from',

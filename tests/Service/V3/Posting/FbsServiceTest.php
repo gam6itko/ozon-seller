@@ -17,6 +17,9 @@ class FbsServiceTest extends AbstractTestCase
         return FbsService::class;
     }
 
+    /**
+     * @covers ::list
+     */
     public function testList(): void
     {
         $this->quickTest(
@@ -25,6 +28,22 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v3/posting/fbs/list',
+                '{"with":{"analytics_data":false,"barcodes":false,"financial_data":false},"filter":[],"dir":"asc","offset":0,"limit":10}',
+            ]
+        );
+    }
+
+    /**
+     * @covers ::unfulfilledList
+     */
+    public function testUnfulfilledList(): void
+    {
+        $this->quickTest(
+            'unfulfilledList',
+            [],
+            [
+                'POST',
+                '/v3/posting/fbs/unfulfilled/list',
                 '{"with":{"analytics_data":false,"barcodes":false,"financial_data":false},"filter":[],"dir":"asc","offset":0,"limit":10}',
             ]
         );
