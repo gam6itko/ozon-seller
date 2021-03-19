@@ -48,4 +48,27 @@ class FbsServiceTest extends AbstractTestCase
             ]
         );
     }
+
+    /**
+     * @covers ::get
+     */
+    public function testGet(): void
+    {
+        $this->quickTest(
+            'get',
+            [
+                '00000001-00001-1',
+                [
+                    'analytics_data' => true,
+                    'barcodes'       => true,
+                    'financial_data' => true,
+                ],
+            ],
+            [
+                'POST',
+                '/v3/posting/fbs/get',
+                '{"posting_number":"00000001-00001-1","with":{"analytics_data":true,"barcodes":true,"financial_data":true}}',
+            ]
+        );
+    }
 }
