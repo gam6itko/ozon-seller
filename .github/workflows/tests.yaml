@@ -45,7 +45,7 @@ jobs:
           dependency-versions: ${{ matrix.dependencies }}
 
       - name: Run PHPUnit
-        run: vendor/bin/phpunit --exclude-group=e2e --coverage-clover=clover.xml
+        run: vendor/bin/phpunit --exclude-group=e2e --coverage-clover=clover-${{ matrix.php-version }}-${{ matrix.dependencies }}.xml
 
       - name: ls
         run: ls -l
@@ -53,8 +53,7 @@ jobs:
       - name: Upload coverage file
         uses: actions/upload-artifact@v2
         with:
-          name: clover-${{ matrix.php-version }}-${{ matrix.dependencies }}.xml
-          path: clover.xml
+          path: clover-${{ matrix.php-version }}-${{ matrix.dependencies }}.xml
 
   upload_coverage:
     name: Upload coverage to Coveralls
