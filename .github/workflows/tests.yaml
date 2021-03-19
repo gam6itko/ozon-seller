@@ -61,7 +61,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-         
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: xdebug
+          ini-values: zend.assertions=1
+
+      - name: Install dependencies with Composer
+        uses: ramsey/composer-install@v1
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
       - name: Download coverage files
         uses: actions/download-artifact@v2
         with:
