@@ -17,10 +17,10 @@ jobs:
         experimental: [false]
         php-version:
           - 7.1
-          - 7.2
-          - 7.3
-          - 7.4
-          - 8.0
+#          - 7.2
+#          - 7.3
+#          - 7.4
+#          - 8.0
         dependencies:
           - highest
         include:
@@ -57,6 +57,10 @@ jobs:
     steps:
       - name: Install php-coveralls
         run: composer global require php-coveralls/php-coveralls
+
+      - name: test
+        run: composer global info --tree
+
       - name: Upload coverage results to Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
