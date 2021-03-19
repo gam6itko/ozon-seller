@@ -67,8 +67,6 @@ jobs:
 
       - name: Install dependencies with Composer
         uses: ramsey/composer-install@v1
-        with:
-          dependency-versions: ${{ matrix.dependencies }}
 
       - name: Download coverage files
         uses: actions/download-artifact@v2
