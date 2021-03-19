@@ -59,9 +59,9 @@ jobs:
         run: composer global require php-coveralls/php-coveralls
 
       - name: test
-        run: composer global info --tree
+        run: ls
 
       - name: Upload coverage results to Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: php-coveralls --coverage_clover=coverage-clover.xml -v
+        run: ./bin/php-coveralls --coverage_clover=coverage-clover.xml -v
