@@ -48,7 +48,6 @@ jobs:
         run: vendor/bin/phpunit --exclude-group=e2e --coverage-clover coverage-clover.xml
 
 
-
   upload_coverage:
     name: Upload coverage to Coveralls
     runs-on: ubuntu-latest
@@ -56,7 +55,9 @@ jobs:
       - phpunit
           
     steps:
+      - name: Install php-coveralls
+        run: composer global require php-coveralls/php-coveralls
       - name: Upload coverage results to Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: vendor/bin/php-coveralls --coverage_clover=coverage-clover.xml -v
+        run: php-coveralls --coverage_clover=coverage-clover.xml -v
