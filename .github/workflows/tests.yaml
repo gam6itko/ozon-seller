@@ -44,13 +44,15 @@ jobs:
         with:
           dependency-versions: ${{ matrix.dependencies }}
 
+      - name: Creating build/logs directory
+        run: mkdir -p build/logs
+
       - name: Run PHPUnit
-        run: vendor/bin/phpunit --exclude-group=e2e --coverage-clover coverage-clover.xml
+        run: vendor/bin/phpunit --exclude-group=e2e --coverage-clover build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: vendor/bin/php-coveralls --coverage_clover=coverage-clover.xml -v
-
+        run: ./bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
 
 
