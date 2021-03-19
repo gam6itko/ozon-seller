@@ -23,10 +23,10 @@ jobs:
 #          - 8.0
         dependencies:
           - highest
-        include:
-          - php-version: 7.1
-            dependencies: lowest
-            experimental: true
+#        include:
+#          - php-version: 7.1
+#            dependencies: lowest
+#            experimental: true
 
     steps:
       - name: Checkout
@@ -74,7 +74,7 @@ jobs:
           path: build/logs
 
       - name: ls
-        run: ls -l
+        run: ls -l build/logs
 
       - name: Install php-coveralls
         run: composer global require php-coveralls/php-coveralls
