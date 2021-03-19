@@ -45,12 +45,12 @@ jobs:
           dependency-versions: ${{ matrix.dependencies }}
 
       - name: Run PHPUnit
-        run: vendor/bin/phpunit --exclude-group=e2e --coverage-clover clover.xml
+        run: vendor/bin/phpunit --exclude-group=e2e --coverage-clover=clover.xml
 
       - name: Upload coverage file
         uses: actions/upload-artifact@v2
         with:
-          name: phpunit-clover-${{ matrix.deps }}-${{ matrix.php-version }}.xml
+          name: phpunit-clover-${{ matrix.php-version }}.xml
           path: clover.xml
 
   upload_coverage:
@@ -62,8 +62,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: PHP v
-        run: php -v
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "7.2"
+          coverage: "pcov"
+          ini-values: "zend.assertions=1"
 
       - name: Install dependencies with Composer
         uses: ramsey/composer-install@v1
@@ -76,6 +80,11 @@ jobs:
       - name: Install php-coveralls
         run: composer global require php-coveralls/php-coveralls
 
+      - name: whereis
+        run: whereis composer
+
+      - name: whereis
+        run: whereis php-coveralls
 
       - name: Upload coverage results to Coveralls
         env:
