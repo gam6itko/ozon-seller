@@ -14,19 +14,19 @@ jobs:
 
     strategy:
       matrix:
-        experimental: [false]
+        experimental: [ false ]
         php-version:
           - 7.1
-#          - 7.2
-#          - 7.3
-#          - 7.4
-#          - 8.0
+          - 7.2
+          - 7.3
+          - 7.4
+          - 8.0
         dependencies:
           - highest
-#        include:
-#          - php-version: 7.1
-#            dependencies: lowest
-#            experimental: true
+        include:
+          - php-version: 7.1
+            dependencies: lowest
+            experimental: true
 
     steps:
       - name: Checkout
@@ -50,7 +50,7 @@ jobs:
       - name: Upload coverage file
         uses: actions/upload-artifact@v2
         with:
-          name: phpunit-clover-${{ matrix.php-version }}.xml
+          name: clover-${{ matrix.deps }}-${{ matrix.php-version }}.xml
           path: clover.xml
 
   upload_coverage:
@@ -59,34 +59,21 @@ jobs:
     needs:
       - phpunit
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.2"
-          coverage: "pcov"
-          ini-values: "zend.assertions=1"
-
-      - name: Install dependencies with Composer
-        uses: ramsey/composer-install@v1
+          php-version: 7.4
+          coverage: none
 
       - name: Download coverage files
         uses: actions/download-artifact@v2
         with:
           path: build/logs
-       
+
       - name: Install php-coveralls
         run: composer global require php-coveralls/php-coveralls
-
-      - name: whereis
-        run: whereis composer
-
-      - name: whereis
-        run: whereis php-coveralls
 
       - name: Upload coverage results to Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: php-coveralls --coverage_clover=build/logs/clover.xml -v
+        run: php-coveralls --coverage_clover=build/logs/clover-*.xml -v
