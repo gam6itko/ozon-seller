@@ -17,10 +17,10 @@ jobs:
         experimental: [ false ]
         php-version:
           - 7.1
-          - 7.2
-          - 7.3
-          - 7.4
-          - 8.0
+#          - 7.2
+#          - 7.3
+#          - 7.4
+#          - 8.0
         dependencies:
           - highest
         include:
@@ -50,7 +50,7 @@ jobs:
       - name: Upload coverage file
         uses: actions/upload-artifact@v2
         with:
-          name: clover-${{ matrix.deps }}-${{ matrix.php-version }}.xml
+          name: clover-${{ matrix.php-version }}-${{ matrix.dependencies }}.xml
           path: clover.xml
 
   upload_coverage:
