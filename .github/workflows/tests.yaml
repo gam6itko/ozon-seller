@@ -47,9 +47,6 @@ jobs:
       - name: Run PHPUnit
         run: vendor/bin/phpunit --exclude-group=e2e --coverage-clover=clover.xml
 
-      - name: ls
-        run: ls -l
-
       - name: Upload coverage file
         uses: actions/upload-artifact@v2
         with:
@@ -75,9 +72,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: build/logs
-
-      - name: ls
-        run: ls -lR build/logs
 
       - name: Install php-coveralls
         run: composer global require php-coveralls/php-coveralls
