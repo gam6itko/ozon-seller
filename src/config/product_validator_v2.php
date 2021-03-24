@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 
 return [
+    'name' => ['type' => 'string', 'requiredCreate' => false],
+
     'offer_id' => ['type' => 'string', 'requiredCreate' => true],
 
     'attributes'         => [

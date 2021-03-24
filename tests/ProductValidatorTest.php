@@ -219,6 +219,10 @@ class ProductValidatorTest extends TestCase
     {
         yield [
             [
+                'foo' => 1,
+                'bar' => true,
+                'baz' => ['you', 'shall', 'not', 'pass'],
+
                 'product_id'  => 123,
                 'description' => 'Description for item',
                 'name'        => 'Наушники Apple AirPods 2 (без беспроводной зарядки чехла)',
@@ -256,6 +260,7 @@ class ProductValidatorTest extends TestCase
             ],
 
             [
+                'name'        => 'Наушники Apple AirPods 2 (без беспроводной зарядки чехла)',
                 'offer_id'    => '16209',
                 'category_id' => 17036198,
                 'price'       => '10110',
