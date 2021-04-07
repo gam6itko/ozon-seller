@@ -20,10 +20,25 @@ class FboServiceTest extends AbstractTestCase
         return FboService::class;
     }
 
-    public function testList()
+    /**
+     * @dataProvider dataList
+     */
+    public function testList(array $arguments, string $json): void
     {
         $this->quickTest(
             'list',
+            $arguments,
+            [
+                'POST',
+                '/v2/posting/fbo/list',
+                $json,
+            ]
+        );
+    }
+
+    public function dataList(): iterable
+    {
+        yield [
             [
                 [
                     'dir'    => SortDirection::ASC,
@@ -36,12 +51,56 @@ class FboServiceTest extends AbstractTestCase
                     ],
                 ],
             ],
+            <<<JSON
+{
+  "filter": {
+    "since": "2018-11-18T11:27:45+00:00",
+    "to": "2019-11-18T11:27:45+00:00",
+    "status": "awaiting_approve"
+  },
+  "dir": "asc",
+  "offset": 0,
+  "limit": 10,
+  "with": {
+    "analytics_data": false,
+    "financial_data": false
+  }
+}
+JSON,
+        ];
+
+        yield [
             [
-                'POST',
-                '/v2/posting/fbo/list',
-                '{"filter":{"since":"2018-11-18T11:27:45+00:00","to":"2019-11-18T11:27:45+00:00","status":"awaiting_approve"},"dir":"asc","offset":0,"limit":10}',
-            ]
-        );
+                [
+                    'dir'    => SortDirection::DESC,
+                    'offset' => 0,
+                    'limit'  => 10,
+                    'filter' => [
+                        'since'  => new \DateTime('2018-11-18T11:27:45.154Z'),
+                        'to'     => new \DateTime('2019-11-18T11:27:45.154Z'),
+                        'status' => Status::AWAITING_APPROVE,
+                    ],
+                    'with'   => [
+                        'analytics_data' => true,
+                    ],
+                ],
+            ],
+            <<<JSON
+{
+  "filter": {
+    "since": "2018-11-18T11:27:45+00:00",
+    "to": "2019-11-18T11:27:45+00:00",
+    "status": "awaiting_approve"
+  },
+  "dir": "desc",
+  "offset": 0,
+  "limit": 10,
+  "with": {
+    "analytics_data": true
+  }
+}
+JSON,
+        ];
     }
 
     public function testGet(): void
@@ -52,7 +111,7 @@ class FboServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbo/get',
-                '{"posting_number":"39268230-0002-3"}',
+                '{"posting_number":"39268230-0002-3","with":{"analytics_data":false,"financial_data":false}}',
             ]
         );
     }

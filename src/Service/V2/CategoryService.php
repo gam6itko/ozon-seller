@@ -4,6 +4,7 @@ namespace Gam6itko\OzonSeller\Service\V2;
 
 use Gam6itko\OzonSeller\Service\AbstractService;
 use Gam6itko\OzonSeller\TypeCaster;
+use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -23,7 +24,7 @@ class CategoryService extends AbstractService
      */
     public function attribute(int $categoryId, array $query = []): array
     {
-        $query = $this->faceControl($query, ['attribute_type', 'language']);
+        $query = ArrayHelper::pick($query, ['attribute_type', 'language']);
         $query = TypeCaster::castArr($query, [
             'attribute_type' => 'str',
             'language'       => 'str',
@@ -45,7 +46,7 @@ class CategoryService extends AbstractService
      */
     public function attributeValues(int $categoryId, int $attrId, array $query = []): array
     {
-        $query = $this->faceControl($query, ['last_value_id', 'limit', 'language']);
+        $query = ArrayHelper::pick($query, ['last_value_id', 'limit', 'language']);
         $query = array_merge([
             'category_id'   => $categoryId,
             'attribute_id'  => $attrId,
@@ -68,7 +69,7 @@ class CategoryService extends AbstractService
     {
         $options = $this->ensureCollection($options);
         foreach ($options as &$o) {
-            $o = $this->faceControl($o, ['attribute_id', 'option_id']);
+            $o = ArrayHelper::pick($o, ['attribute_id', 'option_id']);
         }
         unset($o);
 

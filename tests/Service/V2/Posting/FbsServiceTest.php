@@ -42,7 +42,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/get',
-                '{"posting_number":"39268230-0002-3"}',
+                '{"posting_number":"39268230-0002-3","with":{"analytics_data":false,"barcodes":false,"financial_data":false}}',
             ]
         );
     }

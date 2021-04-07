@@ -4,6 +4,7 @@ namespace Gam6itko\OzonSeller\Service\V1;
 
 use Gam6itko\OzonSeller\Enum\TransactionType;
 use Gam6itko\OzonSeller\Service\AbstractService;
+use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * Allows to retrieve reports via API, that are also available in Seller Center.
@@ -23,7 +24,7 @@ class ReportService extends AbstractService
      */
     public function list(array $query)
     {
-        $query = $this->faceControl($query, ['page', 'page_size', 'report_type']);
+        $query = ArrayHelper::pick($query, ['page', 'page_size', 'report_type']);
 
         return $this->request('POST', '/v1/report/list', $query);
     }
@@ -53,7 +54,7 @@ class ReportService extends AbstractService
      */
     public function products(array $query = [])
     {
-        $query = $this->faceControl($query, ['offer_id', 'search', 'sku', 'visibility']);
+        $query = ArrayHelper::pick($query, ['offer_id', 'search', 'sku', 'visibility']);
         $query = array_filter($query);
 
         return $this->request('POST', '/v1/report/products/create', $query);

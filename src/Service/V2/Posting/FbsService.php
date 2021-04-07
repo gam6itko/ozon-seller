@@ -2,13 +2,17 @@
 
 namespace Gam6itko\OzonSeller\Service\V2\Posting;
 
+use Gam6itko\OzonSeller\Enum\PostingScheme;
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\AbstractService;
+use Gam6itko\OzonSeller\Service\GetOrderInterface;
 use Gam6itko\OzonSeller\Service\HasOrdersInterface;
 use Gam6itko\OzonSeller\Service\HasUnfulfilledOrdersInterface;
+use Gam6itko\OzonSeller\Utils\ArrayHelper;
+use Gam6itko\OzonSeller\Utils\WithResolver;
 
-class FbsService extends AbstractService implements HasOrdersInterface, HasUnfulfilledOrdersInterface
+class FbsService extends AbstractService implements HasOrdersInterface, HasUnfulfilledOrdersInterface, GetOrderInterface
 {
     private $path = '/v2/posting/fbs';
 
@@ -28,10 +32,10 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
 
         $requestData = array_merge(
             $default,
-            $this->faceControl($requestData, array_keys($default))
+            ArrayHelper::pick($requestData, array_keys($default))
         );
 
-        $filter = $this->faceControl($requestData['filter'], ['since', 'to', 'status']);
+        $filter = ArrayHelper::pick($requestData['filter'], ['since', 'to', 'status']);
         foreach (['since', 'to'] as $key) {
             if (isset($filter[$key]) && $filter[$key] instanceof \DateTimeInterface) {
                 $filter[$key] = $filter[$key]->format(DATE_RFC3339);
@@ -58,7 +62,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
 
         $requestData = array_merge(
             $default,
-            $this->faceControl($requestData, array_keys($default))
+            ArrayHelper::pick($requestData, array_keys($default))
         );
 
         if (is_string($requestData['status'])) {
@@ -71,9 +75,12 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_get
      */
-    public function get(string $postingNumber): array
+    public function get(string $postingNumber, array $options = []): array
     {
-        return $this->request('POST', "{$this->path}/get", ['posting_number' => $postingNumber]);
+        return $this->request('POST', "{$this->path}/get", [
+            'posting_number' => $postingNumber,
+            'with'           => WithResolver::resolve($options, 2, PostingScheme::FBS),
+        ]);
     }
 
     /**
@@ -84,7 +91,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     public function ship(array $packages, string $postingNumber): array
     {
         foreach ($packages as &$package) {
-            $package = $this->faceControl($package, ['items']);
+            $package = ArrayHelper::pick($package, ['items']);
         }
 
         $body = [
@@ -262,7 +269,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
         }
 
         foreach ($trackingNumbers as &$tn) {
-            $tn = $this->faceControl($tn, ['posting_number', 'tracking_number']);
+            $tn = ArrayHelper::pick($tn, ['posting_number', 'tracking_number']);
         }
 
         $body = [

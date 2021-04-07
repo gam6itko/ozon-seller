@@ -3,6 +3,7 @@
 namespace Gam6itko\OzonSeller\Service\V1;
 
 use Gam6itko\OzonSeller\Service\AbstractService;
+use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * @see    https://cb-api.ozonru.me/apiref/en/#t-title_action
@@ -69,7 +70,7 @@ class ActionsService extends AbstractService
     {
         $products = $this->ensureCollection($products);
         foreach ($products as &$p) {
-            $p = $this->faceControl($p, ['product_id', 'action_price']);
+            $p = ArrayHelper::pick($p, ['product_id', 'action_price']);
         }
         unset($p);
 

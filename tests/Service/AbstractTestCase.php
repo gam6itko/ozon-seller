@@ -43,7 +43,12 @@ abstract class AbstractTestCase extends TestCase
             ->willReturnCallback(static function (RequestInterface $request) use ($method, $path, $body, $response): ResponseInterface {
                 self::assertEquals($method, $request->getMethod());
                 self::assertEquals($path, $request->getUri()->getPath());
-                self::assertEquals($body, $request->getBody()->getContents());
+
+                if (is_string($body)) {
+                    self::assertJsonStringEqualsJsonString($body, $request->getBody()->getContents());
+                } else {
+                    self::assertEquals($body, $request->getBody()->getContents());
+                }
 
                 return $response;
             });

@@ -5,6 +5,7 @@ namespace Gam6itko\OzonSeller\Service\V1;
 use Gam6itko\OzonSeller\ProductValidator;
 use Gam6itko\OzonSeller\Service\AbstractService;
 use Gam6itko\OzonSeller\TypeCaster;
+use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -28,9 +29,9 @@ class ProductService extends AbstractService
             $income = ['products' => $income];
         }
 
-        $income = $this->faceControl($income, ['products']);
+        $income = ArrayHelper::pick($income, ['products']);
         foreach ($income['products'] as &$p) {
-            $p = $this->faceControl($p, [
+            $p = ArrayHelper::pick($p, [
                 'offer_id',
                 'shop_category_full_path',
                 'shop_category',
@@ -65,7 +66,7 @@ class ProductService extends AbstractService
             $income = ['items' => $income];
         }
 
-        $income = $this->faceControl($income, ['items']);
+        $income = ArrayHelper::pick($income, ['items']);
 
         if ($validateBeforeSend) {
             $pv = new ProductValidator('create');
@@ -103,10 +104,10 @@ class ProductService extends AbstractService
             $income = ['items' => $income];
         }
 
-        $income = $this->faceControl($income, ['items']);
+        $income = ArrayHelper::pick($income, ['items']);
         foreach ($income['items'] as &$item) {
             $item = TypeCaster::castArr(
-                $this->faceControl($item, ['sku', 'name', 'offer_id', 'price', 'old_price', 'premium_price', 'vat']),
+                ArrayHelper::pick($item, ['sku', 'name', 'offer_id', 'price', 'old_price', 'premium_price', 'vat']),
                 [
                     'offer_id'      => 'str',
                     'price'         => 'str',
@@ -164,7 +165,7 @@ class ProductService extends AbstractService
      */
     public function infoBy(array $query)
     {
-        $query = $this->faceControl($query, ['product_id', 'sku', 'offer_id']);
+        $query = ArrayHelper::pick($query, ['product_id', 'sku', 'offer_id']);
         $query = TypeCaster::castArr($query, ['product_id' => 'int', 'sku' => 'int', 'offer_id' => 'str']);
 
         return $this->request('POST', '/v1/product/info', $query);
@@ -184,7 +185,7 @@ class ProductService extends AbstractService
     {
         $pagination = array_merge(
             ['page' => 1, 'page_size' => 100],
-            $this->faceControl($pagination, ['page', 'page_size'])
+            ArrayHelper::pick($pagination, ['page', 'page_size'])
         );
 
         return $this->request('POST', '/v1/product/info/stocks', $pagination);
@@ -203,7 +204,7 @@ class ProductService extends AbstractService
     {
         $pagination = array_merge(
             ['page' => 1, 'page_size' => 100],
-            $this->faceControl($pagination, ['page', 'page_size'])
+            ArrayHelper::pick($pagination, ['page', 'page_size'])
         );
 
         return $this->request('POST', '/v1/product/info/prices', $pagination);
@@ -221,7 +222,7 @@ class ProductService extends AbstractService
      */
     public function list(array $filter = [], array $pagination = [])
     {
-        $filter = $this->faceControl($filter, ['offer_id', 'product_id', 'visibility']);
+        $filter = ArrayHelper::pick($filter, ['offer_id', 'product_id', 'visibility']);
         // normalize offer_id data
         if (isset($filter['offer_id'])) {
             if (!is_array($filter['offer_id'])) {
@@ -230,7 +231,7 @@ class ProductService extends AbstractService
             $filter['offer_id'] = array_map('strval', $filter['offer_id']);
         }
 
-        $pagination = $this->faceControl($pagination, ['page', 'page_size']);
+        $pagination = ArrayHelper::pick($pagination, ['page', 'page_size']);
         if (empty($pagination)) {
             $pagination = ['page' => 1, 'page_size' => 10];
         }
@@ -267,7 +268,7 @@ class ProductService extends AbstractService
         }
 
         foreach ($input['prices'] as $i => &$p) {
-            if (!$p = $this->faceControl($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price'])) {
+            if (!$p = ArrayHelper::pick($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price'])) {
                 throw new \InvalidArgumentException('Invalid price data at index '.$i);
             }
 
@@ -314,7 +315,7 @@ class ProductService extends AbstractService
         }
 
         foreach ($input['stocks'] as $i => &$s) {
-            if (!$s = $this->faceControl($s, ['product_id', 'offer_id', 'stock'])) {
+            if (!$s = ArrayHelper::pick($s, ['product_id', 'offer_id', 'stock'])) {
                 throw new \InvalidArgumentException('Invalid stock data at index '.$i);
             }
 
@@ -417,8 +418,8 @@ class ProductService extends AbstractService
      */
     public function price(array $filter = [], array $pagination = [])
     {
-        $filter = $this->faceControl($filter, ['offer_id', 'product_id', 'visibility']);
-        $pagination = $this->faceControl($pagination, ['page', 'page_size']);
+        $filter = ArrayHelper::pick($filter, ['offer_id', 'product_id', 'visibility']);
+        $pagination = ArrayHelper::pick($pagination, ['page', 'page_size']);
         $body = array_merge($pagination, [
             'filter' => $filter,
         ]);
@@ -435,7 +436,7 @@ class ProductService extends AbstractService
      */
     public function setPrepayment(array $data)
     {
-        $data = $this->faceControl($data, ['is_prepayment', 'offers_ids', 'products_ids']);
+        $data = ArrayHelper::pick($data, ['is_prepayment', 'offers_ids', 'products_ids']);
 
         return $this->request('POST', '/v1/product/prepayment/set', $data);
     }

@@ -5,10 +5,12 @@ namespace Gam6itko\OzonSeller\Service\V2\Posting;
 use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\AbstractService;
+use Gam6itko\OzonSeller\Service\GetOrderInterface;
 use Gam6itko\OzonSeller\Service\HasOrdersInterface;
 use Gam6itko\OzonSeller\Service\HasUnfulfilledOrdersInterface;
+use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
-class CrossborderService extends AbstractService implements HasOrdersInterface, HasUnfulfilledOrdersInterface
+class CrossborderService extends AbstractService implements HasOrdersInterface, HasUnfulfilledOrdersInterface, GetOrderInterface
 {
     private $path = '/v2/posting/crossborder';
 
@@ -26,10 +28,10 @@ class CrossborderService extends AbstractService implements HasOrdersInterface, 
 
         $requestData = array_merge(
             $default,
-            $this->faceControl($requestData, array_keys($default))
+            ArrayHelper::pick($requestData, array_keys($default))
         );
 
-        $filter = $this->faceControl($requestData['filter'], ['since', 'to', 'status']);
+        $filter = ArrayHelper::pick($requestData['filter'], ['since', 'to', 'status']);
         foreach (['since', 'to'] as $key) {
             if (isset($filter[$key]) && $filter[$key] instanceof \DateTimeInterface) {
                 $filter[$key] = $filter[$key]->format(DATE_RFC3339);
@@ -58,7 +60,7 @@ class CrossborderService extends AbstractService implements HasOrdersInterface, 
 
         $requestData = array_merge(
             $default,
-            $this->faceControl($requestData, array_keys($default))
+            ArrayHelper::pick($requestData, array_keys($default))
         );
 
         if (is_string($requestData['status'])) {
@@ -71,7 +73,7 @@ class CrossborderService extends AbstractService implements HasOrdersInterface, 
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-cb_get
      */
-    public function get(string $postingNumber): array
+    public function get(string $postingNumber, array $options = []): array
     {
         return $this->request('POST', "{$this->path}/get", ['posting_number' => $postingNumber]);
     }
@@ -117,7 +119,7 @@ class CrossborderService extends AbstractService implements HasOrdersInterface, 
     public function ship(string $postingNumber, string $track, int $shippingProviderId, array $items): array
     {
         foreach ($items as &$item) {
-            $item = $this->faceControl($item, ['quantity', 'sku']);
+            $item = ArrayHelper::pick($item, ['quantity', 'sku']);
         }
 
         $body = [

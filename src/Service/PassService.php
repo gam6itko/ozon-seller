@@ -3,6 +3,7 @@
 namespace Gam6itko\OzonSeller\Service;
 
 use Gam6itko\OzonSeller\TypeCaster;
+use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 class PassService extends AbstractService
 {
@@ -22,7 +23,7 @@ class PassService extends AbstractService
 
     public function create(array $data)
     {
-        $this->faceControl($data, array_keys(self::CONF));
+        ArrayHelper::pick($data, array_keys(self::CONF));
         TypeCaster::castArr($data, self::CONF);
 
         return $this->request('POST', '/pass/create', $data, true, false);
@@ -35,7 +36,7 @@ class PassService extends AbstractService
 
     public function update(array $data)
     {
-        $this->faceControl($data, array_keys(self::CONF));
+        ArrayHelper::pick($data, array_keys(self::CONF));
         TypeCaster::castArr($data, self::CONF);
 
         return $this->request('POST', '/pass/update', $data);

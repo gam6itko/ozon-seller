@@ -5,6 +5,7 @@ namespace Gam6itko\OzonSeller\Service\V2;
 use Gam6itko\OzonSeller\ProductValidator;
 use Gam6itko\OzonSeller\Service\AbstractService;
 use Gam6itko\OzonSeller\TypeCaster;
+use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -29,7 +30,7 @@ class ProductService extends AbstractService
             $income = ['items' => $income];
         }
 
-        $income = $this->faceControl($income, ['items']);
+        $income = ArrayHelper::pick($income, ['items']);
 
         if ($validateBeforeSend) {
             $pv = new ProductValidator('create', 2);
@@ -50,7 +51,7 @@ class ProductService extends AbstractService
      */
     public function info(array $query): array
     {
-        $query = $this->faceControl($query, ['product_id', 'sku', 'offer_id']);
+        $query = ArrayHelper::pick($query, ['product_id', 'sku', 'offer_id']);
         $query = TypeCaster::castArr($query, ['product_id' => 'int', 'sku' => 'int', 'offer_id' => 'str']);
 
         return $this->request('POST', "{$this->path}/info", $query);
@@ -62,7 +63,7 @@ class ProductService extends AbstractService
     public function infoAttributes(array $filter, int $page = 1, int $pageSize = 100): array
     {
         $keys = ['offer_id', 'product_id'];
-        $filter = $this->faceControl($filter, $keys);
+        $filter = ArrayHelper::pick($filter, $keys);
 
         foreach ($keys as $k) {
             if (isset($filter[$k]) && !is_array($filter[$k])) {

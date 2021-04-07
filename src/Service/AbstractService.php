@@ -3,6 +3,7 @@
 namespace Gam6itko\OzonSeller\Service;
 
 use Gam6itko\OzonSeller\Exception\OzonSellerException;
+use Gam6itko\OzonSeller\Utils\ArrayHelper;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\RequestExceptionInterface;
@@ -52,15 +53,7 @@ abstract class AbstractService
             $config['host'] = rtrim($this->getDefaultHost(), '/');
         }
 
-        $this->config = $this->faceControl($config, $keys);
-    }
-
-    /**
-     * Filters unexpected array keys.
-     */
-    protected function faceControl(array $query, array $whitelist): array
-    {
-        return array_intersect_key($query, array_flip($whitelist));
+        $this->config = ArrayHelper::pick($config, $keys);
     }
 
     protected function createRequest(string $method, string $uri = '', $body = null): RequestInterface

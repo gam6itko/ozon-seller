@@ -3,6 +3,7 @@
 namespace Gam6itko\OzonSeller\Service\V1;
 
 use Gam6itko\OzonSeller\Service\AbstractService;
+use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -18,7 +19,7 @@ class ChatService extends AbstractService
      */
     public function list(array $query = [])
     {
-        $query = $this->faceControl($query, ['chat_id_list', 'page', 'page_size']);
+        $query = ArrayHelper::pick($query, ['chat_id_list', 'page', 'page_size']);
 
         return $this->request('POST', '/v1/chat/list', $query ? $query : '{}');
     }
@@ -30,7 +31,7 @@ class ChatService extends AbstractService
      */
     public function history(string $chatId, array $query = [])
     {
-        $query = $this->faceControl($query, ['from_message_id', 'limit']);
+        $query = ArrayHelper::pick($query, ['from_message_id', 'limit']);
 
         $query['chat_id'] = $chatId;
 
