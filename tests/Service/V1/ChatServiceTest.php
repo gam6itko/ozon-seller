@@ -95,11 +95,11 @@ class ChatServiceTest extends AbstractTestCase
     {
         $this->quickTest(
             'start',
-            [598586936],
+            ['00000000-0000-0'],
             [
                 'POST',
                 '/v1/chat/start',
-                '{"order_id":598586936}',
+                '{"posting_number":"00000000-0000-0"}',
             ],
             '{"result": {"chat_id": "3cdf5407-9f90-4752-8105-8f1d4cd427f5"}}',
             static function ($result): void {

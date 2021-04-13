@@ -3,6 +3,7 @@
 namespace Gam6itko\OzonSeller\Service\V1;
 
 use Gam6itko\OzonSeller\Service\AbstractService;
+use Gam6itko\OzonSeller\TypeCaster;
 use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
@@ -20,8 +21,9 @@ class ChatService extends AbstractService
     public function list(array $query = [])
     {
         $query = ArrayHelper::pick($query, ['chat_id_list', 'page', 'page_size']);
+        $query = TypeCaster::castArr($query, ['page' => 'int', 'page_size' => 'int']);
 
-        return $this->request('POST', '/v1/chat/list', $query ? $query : '{}');
+        return $this->request('POST', '/v1/chat/list', $query ?: '{}');
     }
 
     /**
@@ -54,20 +56,15 @@ class ChatService extends AbstractService
     }
 
     /**
-     * Sends a file in an existing chat with a customer.
-     *
-     * @param string $base64Content File encoded in base64 string
-     * @param string $chatId        Unique chat ID
-     * @param string $name          File name with extension
-     *
-     * @return array|string
+     * @see https://api-seller.ozon.ru/apiref/en/#t-title_post_sendfile
      */
-    public function sendFile(string $base64Content, string $chatId, string $name)
+    public function sendFile(string $chatId, \SplFileInfo $file)
     {
+        $pathname = $file->getPathname();
         $arr = [
             'chat_id'        => $chatId,
-            'base64_content' => $base64Content,
-            'name'           => $name,
+            'base64_content' => base64_encode(file_get_contents($file->getPathname())),
+            'name'           => $file->getBasename(),
         ];
         $response = $this->request('POST', '/v1/chat/send/file', $arr);
 
@@ -75,15 +72,14 @@ class ChatService extends AbstractService
     }
 
     /**
-     * Creates a new chat with a customer related to a specific order.
-     * For example, if a seller has some questions regarding delivery address, he can simply contact a buyer via new chat.
+     * @see https://api-seller.ozon.ru/apiref/ru/#t-title_post_chatstart
      *
      * @return string Chat ID
      */
-    public function start(int $orderId): string
+    public function start(string $postingNumber): string
     {
         $arr = [
-            'order_id' => $orderId,
+            'posting_number' => $postingNumber,
         ];
 
         return $this->request('POST', '/v1/chat/start', $arr)['chat_id'];
