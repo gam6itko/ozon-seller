@@ -38,20 +38,7 @@ class FboServiceTest extends AbstractTestCase
 
     public function dataList(): iterable
     {
-        yield [
-            [
-                [
-                    'dir'    => SortDirection::ASC,
-                    'offset' => 0,
-                    'limit'  => 10,
-                    'filter' => [
-                        'since'  => new \DateTime('2018-11-18T11:27:45.154Z'),
-                        'to'     => new \DateTime('2019-11-18T11:27:45.154Z'),
-                        'status' => Status::AWAITING_APPROVE,
-                    ],
-                ],
-            ],
-            <<<JSON
+        $json = <<<JSON
 {
   "filter": {
     "since": "2018-11-18T11:27:45+00:00",
@@ -66,9 +53,38 @@ class FboServiceTest extends AbstractTestCase
     "financial_data": false
   }
 }
-JSON,
+JSON;
+        yield [
+            [
+                [
+                    'dir'    => SortDirection::ASC,
+                    'offset' => 0,
+                    'limit'  => 10,
+                    'filter' => [
+                        'since'  => new \DateTime('2018-11-18T11:27:45.154Z'),
+                        'to'     => new \DateTime('2019-11-18T11:27:45.154Z'),
+                        'status' => Status::AWAITING_APPROVE,
+                    ],
+                ],
+            ],
+            $json,
         ];
 
+        $json = <<<JSON
+{
+  "filter": {
+    "since": "2018-11-18T11:27:45+00:00",
+    "to": "2019-11-18T11:27:45+00:00",
+    "status": "awaiting_approve"
+  },
+  "dir": "desc",
+  "offset": 0,
+  "limit": 10,
+  "with": {
+    "analytics_data": true
+  }
+}
+JSON;
         yield [
             [
                 [
@@ -85,21 +101,7 @@ JSON,
                     ],
                 ],
             ],
-            <<<JSON
-{
-  "filter": {
-    "since": "2018-11-18T11:27:45+00:00",
-    "to": "2019-11-18T11:27:45+00:00",
-    "status": "awaiting_approve"
-  },
-  "dir": "desc",
-  "offset": 0,
-  "limit": 10,
-  "with": {
-    "analytics_data": true
-  }
-}
-JSON,
+            $json,
         ];
     }
 
