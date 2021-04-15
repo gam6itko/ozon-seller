@@ -1,5 +1,5 @@
 # Ozon-seller API client
-[![Build Status](https://travis-ci.com/gam6itko/ozon-seller.svg?branch=master)](https://travis-ci.com/gam6itko/ozon-seller)
+![tests](https://github.com/gam6itko/ozon-seller/actions/workflows/tests.yaml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/gam6itko/ozon-seller/badge.svg?branch=master)](https://coveralls.io/github/gam6itko/ozon-seller?branch=master)
 
 [![Latest Stable Version](https://poser.pugx.org/gam6itko/ozon-seller/v)](//packagist.org/packages/gam6itko/ozon-seller) 
