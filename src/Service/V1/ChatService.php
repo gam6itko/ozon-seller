@@ -60,7 +60,6 @@ class ChatService extends AbstractService
      */
     public function sendFile(string $chatId, \SplFileInfo $file)
     {
-        $pathname = $file->getPathname();
         $arr = [
             'chat_id'        => $chatId,
             'base64_content' => base64_encode(file_get_contents($file->getPathname())),

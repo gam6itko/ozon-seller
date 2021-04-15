@@ -75,14 +75,18 @@ class ChatServiceTest extends AbstractTestCase
         $this->quickTest(
             'sendFile',
             [
-                'MSwgMiwgMwo=',
                 '3cdf5407-9f90-4752-8105-8f1d4cd427f5',
+                new \SplFileInfo(__DIR__.'/../../../.php_cs.dist'),
                 'test.txt',
             ],
             [
                 'POST',
                 '/v1/chat/send/file',
-                '{"chat_id":"3cdf5407-9f90-4752-8105-8f1d4cd427f5","base64_content":"MSwgMiwgMwo=","name":"test.txt"}',
+                '{
+    "base64_content": "PD9waHAKCiRydWxlcyA9IFsKICAgICdAU3ltZm9ueScgICAgICAgICAgICAgICAgICAgICA9PiB0cnVlLAogICAgJ2JsYW5rX2xpbmVfYWZ0ZXJfb3BlbmluZ190YWcnID0+IGZhbHNlLCAvLyA8P3BocCBkZWNsYXJlKHN0cmljdF90eXBlcz0xKTsKICAgICdsaW5lYnJlYWtfYWZ0ZXJfb3BlbmluZ190YWcnICA9PiBmYWxzZSwgLy8gPD9waHAgZGVjbGFyZShzdHJpY3RfdHlwZXM9MSk7CiAgICAnYmluYXJ5X29wZXJhdG9yX3NwYWNlcycgICAgICAgPT4gWwogICAgICAgICdvcGVyYXRvcnMnID0+IFsKICAgICAgICAgICAgJz0+JyA9PiAnYWxpZ24nLAogICAgICAgIF0sCiAgICBdLAogICAgJ2RlY2xhcmVfc3RyaWN0X3R5cGVzJyAgICAgICAgID0+IHRydWUsCl07CgokZmluZGVyID0gUGhwQ3NGaXhlclxGaW5kZXI6OmNyZWF0ZSgpCiAgICAtPmluKF9fRElSX18pOwoKcmV0dXJuIFBocENzRml4ZXJcQ29uZmlnOjpjcmVhdGUoKQogICAgLT5zZXRGaW5kZXIoJGZpbmRlcikKICAgIC0+c2V0Umlza3lBbGxvd2VkKHRydWUpCiAgICAtPnNldFJ1bGVzKCRydWxlcykKICAgIC0+c2V0VXNpbmdDYWNoZSh0cnVlKTsK",
+    "chat_id": "3cdf5407-9f90-4752-8105-8f1d4cd427f5",
+    "name": ".php_cs.dist"
+}',
             ],
             '{"result": "success"}',
             static function ($result): void {
