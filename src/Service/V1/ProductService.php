@@ -213,29 +213,32 @@ class ProductService extends AbstractService
     /**
      * Receive the list of products.
      *
+     * query['filter']
+     *          [offer_id] string|int|array
+     *          [product_id] string|int|array,
+     *          [visibility] string
+     *      [page] int
+     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
-     *
-     * @param array $filter     ['offer_id', 'product_id', 'visibility']
-     * @param array $pagination ['page', 'page_size']
-     *
-     * @return array
      */
-    public function list(array $filter = [], array $pagination = [])
+    public function list(array $query = [], array $pagination = []): array
     {
-        $filter = ArrayHelper::pick($filter, ['offer_id', 'product_id', 'visibility']);
-        // normalize offer_id data
-        if (isset($filter['offer_id'])) {
-            if (!is_array($filter['offer_id'])) {
-                $filter['offer_id'] = [$filter['offer_id']];
-            }
-            $filter['offer_id'] = array_map('strval', $filter['offer_id']);
+        if (!isset($query['filter'])) {
+            $query = ['filter' => $query];
         }
 
-        $pagination = ArrayHelper::pick($pagination, ['page', 'page_size']);
-        if (empty($pagination)) {
-            $pagination = ['page' => 1, 'page_size' => 10];
+        $query['filter'] = ArrayHelper::pick($query['filter'], ['offer_id', 'product_id', 'visibility']);
+        // normalize offer_id data
+        if (isset($query['filter']['offer_id'])) {
+            $query['filter']['offer_id'] = array_map('strval', ArrayHelper::toArray($query['filter']['offer_id']));
         }
-        $query = array_filter(array_merge($pagination, ['filter' => $filter]));
+        // normalize product_id data
+        if (isset($query['filter']['product_id'])) {
+            $query['filter']['product_id'] = array_map('intval', ArrayHelper::toArray($query['filter']['product_id']));
+        }
+
+        $query = array_merge($pagination, $query);
+        $query = array_merge(['page' => 1, 'page_size' => 10], $query);
 
         return $this->request('POST', '/v1/product/list', $query);
     }

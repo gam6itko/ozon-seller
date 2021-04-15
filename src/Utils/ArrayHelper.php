@@ -11,4 +11,9 @@ class ArrayHelper
     {
         return array_intersect_key($query, array_flip($whitelist));
     }
+
+    public static function toArray($value): array
+    {
+        return is_array($value) ? $value : [$value];
+    }
 }

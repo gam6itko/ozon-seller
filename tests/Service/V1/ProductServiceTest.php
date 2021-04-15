@@ -206,8 +206,9 @@ class ProductServiceTest extends AbstractTestCase
 
     /**
      * @covers ::list
+     * @dataProvider dataList
      */
-    public function testList(): void
+    public function testList(array $filters, array $pagination, string $json): void
     {
         $responseJson = <<<JSON
 {
@@ -227,21 +228,56 @@ class ProductServiceTest extends AbstractTestCase
 }
 JSON;
 
-        $filters = [
-            'offer_id'   => ['1255959'],
-            'product_id' => [552526],
-            'visibility' => 'ALL',
-        ];
         $this->quickTest(
             'list',
-            [$filters],
+            [$filters, $pagination],
             [
                 'POST',
                 '/v1/product/list',
-                '{"page":1,"page_size":10,"filter":{"offer_id":["1255959"],"product_id":[552526],"visibility":"ALL"}}',
+                $json,
             ],
             $responseJson
         );
+    }
+
+    public function dataList(): iterable
+    {
+        yield [
+            [
+                'offer_id'   => ['1255959'],
+                'product_id' => [552526],
+                'visibility' => 'ALL',
+            ],
+            [],
+            '{"page":1,"page_size":10,"filter":{"offer_id":["1255959"],"product_id":[552526],"visibility":"ALL"}}',
+        ];
+
+        yield [
+            [
+                'offer_id'   => '1255959',
+                'product_id' => 552526,
+                'visibility' => 'ALL',
+            ],
+            [
+                'page'      => 10,
+                'page_size' => 100,
+            ],
+            '{"page":10,"page_size":100,"filter":{"offer_id":["1255959"],"product_id":[552526],"visibility":"ALL"}}',
+        ];
+
+        yield [
+            [
+                'filter'    => [
+                    'offer_id'   => ['1255959'],
+                    'product_id' => [552526],
+                    'visibility' => 'ALL',
+                ],
+                'page'      => 10,
+                'page_size' => 100,
+            ],
+            [],
+            '{"page":10,"page_size":100,"filter":{"offer_id":["1255959"],"product_id":[552526],"visibility":"ALL"}}',
+        ];
     }
 
     /**
