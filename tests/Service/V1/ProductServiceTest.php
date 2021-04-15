@@ -278,6 +278,15 @@ JSON;
             [],
             '{"page":10,"page_size":100,"filter":{"offer_id":["1255959"],"product_id":[552526],"visibility":"ALL"}}',
         ];
+
+        yield [
+            [
+                'page'      => 10,
+                'page_size' => 100,
+            ],
+            [],
+            '{"page":10,"page_size":100}',
+        ];
     }
 
     /**

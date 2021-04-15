@@ -223,24 +223,28 @@ class ProductService extends AbstractService
      */
     public function list(array $query = [], array $pagination = []): array
     {
-        if (!isset($query['filter'])) {
+        $filterKeys = ['offer_id', 'product_id', 'visibility'];
+
+        if (!isset($query['filter']) && array_intersect($filterKeys, array_keys($query))) {
             $query = ['filter' => $query];
         }
 
-        $query['filter'] = ArrayHelper::pick($query['filter'], ['offer_id', 'product_id', 'visibility']);
-        // normalize offer_id data
-        if (isset($query['filter']['offer_id'])) {
-            $query['filter']['offer_id'] = array_map('strval', ArrayHelper::toArray($query['filter']['offer_id']));
-        }
-        // normalize product_id data
-        if (isset($query['filter']['product_id'])) {
-            $query['filter']['product_id'] = array_map('intval', ArrayHelper::toArray($query['filter']['product_id']));
+        if (isset($query['filter'])) {
+            $query['filter'] = ArrayHelper::pick($query['filter'], $filterKeys);
+            // normalize offer_id data
+            if (isset($query['filter']['offer_id'])) {
+                $query['filter']['offer_id'] = array_map('strval', ArrayHelper::toArray($query['filter']['offer_id']));
+            }
+            // normalize product_id data
+            if (isset($query['filter']['product_id'])) {
+                $query['filter']['product_id'] = array_map('intval', ArrayHelper::toArray($query['filter']['product_id']));
+            }
         }
 
         $query = array_merge($pagination, $query);
         $query = array_merge(['page' => 1, 'page_size' => 10], $query);
 
-        return $this->request('POST', '/v1/product/list', $query);
+        return $this->request('POST', '/v1/product/list', array_filter($query));
     }
 
     /**
