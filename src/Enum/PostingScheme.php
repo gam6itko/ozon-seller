@@ -7,4 +7,13 @@ final class PostingScheme
     public const CROSSBORDER = 'crossborder';
     public const FBO = 'fbo';
     public const FBS = 'fbs';
+
+    public static function all(): array
+    {
+        return [
+            self::CROSSBORDER,
+            self::FBO,
+            self::FBS,
+        ];
+    }
 }

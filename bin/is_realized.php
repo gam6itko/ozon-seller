@@ -17,6 +17,7 @@ use Gam6itko\OzonSeller\Service\V1\ProductService as V1ProductService;
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use Gam6itko\OzonSeller\Service\V2\ProductService as V2ProductService;
+use Gam6itko\OzonSeller\Service\V2\ReturnsService as V2ReturnsService;
 use GuzzleHttp\Client;
 
 const MAPPING = [
@@ -42,6 +43,8 @@ const MAPPING = [
     '/v2/posting/crossborder/shipping-provider/list' => [CrossborderService::class, 'shippingProviders'],
     '/v2/posting/fbs/cancel-reason/list'             => [FbsService::class.'cancelReasons'],
     '/v2/products/info/attributes'                   => [V2ProductService::class, 'infoAttributes'],
+    '/v2/returns/company/fbo'                        => [V2ReturnsService::class, 'company'],
+    '/v2/returns/company/fbs'                        => [V2ReturnsService::class, 'company'],
 ];
 
 $client = new Client();
