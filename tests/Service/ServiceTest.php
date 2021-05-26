@@ -32,7 +32,7 @@ class ServiceTest extends TestCase
     public function testConstructor(array $config, array $expected)
     {
         $client = $this->createMock(ClientInterface::class);
-        $svc = new ProductService($config, $client);
+        $svc = new ProductService($config, $client, $this->createRequestFactory(), $this->createStreamFactory());
         $class = new \ReflectionClass($svc);
         $parent = $class->getParentClass();
         $prop = $parent->getProperty('config');

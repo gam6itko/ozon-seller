@@ -4,7 +4,7 @@ namespace Gam6itko\OzonSeller\Tests\Service\V1;
 
 use Gam6itko\OzonSeller\Service\V1\ProductService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
-use Psr\Http\Client\ClientInterface;
+use Symfony\Component\HttpClient\Psr18Client;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -370,7 +370,7 @@ JSON;
         self::expectException(\InvalidArgumentException::class);
 
         $config = [123, 'api-key'];
-        $client = $this->createMock(ClientInterface::class);
+        $client = $this->createMock(Psr18Client::class);
         $svc = new ProductService($config, $client);
         $svc->importPrices($prices);
     }
@@ -426,7 +426,7 @@ JSON;
         self::expectException(\InvalidArgumentException::class);
 
         $config = [123, 'api-key'];
-        $client = $this->createMock(ClientInterface::class);
+        $client = $this->createMock(Psr18Client::class);
         $svc = new ProductService($config, $client);
         $svc->importStocks($prices);
     }
