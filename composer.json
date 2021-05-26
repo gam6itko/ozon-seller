@@ -18,8 +18,9 @@
     "require": {
         "php": ">=7.1",
         "ext-json": "*",
-        "guzzlehttp/psr7": "^1.6",
-        "psr/http-client": "^1.0"
+        "dg/bypass-finals": "^1.2",
+        "psr/http-client": "^1.0",
+        "http-interop/http-factory-guzzle": "^1.0"
     },
     "suggest": {
         "php-http/guzzle6-adapter": "For use not with Symfony",
@@ -33,6 +34,7 @@
     },
     "require-dev": {
         "ext-curl": "*",
+        "guzzlehttp/psr7": "^1.6",
         "phpunit/phpunit": "^7.4||^8.0||^9.0",
         "php-http/guzzle6-adapter": "^2.0",
         "symfony/http-client": "^4.1||^5.1",

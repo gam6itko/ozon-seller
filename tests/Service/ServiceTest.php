@@ -5,10 +5,17 @@ namespace Gam6itko\OzonSeller\Tests\Service;
 use Gam6itko\OzonSeller\Exception\BadRequestException;
 use Gam6itko\OzonSeller\Exception\OzonSellerException;
 use Gam6itko\OzonSeller\Service\V1\ProductService;
+use Gam6itko\OzonSeller\Tests\PsrInstanceFactoryTrait;
+use GuzzleHttp\Psr7\Stream;
+use GuzzleHttp\Psr7\Utils;
+use Nyholm\Psr7\Request;
+use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Symfony\Component\HttpClient\Psr18Client;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -17,6 +24,8 @@ use Psr\Http\Message\StreamInterface;
  */
 class ServiceTest extends TestCase
 {
+    use PsrInstanceFactoryTrait;
+
     /**
      * @dataProvider dataConstructor
      */
@@ -31,7 +40,7 @@ class ServiceTest extends TestCase
         self::assertEquals($expected, $prop->getValue($svc));
     }
 
-    public function dataConstructor()
+    public function dataConstructor(): iterable
     {
         yield [
             [
@@ -107,14 +116,14 @@ class ServiceTest extends TestCase
         new ProductService([], $client);
     }
 
-    public function testBadResponseWithoutThrow()
+    public function testBadResponseWithoutThrow(): void
     {
         $this->expectException(BadRequestException::class);
         $this->expectExceptionMessage('API method /v1/product/delete is unavailable');
 
         $jsonError = '{"error":{"code":"BAD_REQUEST","message":"API method /v1/product/delete is unavailable","data":[]}}';
         $client = $this->createMockClientWithErrorResponse($jsonError);
-        $svc = new ProductService([1, 'a'], $client);
+        $svc = new ProductService([1, 'a'], $client, $this->createRequestFactory(), $this->createStreamFactory());
         $svc->importInfo(123);
     }
 
@@ -125,7 +134,7 @@ class ServiceTest extends TestCase
 
         $jsonError = '{"error":{"code":"YOU_dont_kNOw_me_","message":"your test will fall!","data":[]}}';
         $client = $this->createMockClientWithErrorResponse($jsonError);
-        $svc = new ProductService([1, 'a'], $client);
+        $svc = new ProductService([1, 'a'], $client, $this->createRequestFactory(), $this->createStreamFactory());
         $svc->importInfo(123);
     }
 
@@ -135,6 +144,7 @@ class ServiceTest extends TestCase
         $stream
             ->method('getContents')
             ->willReturn($json);
+
         $response = $this->createMock(ResponseInterface::class);
         $response
             ->method('getBody')
@@ -149,5 +159,34 @@ class ServiceTest extends TestCase
             ->willReturn($response);
 
         return $client;
+    }
+
+    public function testSymfonyPsr18Client(): void
+    {
+        $client = $this->createMock(Psr18Client::class);
+        $client
+            ->expects(self::atLeastOnce())
+            ->method('createRequest')
+            ->willReturnCallback(static function ($method, $url): RequestInterface {
+                return new Request($method, $url);
+            });
+        $client
+            ->expects(self::atLeastOnce())
+            ->method('createStream')
+            ->willReturnCallback(static function ($body): StreamInterface {
+                if (is_string($body)) {
+                    return Utils::streamFor($body);
+                }
+
+                return new Stream($body);
+            });
+        $client
+            ->expects(self::once())
+            ->method('sendRequest')
+            ->willReturnCallback(static function (): ResponseInterface {
+                return new Response(200, [], '{"result":"hello"}');
+            });
+        $svc = new ProductService([1, 'a'], $client);
+        $result = $svc->info(123);
     }
 }

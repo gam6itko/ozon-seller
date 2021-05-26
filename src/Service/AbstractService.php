@@ -4,10 +4,11 @@ namespace Gam6itko\OzonSeller\Service;
 
 use Gam6itko\OzonSeller\Exception\OzonSellerException;
 use Gam6itko\OzonSeller\Utils\ArrayHelper;
-use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\RequestExceptionInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -20,10 +21,27 @@ abstract class AbstractService
     /** @var ClientInterface */
     protected $client;
 
-    public function __construct(array $config, ClientInterface $client)
+    /** @var RequestFactoryInterface */
+    protected $requestFactory;
+
+    public function __construct(array $config, ClientInterface $client, ?RequestFactoryInterface $requestFactory = null, ?StreamFactoryInterface $streamFactory = null)
     {
         $this->parseConfig($config);
         $this->client = $client;
+
+        // request factory
+        if (!$requestFactory && $this->client instanceof RequestFactoryInterface) {
+            $requestFactory = $this->client;
+        }
+        assert(null !== $requestFactory);
+        $this->requestFactory = $requestFactory;
+
+        // stream factory
+        if (!$streamFactory && $this->client instanceof StreamFactoryInterface) {
+            $streamFactory = $this->client;
+        }
+        assert(null !== $streamFactory);
+        $this->streamFactory = $streamFactory;
     }
 
     protected function getDefaultHost(): string
@@ -65,16 +83,17 @@ abstract class AbstractService
             }
         }
 
-        return new Request(
-            $method,
-            $this->config['host'].$uri,
-            [
-                'Client-Id'    => $this->config['clientId'],
-                'Api-Key'      => $this->config['apiKey'],
-                'Content-Type' => 'application/json',
-            ],
-            $body
-        );
+        $request = $this->requestFactory
+            ->createRequest($method, $this->config['host'].$uri)
+            ->withHeader('Client-Id', $this->config['clientId'])
+            ->withHeader('Api-Key', $this->config['apiKey'])
+            ->withHeader('Content-Type', 'application/json');
+
+        if ($body) {
+            $request = $request->withBody($this->streamFactory->createStream($body));
+        }
+
+        return $request;
     }
 
     /**
@@ -94,6 +113,10 @@ abstract class AbstractService
 
             if (!$parseResultAsJson) {
                 return $responseBody->getContents();
+            }
+
+            if ($responseBody->isSeekable() && 0 !== $responseBody->tell()) {
+                $responseBody->rewind();
             }
 
             $arr = json_decode($responseBody->getContents(), true);

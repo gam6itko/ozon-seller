@@ -50,7 +50,7 @@ class ExceptionTest extends AbstractTestCase
 
         try {
             /** @var FbsService $svc */
-            $svc = $this->createSvc($client);
+            $svc = $this->createSvc($client, $this->createRequestFactory(), $this->createStreamFactory());
             $svc->get('');
         } catch (OzonSellerException $exc) {
             self::assertInstanceOf($class, $exc);
@@ -118,7 +118,7 @@ HTML;
             ->willReturn($response);
 
         /** @var FbsService $svc */
-        $svc = $this->createSvc($client);
+        $svc = $this->createSvc($client, $this->createRequestFactory(), $this->createStreamFactory());
         $svc->get('');
     }
 }

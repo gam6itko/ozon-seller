@@ -50,14 +50,19 @@ composer require php-http/guzzle6-adapter
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use GuzzleHttp\Client as GuzzleClient;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
 
 $config = [
     'clientId' => '<ozon seller client-id>',
     'apiKey' => '<ozon seller api-key>',
     'host' => 'http://cb-api.ozonru.me/'
 ];
-$adapter = new GuzzleAdapter(new GuzzleClient());
-$svc = new CategoriesService($config, $adapter);
+$client = new GuzzleAdapter(new GuzzleClient());
+$requestFactory = new RequestFactory();
+$streamFactory = new StreamFactory();
+
+$svc = new CategoriesService($config, $client, $requestFactory, $streamFactory);
 //do stuff
 ```
 
