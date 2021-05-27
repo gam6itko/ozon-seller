@@ -5,7 +5,7 @@ namespace Gam6itko\OzonSeller\Tests\Service\V2;
 use Gam6itko\OzonSeller\Enum\PostingScheme;
 use Gam6itko\OzonSeller\Service\V2\ReturnsService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
-use Symfony\Component\HttpClient\Psr18Client;
+use Psr\Http\Client\ClientInterface;
 
 /**
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\ReturnsService
@@ -44,8 +44,8 @@ class ReturnsServiceTest extends AbstractTestCase
     {
         self::expectExceptionMessage("Unsupported posting scheme: $postingScheme");
 
-        $client = $this->createMock(Psr18Client::class);
-        $svc = new ReturnsService(['clientId' => 1, 'apiKey' => '123'], $client);
+        $client = $this->createMock(ClientInterface::class);
+        $svc = new ReturnsService(['clientId' => 1, 'apiKey' => '123'], $client, $this->createRequestFactory(), $this->createStreamFactory());
         $svc->company($postingScheme, []);
     }
 

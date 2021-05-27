@@ -4,7 +4,6 @@ namespace Gam6itko\OzonSeller\Tests;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Stream;
-use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
@@ -70,7 +69,13 @@ trait PsrInstanceFactoryTrait
             ->method('createStream')
             ->willReturnCallback(static function ($body): StreamInterface {
                 if (is_string($body)) {
-                    return Utils::streamFor($body);
+                    $stream = fopen('php://temp', 'r+');
+                    if ('' !== $stream) {
+                        fwrite($stream, $body);
+                        fseek($stream, 0);
+                    }
+
+                    return new Stream($stream);
                 }
 
                 return new Stream($body);

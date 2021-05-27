@@ -7,13 +7,14 @@ use Gam6itko\OzonSeller\Exception\OzonSellerException;
 use Gam6itko\OzonSeller\Service\V1\ProductService;
 use Gam6itko\OzonSeller\Tests\PsrInstanceFactoryTrait;
 use GuzzleHttp\Psr7\Stream;
-use GuzzleHttp\Psr7\Utils;
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -163,6 +164,11 @@ class ServiceTest extends TestCase
 
     public function testSymfonyPsr18Client(): void
     {
+        $classImplements = class_implements(Psr18Client::class);
+        if (!in_array(RequestFactoryInterface::class, $classImplements) || !in_array(StreamFactoryInterface::class, $classImplements)) {
+            self::markTestSkipped('Psr18Client not implements RequestFactoryInterface or StreamFactoryInterface');
+        }
+
         $client = $this->createMock(Psr18Client::class);
         $client
             ->expects(self::atLeastOnce())
@@ -175,7 +181,13 @@ class ServiceTest extends TestCase
             ->method('createStream')
             ->willReturnCallback(static function ($body): StreamInterface {
                 if (is_string($body)) {
-                    return Utils::streamFor($body);
+                    $stream = fopen('php://temp', 'r+');
+                    if ('' !== $stream) {
+                        fwrite($stream, $body);
+                        fseek($stream, 0);
+                    }
+
+                    return new Stream($stream);
                 }
 
                 return new Stream($body);
