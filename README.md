@@ -20,7 +20,7 @@
 composer require gam6itko/ozon-seller
 ```
 
-Для взаимодействия библиотеки с Ozon-Api используют [psr-18-client](https://packagist.org/explore/?tags=psr-18~client).
+Для взаимодействия библиотеки с Ozon-Api нужны дополнительно установить реализзации [PSR-18: HTTP Client](https://packagist.org/providers/psr/http-client-implementation) и [PSR-17: HTTP Factories](https://packagist.org/providers/psr/http-factory-implementation).
 
 ### Использование с Symfony
 https://symfony.com/doc/current/components/http_client.html#psr-18-and-psr-17
