@@ -52,7 +52,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     public function unfulfilledList(array $requestData = []): array
     {
         $default = [
-            'with'    => [],
+            'with'    => WithResolver::resolve($requestData, 2, PostingScheme::FBS),
             'status'  => Status::getList(),
             'sort_by' => 'updated_at',
             'dir'     => SortDirection::ASC,

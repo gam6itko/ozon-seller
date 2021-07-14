@@ -2,12 +2,16 @@
 
 namespace Gam6itko\OzonSeller\Utils;
 
+use Gam6itko\OzonSeller\Enum\PostingScheme;
+
 final class WithResolver
 {
     public static function getKeys(int $version = 2, string $postingScheme = 'fbs'): array
     {
         switch ("$version-$postingScheme") {
-            case '2-fbo':
+            case '2-'.PostingScheme::FBS:
+                return ['barcodes'];
+            case '2-'.PostingScheme::FBO:
                 return ['analytics_data', 'financial_data'];
             default:
                 return ['analytics_data', 'barcodes', 'financial_data'];

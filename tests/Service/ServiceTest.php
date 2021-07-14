@@ -117,7 +117,7 @@ class ServiceTest extends TestCase
         new ProductService([], $client);
     }
 
-    public function testBadResponseWithoutThrow(): void
+    public function testBadResponseWithoutThrow()
     {
         $this->expectException(BadRequestException::class);
         $this->expectExceptionMessage('API method /v1/product/delete is unavailable');
@@ -128,7 +128,7 @@ class ServiceTest extends TestCase
         $svc->importInfo(123);
     }
 
-    public function testThrowUnknownErrorCode(): void
+    public function testThrowUnknownErrorCode()
     {
         $this->expectException(OzonSellerException::class);
         $this->expectExceptionMessage('{"error":{"code":"YOU_dont_kNOw_me_","message":"your test will fall!","data":[]}}');
@@ -162,7 +162,7 @@ class ServiceTest extends TestCase
         return $client;
     }
 
-    public function testSymfonyPsr18Client(): void
+    public function testSymfonyPsr18Client()
     {
         $classImplements = class_implements(Psr18Client::class);
         if (!in_array(RequestFactoryInterface::class, $classImplements) || !in_array(StreamFactoryInterface::class, $classImplements)) {

@@ -6,6 +6,9 @@ use Gam6itko\OzonSeller\Enum\Status;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
 
+/**
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\Posting\FbsService
+ */
 class FbsServiceTest extends AbstractTestCase
 {
     protected function getClass(): string
@@ -47,24 +50,47 @@ class FbsServiceTest extends AbstractTestCase
         );
     }
 
-    public function testUnfulfilledList(): void
+    /**
+     * @covers ::unfulfilledList
+     * @dataProvider dataUnfulfilledList
+     */
+    public function testUnfulfilledList(array $args, string $responseJson): void
     {
         $this->quickTest(
             'unfulfilledList',
+            $args,
+            [
+                'POST',
+                '/v2/posting/fbs/unfulfilled/list',
+                $responseJson,
+            ]
+        );
+    }
+
+    public function dataUnfulfilledList(): iterable
+    {
+        yield [
             [
                 [
                     'status' => [
                         Status::AWAITING_APPROVE,
                     ],
-                    'with'   => ['barcodes' => true],
+                    'with' => ['barcodes' => true],
                 ],
             ],
+            '{"with":{"barcodes":true},"status":["awaiting_approve"],"sort_by":"updated_at","dir":"asc","offset":0,"limit":10}',
+        ];
+
+        yield [
             [
-                'POST',
-                '/v2/posting/fbs/unfulfilled/list',
-                '{"with":{"barcodes":true},"status":["awaiting_approve"],"sort_by":"updated_at","dir":"asc","offset":0,"limit":10}',
-            ]
-        );
+                [
+                    'status' => [
+                        Status::AWAITING_APPROVE,
+                    ],
+                ],
+            ],
+            '{"with":{"barcodes":false},"status":["awaiting_approve"],"sort_by":"updated_at","dir":"asc","offset":0,"limit":10}',
+        ];
     }
 
     public function testShip(): void
