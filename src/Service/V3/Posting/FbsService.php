@@ -15,6 +15,9 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
 {
     private $path = '/v3/posting/fbs';
 
+    /**
+     * @see https://docs.ozon.ru/api/seller/#operation/PostingAPI_GetFbsPostingList
+     */
     public function list(array $requestData = []): array
     {
         $default = [
@@ -34,11 +37,20 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
             'delivery_method_id',
             'order_id',
             'provider_id',
-            'since',
             'status',
+            'since',
             'to',
             'warehouse_id',
         ]);
+
+        //default filter parameters
+        $requestData['filter'] = array_merge(
+            [
+                'since' => (new \DateTime('now - 7 days'))->format(DATE_W3C),
+                'to'    => (new \DateTime('now'))->format(DATE_W3C),
+            ],
+            $requestData['filter']
+        );
 
         return $this->request('POST', "{$this->path}/list", $requestData);
     }

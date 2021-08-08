@@ -1,4 +1,5 @@
 /.idea
+/examples/.env
 /composer.lock
 /vendor/
 /phpunit.xml
