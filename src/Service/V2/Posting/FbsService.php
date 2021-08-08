@@ -9,6 +9,7 @@ use Gam6itko\OzonSeller\Service\AbstractService;
 use Gam6itko\OzonSeller\Service\GetOrderInterface;
 use Gam6itko\OzonSeller\Service\HasOrdersInterface;
 use Gam6itko\OzonSeller\Service\HasUnfulfilledOrdersInterface;
+use Gam6itko\OzonSeller\TypeCaster;
 use Gam6itko\OzonSeller\Utils\ArrayHelper;
 use Gam6itko\OzonSeller\Utils\WithResolver;
 
@@ -25,9 +26,9 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     {
         $default = [
             'filter' => [],
-            'dir'    => SortDirection::ASC,
+            'dir' => SortDirection::ASC,
             'offset' => 0,
-            'limit'  => 10,
+            'limit' => 10,
         ];
 
         $requestData = array_merge(
@@ -52,12 +53,12 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     public function unfulfilledList(array $requestData = []): array
     {
         $default = [
-            'with'    => WithResolver::resolve($requestData, 2, PostingScheme::FBS, __FUNCTION__),
-            'status'  => Status::getList(),
+            'with' => WithResolver::resolve($requestData, 2, PostingScheme::FBS, __FUNCTION__),
+            'status' => Status::getList(),
             'sort_by' => 'updated_at',
-            'dir'     => SortDirection::ASC,
-            'offset'  => 0,
-            'limit'   => 10,
+            'dir' => SortDirection::ASC,
+            'offset' => 0,
+            'limit' => 10,
         ];
 
         $requestData = array_merge(
@@ -79,7 +80,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     {
         return $this->request('POST', "{$this->path}/get", [
             'posting_number' => $postingNumber,
-            'with'           => WithResolver::resolve($options, 2, PostingScheme::FBS),
+            'with' => WithResolver::resolve($options, 2, PostingScheme::FBS),
         ]);
     }
 
@@ -95,7 +96,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
         }
 
         $body = [
-            'packages'       => $packages,
+            'packages' => $packages,
             'posting_number' => $postingNumber,
         ];
 
@@ -138,8 +139,8 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     public function cancel(string $postingNumber, int $cancelReasonId, string $cancelReasonMessage = null): bool
     {
         $body = [
-            'posting_number'        => $postingNumber,
-            'cancel_reason_id'      => $cancelReasonId,
+            'posting_number' => $postingNumber,
+            'cancel_reason_id' => $cancelReasonId,
             'cancel_reason_message' => $cancelReasonMessage,
         ];
         $result = $this->request('POST', "{$this->path}/cancel", $body);
@@ -180,11 +181,19 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     //<editor-fold desc="/act">
 
     /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-section_postings_fbs_act_create_title
+     * @see https://docs.ozon.ru/api/seller/#operation/PostingAPI_PostingFBSActCreate
+     * @param array $params [containers_count, delivery_method_id]
      */
-    public function actCreate(): int
+    public function actCreate(array $params): int
     {
-        $result = $this->request('POST', "{$this->path}/act/create", '{}');
+        $config = [
+            'containers_count' => 'int',
+            'delivery_method_id' => 'int'
+        ];
+
+        $params = ArrayHelper::pick($params, array_keys($config));
+        $params = TypeCaster::castArr($params, $config);
+        $result = $this->request('POST', "{$this->path}/act/create", $params);
 
         return $result['id'];
     }
