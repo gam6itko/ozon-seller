@@ -24,11 +24,18 @@ class FbsServiceTest extends AbstractTestCase
     {
         $this->quickTest(
             'list',
-            [],
+            [
+                [
+                    'filter' => [
+                        "since" => "2021-08-01T00:00:00+00:00",
+                        "to"    => "2021-08-08T00:00:00+00:00",
+                    ],
+                ],
+            ],
             [
                 'POST',
                 '/v3/posting/fbs/list',
-                '{"with":{"analytics_data":false,"barcodes":false,"financial_data":false},"filter":[],"dir":"asc","offset":0,"limit":10}',
+                '{"with":{"analytics_data":false,"barcodes":false,"financial_data":false},"filter":{"since":"2021-08-01T00:00:00+00:00","to":"2021-08-08T00:00:00+00:00"},"dir":"asc","offset":0,"limit":10}',
             ]
         );
     }
