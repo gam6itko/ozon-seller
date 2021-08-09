@@ -11,8 +11,6 @@
 
 <https://docs.ozon.ru/api/seller> 
 
-<https://cb-api.ozonru.me/apiref/>
-
 
 ## Установка
 
