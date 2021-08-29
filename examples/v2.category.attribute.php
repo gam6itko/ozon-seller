@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 $svcArgs = require_once __DIR__.'/bootstrap.php';
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 use Gam6itko\OzonSeller\Service\V3\Posting\FbsService;
 

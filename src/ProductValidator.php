@@ -64,10 +64,10 @@ class ProductValidator
 
         foreach ($this->requiredKeys as $key) {
             if (!array_key_exists($key, $item)) {
-                throw new ProductValidatorException("Required property not defined: $key", $item);
+                throw new ProductValidatorException("Required property not defined: $key", 0, $item);
             }
             if ('string' === TypeCaster::normalizeType($this->config[$key]['type']) && '' === $item[$key]) {
-                throw new ProductValidatorException("Empty value for property: $key", $item);
+                throw new ProductValidatorException("Empty value for property: $key", 0, $item);
             }
         }
 

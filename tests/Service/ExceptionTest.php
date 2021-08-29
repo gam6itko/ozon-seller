@@ -54,12 +54,12 @@ class ExceptionTest extends AbstractTestCase
             $svc->get('');
         } catch (OzonSellerException $exc) {
             self::assertInstanceOf($class, $exc);
-            self::assertEquals($expectedData, $exc->getData());
+            self::assertEquals($expectedData, $exc->getDetails());
             self::assertTrue(false !== strpos((string) $exc, 'Data:'));
         }
     }
 
-    public function dataProvider()
+    public function dataProvider(): iterable
     {
         yield [
             AccessDeniedException::class,
@@ -106,6 +106,43 @@ HTML;
             ->expects(self::once())
             ->method('getStatusCode')
             ->willReturn(502);
+        $response
+            ->expects(self::once())
+            ->method('getBody')
+            ->willReturn($stream);
+
+        $client = $this->createMock(ClientInterface::class);
+        $client
+            ->expects(self::once())
+            ->method('sendRequest')
+            ->willReturn($response);
+
+        /** @var FbsService $svc */
+        $svc = $this->createSvc($client, $this->createRequestFactory(), $this->createStreamFactory());
+        $svc->get('');
+    }
+
+    public function testWithoutErrorDetails()
+    {
+        $content = <<<HTML
+{"code":7,"message":"Invalid Api-Key, please contact support","details":[]}
+HTML;
+
+        $this->expectException(OzonSellerException::class);
+        $this->expectExceptionMessage('Invalid Api-Key, please contact support');
+        $this->expectExceptionCode(7);
+
+        $stream = $this->createMock(StreamInterface::class);
+        $stream
+            ->expects(self::once())
+            ->method('getContents')
+            ->willReturn($content);
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response
+            ->expects(self::once())
+            ->method('getStatusCode')
+            ->willReturn(403);
         $response
             ->expects(self::once())
             ->method('getBody')

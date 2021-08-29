@@ -13,7 +13,7 @@ class CategoryService extends AbstractService
 
     /**
      * @param array|int $categoryId
-     * @param array     $query [attribute_type, language]
+     * @param array     $query      [attribute_type, language]
      *
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */

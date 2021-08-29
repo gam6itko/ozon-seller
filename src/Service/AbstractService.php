@@ -143,6 +143,10 @@ abstract class AbstractService
             throw new OzonSellerException($responseBodyContents);
         }
 
+        if (!isset($errorData['error'])) {
+            throw new OzonSellerException($errorData['message'] ?? 'Ozon error', (int) ($errorData['code'] ?? 0), $errorData['details'] ?? []);
+        }
+
         if (!class_exists($className = $this->getExceptionClassByName($errorData['error']['code']))) {
             throw new OzonSellerException($responseBodyContents);
         }
@@ -154,7 +158,7 @@ abstract class AbstractService
 
         $refClass = new \ReflectionClass($className);
         /** @var \Throwable $instance */
-        $instance = $refClass->newInstance($errorData['message'], $errorData['data']);
+        $instance = $refClass->newInstance($errorData['message'], 0, $errorData['data'] ?? []);
         throw $instance;
     }
 
