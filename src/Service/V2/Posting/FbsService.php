@@ -26,9 +26,9 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     {
         $default = [
             'filter' => [],
-            'dir' => SortDirection::ASC,
+            'dir'    => SortDirection::ASC,
             'offset' => 0,
-            'limit' => 10,
+            'limit'  => 10,
         ];
 
         $requestData = array_merge(
@@ -53,12 +53,12 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     public function unfulfilledList(array $requestData = []): array
     {
         $default = [
-            'with' => WithResolver::resolve($requestData, 2, PostingScheme::FBS, __FUNCTION__),
-            'status' => Status::getList(),
+            'with'    => WithResolver::resolve($requestData, 2, PostingScheme::FBS, __FUNCTION__),
+            'status'  => Status::getList(),
             'sort_by' => 'updated_at',
-            'dir' => SortDirection::ASC,
-            'offset' => 0,
-            'limit' => 10,
+            'dir'     => SortDirection::ASC,
+            'offset'  => 0,
+            'limit'   => 10,
         ];
 
         $requestData = array_merge(
@@ -80,7 +80,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     {
         return $this->request('POST', "{$this->path}/get", [
             'posting_number' => $postingNumber,
-            'with' => WithResolver::resolve($options, 2, PostingScheme::FBS),
+            'with'           => WithResolver::resolve($options, 2, PostingScheme::FBS),
         ]);
     }
 
@@ -96,7 +96,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
         }
 
         $body = [
-            'packages' => $packages,
+            'packages'       => $packages,
             'posting_number' => $postingNumber,
         ];
 
@@ -139,8 +139,8 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     public function cancel(string $postingNumber, int $cancelReasonId, string $cancelReasonMessage = null): bool
     {
         $body = [
-            'posting_number' => $postingNumber,
-            'cancel_reason_id' => $cancelReasonId,
+            'posting_number'        => $postingNumber,
+            'cancel_reason_id'      => $cancelReasonId,
             'cancel_reason_message' => $cancelReasonMessage,
         ];
         $result = $this->request('POST', "{$this->path}/cancel", $body);
@@ -182,13 +182,14 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
 
     /**
      * @see https://docs.ozon.ru/api/seller/#operation/PostingAPI_PostingFBSActCreate
+     *
      * @param array $params [containers_count, delivery_method_id]
      */
     public function actCreate(array $params): int
     {
         $config = [
-            'containers_count' => 'int',
-            'delivery_method_id' => 'int'
+            'containers_count'   => 'int',
+            'delivery_method_id' => 'int',
         ];
 
         $params = ArrayHelper::pick($params, array_keys($config));

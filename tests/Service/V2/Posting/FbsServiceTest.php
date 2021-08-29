@@ -23,8 +23,8 @@ class FbsServiceTest extends AbstractTestCase
             [
                 [
                     'filter' => [
-                        'since' => new \DateTime('2018-11-18T11:27:45.154Z'),
-                        'to' => new \DateTime('2019-11-18T11:27:45.154Z'),
+                        'since'  => new \DateTime('2018-11-18T11:27:45.154Z'),
+                        'to'     => new \DateTime('2019-11-18T11:27:45.154Z'),
                         'status' => Status::AWAITING_APPROVE,
                     ],
                 ],
@@ -115,9 +115,9 @@ class FbsServiceTest extends AbstractTestCase
             'actCreate',
             [
                 [
-                    'containers_count' => '1917',
-                    'delivery_method_id' => 11
-                ]
+                    'containers_count'   => '1917',
+                    'delivery_method_id' => 11,
+                ],
             ],
             [
                 'POST',
