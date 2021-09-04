@@ -4,7 +4,11 @@ namespace Gam6itko\OzonSeller\Tests\Service\V2;
 
 use Gam6itko\OzonSeller\Service\V2\ProductService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
+use Psr\Http\Client\ClientInterface;
 
+/**
+ * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\ProductService
+ */
 class ProductServiceTest extends AbstractTestCase
 {
     protected function getClass(): string
@@ -128,5 +132,119 @@ class ProductServiceTest extends AbstractTestCase
                 '{"filter":{"offer_id":["ABC-123"],"product_id":[2346321]},"page":0,"page_size":10}',
             ]
         );
+    }
+
+    /**
+     * @covers ::importStocks
+     * @dataProvider dataImportStocks
+     */
+    public function testImportStocks(array $stocks): void
+    {
+        $this->quickTest(
+            'importStocks',
+            [$stocks],
+            [
+                'POST',
+                '/v2/products/stocks',
+                '{"stocks":[{"product_id":120000,"offer_id":"PRD-1","stock":20}]}',
+            ]
+        );
+    }
+
+    public function dataImportStocks(): iterable
+    {
+        $stock = [
+            'product_id' => 120000,
+            'offer_id'   => 'PRD-1',
+            'stock'      => 20,
+        ];
+
+        yield [$stock];
+        yield [[$stock]];
+        yield [['stocks' => [$stock]]];
+    }
+
+    /**
+     * @dataProvider dataFailImportStocks
+     */
+    public function testFailImportStocks(array $prices): void
+    {
+        self::expectException(\InvalidArgumentException::class);
+
+        $config = [123, 'api-key'];
+        $client = $this->createMock(ClientInterface::class);
+        $svc = new \Gam6itko\OzonSeller\Service\V1\ProductService($config, $client, $this->createRequestFactory(), $this->createStreamFactory());
+        $svc->importStocks($prices);
+    }
+
+    public function dataFailImportStocks(): iterable
+    {
+        $item = [
+            'foo'     => 'far',
+            'bad_key' => 'bad_value',
+            2,
+            3,
+        ];
+
+        yield [$item];
+        yield [[]];
+        yield [['some_key' => [$item]]];
+    }
+
+    public function testInfoStocks(): void
+    {
+        $this->quickTest(
+            'infoStocks',
+            [],
+            [
+                'POST',
+                '/v2/product/info/stocks',
+                '{"page":1,"page_size":100}',
+            ]
+        );
+    }
+
+    /**
+     * @covers ::delete
+     * @dataProvider dataDelete
+     */
+    public function testDelete(array $products, string $expectedJsonString): void
+    {
+        $this->quickTest(
+            'delete',
+            [$products],
+            [
+                'POST',
+                '/v2/products/delete',
+                $expectedJsonString,
+            ]
+        );
+    }
+
+    public function dataDelete(): iterable
+    {
+        yield [
+            [
+                'products' => [
+                    ['offer_id' => 'PRD-1'],
+                    ['offer_id' => 2],
+                ],
+            ],
+
+            '{"products":[{"offer_id":"PRD-1"}, {"offer_id":"2"}]}',
+        ];
+
+        yield [
+            [
+                ['offer_id' => 'PRD-1'],
+                ['offer_id' => 2],
+            ],
+            '{"products":[{"offer_id":"PRD-1"}, {"offer_id":"2"}]}',
+        ];
+
+        yield [
+            ['offer_id' => 'PRD-1'],
+            '{"products":[{"offer_id":"PRD-1"}]}',
+        ];
     }
 }

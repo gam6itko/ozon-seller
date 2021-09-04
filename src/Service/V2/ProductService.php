@@ -81,6 +81,127 @@ class ProductService extends AbstractService
             'page_size' => $pageSize,
         ];
 
-        return $this->request('POST', '/v2/products/info/attributes', $query);
+        return $this->request('POST', "{$this->path}s/info/attributes", $query);
+    }
+
+    /**
+     * Receive products stocks info.
+     *
+     * @param array $pagination ['page', 'page_size']
+     *
+     * @return array {items: array, total: int}
+     *
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoPricesV2
+     */
+    public function infoStocks(array $pagination = []): array
+    {
+        $pagination = array_merge(
+            ['page' => 1, 'page_size' => 100],
+            ArrayHelper::pick($pagination, ['page', 'page_size'])
+        );
+
+        return $this->request('POST', "{$this->path}/info/stocks", $pagination);
+    }
+
+    /**
+     * Receive products prices info.
+     *
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoListV2
+     *
+     * @param array $pagination [page, page_size]
+     *
+     * @return array
+     */
+    public function infoPrices(array $pagination = [])
+    {
+        $pagination = array_merge(
+            ['page' => 1, 'page_size' => 100],
+            ArrayHelper::pick($pagination, ['page', 'page_size'])
+        );
+
+        return $this->request('POST', '/v1/product/info/prices', $pagination);
+    }
+
+    /**
+     * Update product stocks.
+     *
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_ProductsStocksV2
+     *
+     * @param $input
+     *
+     * @return array
+     */
+    public function importStocks(array $input)
+    {
+        if (empty($input)) {
+            throw new \InvalidArgumentException('Empty stocks data');
+        }
+
+        if ($this->isAssoc($input) && !isset($input['stocks'])) {// if it one price
+            $input = ['stocks' => [$input]];
+        } else {
+            if (!$this->isAssoc($input)) {// if it plain array on prices
+                $input = ['stocks' => $input];
+            }
+        }
+
+        if (!isset($input['stocks'])) {
+            throw new \InvalidArgumentException();
+        }
+
+        foreach ($input['stocks'] as $i => &$s) {
+            if (!$s = ArrayHelper::pick($s, ['product_id', 'offer_id', 'stock'])) {
+                throw new \InvalidArgumentException('Invalid stock data at index '.$i);
+            }
+
+            $s = TypeCaster::castArr(
+                $s,
+                [
+                    'product_id' => 'int',
+                    'offer_id'   => 'str',
+                    'stock'      => 'int',
+                ]
+            );
+        }
+
+        return $this->request('POST', "{$this->path}s/stocks", $input);
+    }
+
+    /**
+     * @param array $input one of: <br>
+     *                     {products:[{offer_id: "str"}, ...]}<br>
+     *                     [{offer_id: "str"}, ...]<br>
+     *                     {offer_id: "str"}<br>
+     *
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_DeleteProducts
+     */
+    public function delete(array $input)
+    {
+        if ($this->isAssoc($input) && !isset($input['products'])) {// if it one price
+            $input = ['products' => [$input]];
+        } else {
+            if (!$this->isAssoc($input)) {// if it plain array on prices
+                $input = ['products' => $input];
+            }
+        }
+
+        if (!isset($input['products'])) {
+            throw new \InvalidArgumentException();
+        }
+
+        foreach ($input['products'] as $i => &$s) {
+            if (!$s = ArrayHelper::pick($s, ['offer_id'])) {
+                throw new \InvalidArgumentException('Invalid stock data at index '.$i);
+            }
+
+            $s = TypeCaster::castArr(
+                $s,
+                [
+                    'offer_id' => 'str',
+                ]
+            );
+        }
+
+        return $this->request('POST', "{$this->path}s/delete", $input);
     }
 }

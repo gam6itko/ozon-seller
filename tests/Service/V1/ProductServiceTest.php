@@ -64,7 +64,7 @@ class ProductServiceTest extends AbstractTestCase
         );
     }
 
-    public function dataImport()
+    public function dataImport(): iterable
     {
         $item = [
             'barcode'        => '8801643566784',
@@ -116,7 +116,7 @@ class ProductServiceTest extends AbstractTestCase
         );
     }
 
-    public function dataImportBySku()
+    public function dataImportBySku(): iterable
     {
         $item = [
             'sku'           => 1445625485,
@@ -347,7 +347,7 @@ JSON;
         );
     }
 
-    public function dataImportPrices()
+    public function dataImportPrices(): iterable
     {
         $item = [
             'product_id'    => 120000,
@@ -375,7 +375,7 @@ JSON;
         $svc->importPrices($prices);
     }
 
-    public function dataFailImportPrices()
+    public function dataFailImportPrices(): iterable
     {
         $item = [
             'foo'     => 'far',
@@ -405,7 +405,7 @@ JSON;
         );
     }
 
-    public function dataImportStocks()
+    public function dataImportStocks(): iterable
     {
         $stock = [
             'product_id' => 120000,
@@ -431,7 +431,7 @@ JSON;
         $svc->importStocks($prices);
     }
 
-    public function dataFailImportStocks()
+    public function dataFailImportStocks(): iterable
     {
         $item = [
             'foo'     => 'far',
