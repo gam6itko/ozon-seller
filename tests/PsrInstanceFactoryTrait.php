@@ -2,8 +2,8 @@
 
 namespace Gam6itko\OzonSeller\Tests;
 
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Stream;
+use Http\Factory\Guzzle\RequestFactory;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
@@ -16,7 +16,7 @@ trait PsrInstanceFactoryTrait
     /**
      * @param array|string|null $body
      */
-    protected function createClient(string $method, string $path, $body, string $responseContents): ClientInterface
+    protected function createClient(string $expectedMethod, string $expectedPath, $body, string $responseContents): ClientInterface
     {
         $stream = $this->createMock(StreamInterface::class);
         $stream
@@ -34,9 +34,9 @@ trait PsrInstanceFactoryTrait
         $client
             ->expects(self::once())
             ->method('sendRequest')
-            ->willReturnCallback(static function (RequestInterface $request) use ($method, $path, $body, $response): ResponseInterface {
-                self::assertEquals($method, $request->getMethod());
-                self::assertEquals($path, $request->getUri()->getPath());
+            ->willReturnCallback(static function (RequestInterface $request) use ($expectedMethod, $expectedPath, $body, $response): ResponseInterface {
+                self::assertEquals($expectedMethod, $request->getMethod());
+                self::assertEquals($expectedPath, $request->getUri()->getPath());
 
                 if (is_string($body)) {
                     self::assertJsonStringEqualsJsonString($body, $request->getBody()->getContents());
@@ -50,16 +50,9 @@ trait PsrInstanceFactoryTrait
         return $client;
     }
 
-    protected function createRequestFactory(string $methodName = 'GET', string $path = '/'): RequestFactoryInterface
+    protected function createRequestFactory(): RequestFactoryInterface
     {
-        $request = new Request($methodName, $path);
-
-        $requestFactory = $this->createMock(RequestFactoryInterface::class);
-        $requestFactory
-            ->method('createRequest')
-            ->willReturn($request);
-
-        return $requestFactory;
+        return new RequestFactory();
     }
 
     protected function createStreamFactory(): StreamFactoryInterface

@@ -30,7 +30,7 @@ abstract class AbstractTestCase extends TestCase
     {
         [$method, $path, $expectedOptions] = $expectedRequest;
         $client = $this->createClient($method, $path, $expectedOptions, $responseJson);
-        $requestFactory = $this->createRequestFactory($method, $path);
+        $requestFactory = $this->createRequestFactory();
         $streamFactory = $this->createStreamFactory();
         $svc = $this->createSvc($client, $requestFactory, $streamFactory);
         self::assertTrue(method_exists($svc, $methodName), "No method `$methodName`");
