@@ -30,6 +30,7 @@ return [
         'options'        => ['g', 'kg', 'lb'],
     ],
 
+    'primary_image'  => ['type' => 'str', 'requiredCreate' => false],
     'image_group_id' => ['type' => 'str', 'requiredCreate' => false],
     'images'         => ['type' => 'array', 'requiredCreate' => true],
     'images360'      => [
