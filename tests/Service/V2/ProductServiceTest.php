@@ -146,7 +146,7 @@ class ProductServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/products/stocks',
-                '{"stocks":[{"product_id":120000,"offer_id":"PRD-1","stock":20}]}',
+                '{"stocks":[{"product_id":120000,"offer_id":"PRD-1","stock":20,"warehouse_id":22043923995000}]}',
             ]
         );
     }
@@ -157,6 +157,7 @@ class ProductServiceTest extends AbstractTestCase
             'product_id' => 120000,
             'offer_id'   => 'PRD-1',
             'stock'      => 20,
+            'warehouse_id' => 22043923995000
         ];
 
         yield [$stock];
