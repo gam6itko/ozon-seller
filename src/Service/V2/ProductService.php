@@ -150,7 +150,7 @@ class ProductService extends AbstractService
         }
 
         foreach ($input['stocks'] as $i => &$s) {
-            if (!$s = ArrayHelper::pick($s, ['product_id', 'offer_id', 'stock'])) {
+            if (!$s = ArrayHelper::pick($s, ['product_id', 'offer_id', 'stock', 'warehouse_id'])) {
                 throw new \InvalidArgumentException('Invalid stock data at index '.$i);
             }
 
@@ -160,6 +160,7 @@ class ProductService extends AbstractService
                     'product_id' => 'int',
                     'offer_id'   => 'str',
                     'stock'      => 'int',
+                    'warehouse_id' => 'int'
                 ]
             );
         }
