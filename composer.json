@@ -18,7 +18,6 @@
     "require": {
         "php": ">=7.1",
         "ext-json": "*",
-        "dg/bypass-finals": "^1.2",
         "psr/http-client": "^1.0",
         "http-interop/http-factory-guzzle": "^1.0"
     },
@@ -34,6 +33,7 @@
     },
     "require-dev": {
         "ext-curl": "*",
+        "dg/bypass-finals": "^1.2",
         "guzzlehttp/psr7": "^1.6",
         "phpunit/phpunit": "^7.4||^8.0||^9.0",
         "php-http/guzzle6-adapter": "^2.0",
