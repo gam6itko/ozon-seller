@@ -124,13 +124,55 @@ HTML;
 
     public function testWithoutErrorDetails()
     {
-        $content = <<<HTML
-{"code":7,"message":"Invalid Api-Key, please contact support","details":[]}
-HTML;
+        $content = <<<JSON
+{
+    "code":7,
+    "message":"Invalid Api-Key, please contact support",
+    "details":[]
+}
+JSON;
 
         $this->expectException(OzonSellerException::class);
         $this->expectExceptionMessage('Invalid Api-Key, please contact support');
         $this->expectExceptionCode(7);
+
+        $stream = $this->createMock(StreamInterface::class);
+        $stream
+            ->expects(self::once())
+            ->method('getContents')
+            ->willReturn($content);
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response
+            ->expects(self::once())
+            ->method('getStatusCode')
+            ->willReturn(403);
+        $response
+            ->expects(self::once())
+            ->method('getBody')
+            ->willReturn($stream);
+
+        $client = $this->createMock(ClientInterface::class);
+        $client
+            ->expects(self::once())
+            ->method('sendRequest')
+            ->willReturn($response);
+
+        /** @var FbsService $svc */
+        $svc = $this->createSvc($client, $this->createRequestFactory(), $this->createStreamFactory());
+        $svc->get('');
+    }
+
+    public function testErrorWithoutCode(): void
+    {
+        $content = <<<JSON
+{
+    "error": {}
+}
+JSON;
+
+        $this->expectException(OzonSellerException::class);
+        $this->expectExceptionMessage('Ozon error');
 
         $stream = $this->createMock(StreamInterface::class);
         $stream

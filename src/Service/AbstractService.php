@@ -143,7 +143,7 @@ abstract class AbstractService
             throw new OzonSellerException($responseBodyContents);
         }
 
-        if (!isset($errorData['error'])) {
+        if (!isset($errorData['error']) || empty($errorData['error']['code'])) {
             throw new OzonSellerException($errorData['message'] ?? 'Ozon error', (int) ($errorData['code'] ?? 0), $errorData['details'] ?? []);
         }
 
