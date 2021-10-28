@@ -233,11 +233,11 @@ class ProductService extends AbstractService
             $query['filter'] = ArrayHelper::pick($query['filter'], $filterKeys);
             // normalize offer_id data
             if (isset($query['filter']['offer_id'])) {
-                $query['filter']['offer_id'] = array_map('strval', ArrayHelper::toArray($query['filter']['offer_id']));
+                $query['filter']['offer_id'] = array_map('strval', (array) $query['filter']['offer_id']);
             }
             // normalize product_id data
             if (isset($query['filter']['product_id'])) {
-                $query['filter']['product_id'] = array_map('intval', ArrayHelper::toArray($query['filter']['product_id']));
+                $query['filter']['product_id'] = array_map('intval', (array) $query['filter']['product_id']);
             }
         }
 
