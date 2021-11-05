@@ -77,7 +77,7 @@ abstract class AbstractService
     protected function createRequest(string $method, string $uri = '', $body = null): RequestInterface
     {
         if (is_array($body)) {
-            $body = json_encode($body);
+            $body = json_encode($body, JSON_FORCE_OBJECT);
             if (JSON_ERROR_NONE !== json_last_error()) {
                 throw new \RuntimeException('json_encode error: '.json_last_error_msg());
             }
