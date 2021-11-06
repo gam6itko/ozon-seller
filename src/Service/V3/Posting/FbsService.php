@@ -81,7 +81,14 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
             'warehouse_id',
         ]);
 
-        return $this->request('POST', "{$this->path}/unfulfilled/list", $requestData);
+        return $this->request(
+            'POST',
+            "{$this->path}/unfulfilled/list",
+            // filter entities like {"filter":[]}
+            array_filter($requestData, static function ($v): bool {
+                return $v !== [];
+            })
+        );
     }
 
     public function get(string $postingNumber, array $options = []): array
