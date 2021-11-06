@@ -51,7 +51,7 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v3/posting/fbs/unfulfilled/list',
-                '{"with":{"analytics_data":false,"barcodes":false,"financial_data":false},"filter":{},"dir":"asc","offset":0,"limit":10}',
+                '{"with":{"analytics_data":false,"barcodes":false,"financial_data":false},"dir":"asc","offset":0,"limit":10}',
             ]
         );
     }
