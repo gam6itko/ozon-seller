@@ -4,6 +4,7 @@ namespace Gam6itko\OzonSeller\Tests\Service\V3\Posting;
 
 use Gam6itko\OzonSeller\Service\V3\Posting\FbsService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
+use Symfony\Component\HttpClient\Psr18Client;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
@@ -47,13 +48,29 @@ class FbsServiceTest extends AbstractTestCase
     {
         $this->quickTest(
             'unfulfilledList',
-            [],
+            [
+                [
+                    'filter' => [
+                        'cutoff_from' => '2021-11-12T00:00:00Z',
+                        'cutoff_to'   => '2021-11-13T00:00:22Z',
+                    ],
+                ],
+            ],
             [
                 'POST',
                 '/v3/posting/fbs/unfulfilled/list',
-                '{"with":{"analytics_data":false,"barcodes":false,"financial_data":false},"dir":"asc","offset":0,"limit":10}',
+                '{"with":{"analytics_data":false,"barcodes":false,"financial_data":false},"dir":"asc","filter":{"cutoff_from": "2021-11-12T00:00:00Z","cutoff_to": "2021-11-13T00:00:22Z"},"offset":0,"limit":10}',
             ]
         );
+    }
+
+    public function testUnfulfilledListNoMandatoryFilter(): void
+    {
+        self::expectException(\LogicException::class);
+        self::expectExceptionMessage('Not defined mandatory filter date ranges `cutoff` or `delivering_date`');
+
+        $svc = new FbsService([1,1], $this->createMock(Psr18Client::class));
+        $svc->unfulfilledList();
     }
 
     /**

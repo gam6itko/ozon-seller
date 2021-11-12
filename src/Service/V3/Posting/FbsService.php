@@ -86,7 +86,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
             (empty($requestData['filter']['cutoff_from']) && empty($requestData['filter']['cutoff_to'])) &&
             (empty($requestData['filter']['delivering_date_from']) && empty($requestData['filter']['delivering_date_to']))
         ) {
-            throw new \LogicException('Not defined mandatory filter date ranges `cutoff` or `delivering_date` ');
+            throw new \LogicException('Not defined mandatory filter date ranges `cutoff` or `delivering_date`');
         }
 
         return $this->request('POST', "{$this->path}/unfulfilled/list", $requestData);
