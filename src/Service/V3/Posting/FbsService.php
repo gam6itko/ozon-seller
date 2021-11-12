@@ -81,14 +81,15 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
             'warehouse_id',
         ]);
 
-        return $this->request(
-            'POST',
-            "{$this->path}/unfulfilled/list",
-            // filter entities like {"filter":[]}
-            array_filter($requestData, static function ($v): bool {
-                return $v !== [];
-            })
-        );
+        //https://github.com/gam6itko/ozon-seller/issues/48
+        if (
+            (empty($requestData['filter']['cutoff_from']) && empty($requestData['filter']['cutoff_to'])) &&
+            (empty($requestData['filter']['delivering_date_from']) && empty($requestData['filter']['delivering_date_to']))
+        ) {
+            throw new \LogicException('Not defined mandatory filter date ranges `cutoff` or `delivering_date` ');
+        }
+
+        return $this->request('POST', "{$this->path}/unfulfilled/list", $requestData);
     }
 
     public function get(string $postingNumber, array $options = []): array
