@@ -69,7 +69,7 @@ class FbsServiceTest extends AbstractTestCase
         self::expectException(\LogicException::class);
         self::expectExceptionMessage('Not defined mandatory filter date ranges `cutoff` or `delivering_date`');
 
-        $svc = new FbsService([1,1], $this->createMock(Psr18Client::class));
+        $svc = new FbsService([1,1], $this->createMock(Psr18Client::class), $this->createRequestFactory(), $this->createStreamFactory());
         $svc->unfulfilledList();
     }
 
