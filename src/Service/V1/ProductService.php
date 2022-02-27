@@ -275,7 +275,7 @@ class ProductService extends AbstractService
         }
 
         foreach ($input['prices'] as $i => &$p) {
-            if (!$p = ArrayHelper::pick($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price'])) {
+            if (!$p = ArrayHelper::pick($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price', 'min_price'])) {
                 throw new \InvalidArgumentException('Invalid price data at index '.$i);
             }
 
@@ -287,6 +287,7 @@ class ProductService extends AbstractService
                     'price'         => 'str',
                     'old_price'     => 'str',
                     'premium_price' => 'str',
+                    'min_price'     => 'str',
                 ]
             );
         }
