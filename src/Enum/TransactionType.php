@@ -1,13 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Gam6itko\OzonSeller\Enum;
 
 final class TransactionType
 {
-    const ALL = 'ALL';
-    const ORDERS = 'ORDERS';
-    const RETURNS = 'RETURNS';
-    const SERVICES = 'SERVICES';
-    const OTHER = 'OTHER';
-    const DEPOSIT = 'DEPOSIT';
+    public const ALL = 'ALL';
+    public const ORDERS = 'ORDERS';
+    public const RETURNS = 'RETURNS';
+    public const SERVICES = 'SERVICES';
+    public const OTHER = 'OTHER';
+    public const DEPOSIT = 'DEPOSIT';
 }

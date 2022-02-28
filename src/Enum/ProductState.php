@@ -1,13 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Gam6itko\OzonSeller\Enum;
 
 final class ProductState
 {
-    const PROCESSED = 'processed';
-    const PROCESSING = 'processing';
-    const MODERATING = 'moderating';
-    const FAILED_MODERATION = 'failed_moderation';
-    const FAILED_VALIDATION = 'failed_validation';
-    const FAILED = 'failed';
+    public const PROCESSED = 'processed';
+    public const PROCESSING = 'processing';
+    public const MODERATING = 'moderating';
+    public const FAILED_MODERATION = 'failed_moderation';
+    public const FAILED_VALIDATION = 'failed_validation';
+    public const FAILED = 'failed';
 }

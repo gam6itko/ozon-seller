@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 $whereIsAutoloader = [
     dirname(__DIR__).'/vendor/autoload.php',

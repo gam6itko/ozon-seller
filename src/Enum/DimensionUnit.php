@@ -1,17 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Gam6itko\OzonSeller\Enum;
 
 final class DimensionUnit
 {
-    const MILLIMETERS = 'mm';
-    const CENTIMETRES = 'cm';
-    const INCHES = 'in';
+    public const MILLIMETERS = 'mm';
+    public const CENTIMETRES = 'cm';
+    public const INCHES = 'in';
 
     /** @deprecated use MILLIMETERS */
-    const Millimeters = 'mm';
+    public const Millimeters = 'mm';
     /** @deprecated use CENTIMETRES */
-    const Centimetres = 'cm';
+    public const Centimetres = 'cm';
     /** @deprecated use INCHES */
-    const Inches = 'in';
+    public const Inches = 'in';
 }

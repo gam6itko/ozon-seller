@@ -1,15 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Gam6itko\OzonSeller\Enum;
 
 final class Status
 {
-    const AWAITING_APPROVE = 'awaiting_approve';
-    const AWAITING_PACKAGING = 'awaiting_packaging';
-    const AWAITING_DELIVER = 'awaiting_deliver';
-    const DELIVERING = 'delivering';
-    const DELIVERED = 'delivered';
-    const CANCELLED = 'cancelled';
+    public const AWAITING_APPROVE = 'awaiting_approve';
+    public const AWAITING_PACKAGING = 'awaiting_packaging';
+    public const AWAITING_DELIVER = 'awaiting_deliver';
+    public const DELIVERING = 'delivering';
+    public const DELIVERED = 'delivered';
+    public const CANCELLED = 'cancelled';
 
     public static function getList()
     {

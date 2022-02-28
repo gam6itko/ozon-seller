@@ -2,8 +2,6 @@
 
 $rules = [
     '@Symfony'                     => true,
-    'blank_line_after_opening_tag' => false, // <?php declare(strict_types=1);
-    'linebreak_after_opening_tag'  => false, // <?php declare(strict_types=1);
     'binary_operator_spaces'       => [
         'operators' => [
             '=>' => 'align',
