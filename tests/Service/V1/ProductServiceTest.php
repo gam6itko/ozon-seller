@@ -332,9 +332,10 @@ JSON;
     }
 
     /**
+     * @covers ::importPrices
      * @dataProvider dataImportPrices
      */
-    public function testImportPrices(array $prices): void
+    public function testImportPrices(array $prices, string $expectedJson): void
     {
         $this->quickTest(
             'importPrices',
@@ -342,7 +343,7 @@ JSON;
             [
                 'POST',
                 '/v1/product/import/prices',
-                '{"prices":[{"product_id":120000,"offer_id":"PRD-1","price":"79990","old_price":"89990","premium_price":"75555"}]}',
+                $expectedJson
             ]
         );
     }
@@ -356,10 +357,20 @@ JSON;
             'old_price'     => '89990',
             'premium_price' => '75555',
         ];
+        $json = '{"prices":[{"product_id":120000,"offer_id":"PRD-1","price":"79990","old_price":"89990","premium_price":"75555"}]}';
 
-        yield [$item];
-        yield [[$item]];
-        yield [['prices' => [$item]]];
+        yield [$item, $json];
+        yield [[$item], $json];
+        yield [['prices' => [$item]], $json];
+
+        yield 'no discount' => [
+            [
+                'offer_id'      => 'PRD-2',
+                'price'         => '10000.10',
+                'old_price'     => '5000.50',
+            ],
+            '{"prices":[{"offer_id":"PRD-2","price":"10000.10","old_price":"0"}]}'
+        ];
     }
 
     /**

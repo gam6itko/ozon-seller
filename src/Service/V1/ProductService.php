@@ -275,8 +275,21 @@ class ProductService extends AbstractService
         }
 
         foreach ($input['prices'] as $i => &$p) {
-            if (!$p = ArrayHelper::pick($p, ['product_id', 'offer_id', 'price', 'old_price', 'premium_price', 'min_price'])) {
+            if (!$p = ArrayHelper::pick($p, [
+                'product_id',
+                'offer_id',
+                'price',
+                'old_price',
+                'premium_price',
+                'min_price',
+            ])) {
                 throw new \InvalidArgumentException('Invalid price data at index '.$i);
+            }
+
+            // old_price must be greater than price
+            if (!empty($p['old_price']) && !empty($p['price']) && (float) $p['price'] > (float) $p['old_price']) {
+                @trigger_error('`old_price` must be greater than `price`', E_USER_WARNING);
+                $p['old_price'] = 0;
             }
 
             $p = TypeCaster::castArr(
