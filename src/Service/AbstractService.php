@@ -67,8 +67,7 @@ abstract class AbstractService
         }
 
         if (!empty($config['host'])) {
-            $url = parse_url($config['host']);
-            $config['host'] = "{$url['scheme']}://{$url['host']}";
+            $config['host'] = rtrim($config['host'], '/');
         } else {
             $config['host'] = rtrim($this->getDefaultHost(), '/');
         }
