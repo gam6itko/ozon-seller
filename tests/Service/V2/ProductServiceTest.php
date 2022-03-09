@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Gam6itko\OzonSeller\Tests\Service\V2;
 
+use Gam6itko\OzonSeller\Enum\Visibility;
 use Gam6itko\OzonSeller\Service\V2\ProductService;
 use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
 use Psr\Http\Client\ClientInterface;
@@ -101,6 +102,25 @@ class ProductServiceTest extends AbstractTestCase
         yield [['items' => [$item]]];
     }
 
+    public function testList(): void
+    {
+        $this->quickTest(
+            'list',
+            [
+                [
+                    'filter' => ['offer_id' => 'item_6060091', 'product_id' => 7154396, 'visibility' => Visibility::ALL],
+                    'last_id' => '100',
+                    'limit' => 100,
+                ],
+            ],
+            [
+                'POST',
+                '/v2/product/list',
+                '{"filter":{"offer_id":["item_6060091"],"product_id":[7154396],"visibility":"ALL"},"last_id":"100","limit":100}',
+            ]
+        );
+    }
+
     public function testInfo(): void
     {
         $this->quickTest(
@@ -114,6 +134,41 @@ class ProductServiceTest extends AbstractTestCase
                 '{"offer_id":"item_6060091","product_id":7154396,"sku":150583609}',
             ]
         );
+    }
+
+    /**
+     * @dataProvider dataInfoList
+     */
+    public function testInfoList(array $query): void
+    {
+        $this->quickTest(
+            'infoList',
+            [$query],
+            [
+                'POST',
+                '/v2/product/info/list',
+                '{"offer_id":["item_6060091"],"product_id":[7154396],"sku":[150583609]}',
+            ]
+        );
+    }
+
+    public function dataInfoList(): iterable
+    {
+        yield [
+            ['offer_id' => 'item_6060091', 'product_id' => 7154396, 'sku' => 150583609],
+        ];
+
+        yield [
+            ['offer_id' => ['item_6060091'], 'product_id' => '7154396', 'sku' => '150583609'],
+        ];
+
+        yield [
+            ['offer_id' => ['item_6060091'], 'product_id' => [7154396], 'sku' => [150583609]],
+        ];
+
+        yield [
+            ['offer_id' => ['item_6060091'], 'product_id' => ['7154396'], 'sku' => ['150583609']],
+        ];
     }
 
     public function testInfoAttributes(): void
@@ -156,10 +211,10 @@ class ProductServiceTest extends AbstractTestCase
     public function dataImportStocks(): iterable
     {
         $stock = [
-            'product_id' => 120000,
-            'offer_id'   => 'PRD-1',
-            'stock'      => 20,
-            'warehouse_id' => 22043923995000
+            'product_id'   => 120000,
+            'offer_id'     => 'PRD-1',
+            'stock'        => 20,
+            'warehouse_id' => 22043923995000,
         ];
 
         yield [$stock];

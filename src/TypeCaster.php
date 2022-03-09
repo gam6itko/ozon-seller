@@ -32,6 +32,16 @@ class TypeCaster
                     case 'float':
                         $val = (float) $val;
                         break;
+                    case 'arrayOfInt':
+                        $val = array_map(function ($v): int {
+                            return (int) $v;
+                        }, (array) $val);
+                        break;
+                    case 'arrayOfString':
+                        $val = array_map(function ($v): string {
+                            return (string) $v;
+                        }, (array) $val);
+                        break;
                     default:
                         if ($force) {
                             throw new \LogicException("Unsupported type: {$config[$key]}");
@@ -49,6 +59,12 @@ class TypeCaster
             case 'arr':
             case 'array':
                 return 'array';
+            case 'arrOfInt':
+            case 'arrayOfInt':
+                return 'arrayOfInt';
+            case 'arrOfStr':
+            case 'arrayOfString':
+                return 'arrayOfString';
             case 'bool':
             case 'boolean':
                 return 'boolean';

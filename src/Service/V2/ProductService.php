@@ -45,6 +45,32 @@ class ProductService extends AbstractService
     }
 
     /**
+     * Receive the list of products.
+     *
+     * query['filter']
+     *          [offer_id] string|int|array
+     *          [product_id] string|int|array,
+     *          [visibility] string
+     *      [last_id] str
+     *      [limit] int
+     *
+     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
+     */
+    public function list(array $query)
+    {
+        $query = ArrayHelper::pick($query, ['filter', 'last_id', 'limit']);
+        $query = TypeCaster::castArr($query, ['last_id' => 'str', 'limit' => 'int']);
+        if (isset($query['filter'])) {
+            $query['filter'] = TypeCaster::castArr(
+                ArrayHelper::pick($query['filter'], ['offer_id', 'product_id', 'visibility']),
+                ['offer_id' => 'arrOfStr', 'product_id' => 'arrOfInt', 'visibility' => 'str']
+            );
+        }
+
+        return $this->request('POST', "{$this->path}/list", $query);
+    }
+
+    /**
      * Receive product info.
      *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_products_info
@@ -57,6 +83,14 @@ class ProductService extends AbstractService
         $query = TypeCaster::castArr($query, ['product_id' => 'int', 'sku' => 'int', 'offer_id' => 'str']);
 
         return $this->request('POST', "{$this->path}/info", $query);
+    }
+
+    public function infoList(array $query): array
+    {
+        $query = ArrayHelper::pick($query, ['product_id', 'sku', 'offer_id']);
+        $query = TypeCaster::castArr($query, ['product_id' => 'arrOfInt', 'sku' => 'arrOfInt', 'offer_id' => 'arrOfStr']);
+
+        return $this->request('POST', "{$this->path}/info/list", $query);
     }
 
     /**
