@@ -467,11 +467,16 @@ class ProductService extends AbstractService
     /**
      * Place product to archive.
      *
-     * @see https://docs.ozon.ru/api/seller#/archive-post
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_DeleteProducts
+     *
+     * @param int|string|array $productId
      */
-    public function archive(int $productId): bool
+    public function archive($productId): bool
     {
-        $query = ['product_id' => [$productId]];
+        if (!is_array($productId)){
+            $productId = [$productId];
+        }
+        $query = ['product_id' => $productId];
 
         return $this->request('POST', '/v1/product/archive', $query);
     }
@@ -479,11 +484,16 @@ class ProductService extends AbstractService
     /**
      * Returns product from archive to store.
      *
-     * @see https://docs.ozon.ru/api/seller#/unarchive-post
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_ProductUnarchive
+     *
+     * @param int|string|array $productId
      */
-    public function unarchive(int $productId): bool
+    public function unarchive($productId): bool
     {
-        $query = ['product_id' => [$productId]];
+        if (!is_array($productId)){
+            $productId = [$productId];
+        }
+        $query = ['product_id' => $productId];
 
         return $this->request('POST', '/v1/product/unarchive', $query);
     }
