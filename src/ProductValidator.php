@@ -83,6 +83,6 @@ class ProductValidator
             array_splice($item['images'], self::MAX_IMAGES_COUNT);
         }
 
-        return TypeCaster::castArr($item, $this->typeCast, false);
+        return TypeCaster::castArr($item, $this->typeCast);
     }
 }

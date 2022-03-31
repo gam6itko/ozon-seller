@@ -15,42 +15,42 @@ class TypeCaster
      *
      * @return array Modified data
      */
-    public static function castArr(array $data, array $config, bool $force = true)
+    public static function castArr(array $data, array $config)
     {
         foreach ($data as $key => &$val) {
             if (array_key_exists($key, $config) && null !== $val) {
-                switch (self::normalizeType($config[$key])) {
-                    case 'boolean':
-                        $val = (bool) $val;
-                        break;
-                    case 'string':
-                        $val = (string) $val;
-                        break;
-                    case 'integer':
-                        $val = (int) $val;
-                        break;
-                    case 'float':
-                        $val = (float) $val;
-                        break;
-                    case 'arrayOfInt':
-                        $val = array_map(function ($v): int {
-                            return (int) $v;
-                        }, (array) $val);
-                        break;
-                    case 'arrayOfString':
-                        $val = array_map(function ($v): string {
-                            return (string) $v;
-                        }, (array) $val);
-                        break;
-                    default:
-                        if ($force) {
-                            throw new \LogicException("Unsupported type: {$config[$key]}");
-                        }
-                }
+                $val = self::cast($val, $config[$key]);
             }
         }
 
         return $data;
+    }
+
+    public static function cast($val, string $type)
+    {
+        switch (self::normalizeType($type)) {
+            case 'boolean':
+                return (bool) $val;
+            case 'string':
+                return (string) $val;
+            case 'integer':
+                return (int) $val;
+            case 'float':
+                return (float) $val;
+            case 'array':
+                return (array) $val;
+            case 'arrayOfInt':
+                return array_map(function ($v): int {
+                    return (int) $v;
+                }, (array) $val);
+            case 'arrayOfString':
+                return array_map(function ($v): string {
+                    return (string) $v;
+                }, (array) $val);
+            default:
+                assert(false, 'Unsupported typecast '. $type);
+                return $val;
+        }
     }
 
     public static function normalizeType(string $type): string
