@@ -155,7 +155,7 @@ class ProductService extends AbstractService
             ArrayHelper::pick($pagination, ['page', 'page_size'])
         );
 
-        return $this->request('POST', '/v1/product/info/prices', $pagination);
+        return $this->request('POST', "{$this->path}/info/prices", $pagination);
     }
 
     /**
