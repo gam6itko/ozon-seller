@@ -467,11 +467,16 @@ class ProductService extends AbstractService
     /**
      * Place product to archive.
      *
-     * @see https://docs.ozon.ru/api/seller#/archive-post
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_DeleteProducts
+     *
+     * @param int|string|array $productId
      */
-    public function archive(int $productId): bool
+    public function archive($productId): bool
     {
-        $query = ['product_id' => [$productId]];
+        if (!is_array($productId)) {
+            $productId = [$productId];
+        }
+        $query = ['product_id' => $productId];
 
         return $this->request('POST', '/v1/product/archive', $query);
     }
@@ -479,11 +484,16 @@ class ProductService extends AbstractService
     /**
      * Returns product from archive to store.
      *
-     * @see https://docs.ozon.ru/api/seller#/unarchive-post
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_ProductUnarchive
+     *
+     * @param int|string|array $productId
      */
-    public function unarchive(int $productId): bool
+    public function unarchive($productId): bool
     {
-        $query = ['product_id' => [$productId]];
+        if (!is_array($productId)) {
+            $productId = [$productId];
+        }
+        $query = ['product_id' => $productId];
 
         return $this->request('POST', '/v1/product/unarchive', $query);
     }
@@ -523,5 +533,34 @@ class ProductService extends AbstractService
     public function certificateTypes(): array
     {
         return $this->request('GET', '/v1/product/certificate/types');
+    }
+
+    /**
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_ProductImportPictures
+     */
+    public function picturesImport(array $query): array
+    {
+        $query = ArrayHelper::pick($query, ['color_image', 'images', 'images360', 'primary_image', 'product_id']);
+        $query = TypeCaster::castArr($query, [
+            'color_image'   => 'str',
+            'images'        => 'arrOfStr',
+            'images360'     => 'arrOfStr',
+            'primary_image' => 'str',
+            'product_id'    => 'int',
+        ]);
+
+        return $this->request('POST', '/v1/product/pictures/import', $query);
+    }
+
+    /**
+     * @param string[]|string $productId
+     *
+     * @return array
+     */
+    public function picturesInfo($productId): array
+    {
+        return $this->request('POST', '/v1/product/pictures/info', [
+            'product_id' => TypeCaster::cast($productId, 'arrOfStr'),
+        ]);
     }
 }

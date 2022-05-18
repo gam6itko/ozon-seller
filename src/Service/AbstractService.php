@@ -66,12 +66,7 @@ abstract class AbstractService
             throw new \LogicException('Not defined mandatory config parameters `clientId` or `apiKey`');
         }
 
-        if (!empty($config['host'])) {
-            $url = parse_url($config['host']);
-            $config['host'] = "{$url['scheme']}://{$url['host']}";
-        } else {
-            $config['host'] = rtrim($this->getDefaultHost(), '/');
-        }
+        $config['host'] = rtrim($config['host'] ?? $this->getDefaultHost(), '/');
 
         $this->config = ArrayHelper::pick($config, $keys);
     }

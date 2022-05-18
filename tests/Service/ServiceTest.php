@@ -49,7 +49,7 @@ class ServiceTest extends TestCase
             [
                 '123',
                 'api-key',
-                'https://github.com/gam6itko/ozon-seller',
+                'https://github.com/',
             ],
             [
                 'clientId' => '123',

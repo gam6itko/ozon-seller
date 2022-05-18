@@ -21,7 +21,7 @@ abstract class AbstractTestCase extends TestCase
         $class = new \ReflectionClass($this->getClass());
 
         return $class->newInstance(
-            [123, 'api-key', 'https://packagist.org/packages/gam6itko/ozon-seller'],
+            [123, 'api-key', 'https://packagist.org/'],
             $client,
             $requestFactory,
             $streamFactory
