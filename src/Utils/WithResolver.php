@@ -16,6 +16,8 @@ final class WithResolver
                 return ['barcodes'];
             case [2, PostingScheme::FBO]:
                 return ['analytics_data', 'financial_data'];
+            case [3, PostingScheme::FBS, 'ship']:
+                return ['additional_data'];
             default:
                 return ['analytics_data', 'barcodes', 'financial_data'];
         }
@@ -36,7 +38,7 @@ final class WithResolver
 
         return array_merge(
             self::getDefaults($version, $postingScheme, $method),
-            ArrayHelper::pick($with, self::getKeys($version, $postingScheme))
+            ArrayHelper::pick($with, self::getKeys($version, $postingScheme, $method))
         );
     }
 }

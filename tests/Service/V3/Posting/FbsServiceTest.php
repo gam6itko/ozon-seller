@@ -97,4 +97,40 @@ class FbsServiceTest extends AbstractTestCase
             ]
         );
     }
+    
+    /**
+     * @covers ::ship
+     */
+    public function testShip(): void
+    {
+        $packages = [
+            [
+                'products' => [
+                    [
+                        'exemplar_info' => [
+                            [
+                                'is_gtd_absent' => true,
+                            ]
+                        ],
+                        'product_id'    => 123456,
+                        'quantity'      => 1,
+                    ]
+                ]
+            ],
+        ];
+
+        $this->quickTest(
+            'ship',
+            [
+                $packages,
+                '11111111-2222-3',
+                ['additional_data' => true],
+            ],
+            [
+                'POST',
+                '/v3/posting/fbs/ship',
+                '{"packages":[{"products":[{"exemplar_info":[{"is_gtd_absent": true}],"product_id":123456, "quantity":1}]}],"posting_number":"11111111-2222-3","with":{"additional_data": true}}',
+            ]
+        );
+    }
 }
