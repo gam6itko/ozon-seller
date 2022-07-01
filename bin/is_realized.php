@@ -20,6 +20,7 @@ use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use Gam6itko\OzonSeller\Service\V2\ProductService as V2ProductService;
 use Gam6itko\OzonSeller\Service\V2\ReturnsService as V2ReturnsService;
+use Gam6itko\OzonSeller\Service\V4\ProductService as V4ProductService;
 use GuzzleHttp\Client;
 
 const MAPPING = [
@@ -47,6 +48,11 @@ const MAPPING = [
     '/v2/products/info/attributes'                   => [V2ProductService::class, 'infoAttributes'],
     '/v2/returns/company/fbo'                        => [V2ReturnsService::class, 'company'],
     '/v2/returns/company/fbs'                        => [V2ReturnsService::class, 'company'],
+
+    // V3 - TODO
+
+    // V4
+    '/v4/product/info/prices'                       => [V4ProductService::class, 'infoPrices'],
 ];
 
 $client = new Client();
