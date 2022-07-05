@@ -13,23 +13,21 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
  */
 class ProductService extends AbstractService
 {
-    private string $path = '/v4/product';
+    private $path = '/v4/product';
 
     /**
      * Receive products prices info.
      *
      * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoPricesV4
      *
-     * @param array $requestData - Request parameters.
+     * @param array $requestData - ['filter' => array( 'offer_id' => array(string), 'product_id' => array(int|string), 'visibility' => string ), 'last_id' => string, 'limit' => int]
      *
-     * @return array
+     * @return array - ['items' => array, 'total' => int, 'last_id' => string]
      */
     public function infoPrices(array $requestData = []) : array
     {
         $default = [
-            'filter' => [
-                'visibility' => Visibility::ALL
-            ],
+            'filter' => [],
             'last_id' => '',
             'limit'  => 100,
         ];
