@@ -97,7 +97,7 @@ class FbsServiceTest extends AbstractTestCase
             ]
         );
     }
-    
+
     /**
      * @covers ::ship
      */
