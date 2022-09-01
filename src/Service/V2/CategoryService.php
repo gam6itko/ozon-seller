@@ -82,4 +82,19 @@ class CategoryService extends AbstractService
 
         return $this->request('POST', "{$this->path}/attribute/value/by-option", $body);
     }
+
+    /**
+     * @see https://api-seller.ozon.ru/v2/category/tree
+     */
+    public function tree(int $categoryId, string $language = 'DEFAULT')
+    {
+        return $this->request(
+            'POST',
+            "{$this->path}/tree",
+            [
+                'category_id' => $categoryId,
+                'language'    => $language,
+            ]
+        );
+    }
 }

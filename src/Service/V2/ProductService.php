@@ -88,13 +88,19 @@ class ProductService extends AbstractService
     public function infoList(array $query): array
     {
         $query = ArrayHelper::pick($query, ['product_id', 'sku', 'offer_id']);
-        $query = TypeCaster::castArr($query, ['product_id' => 'arrOfInt', 'sku' => 'arrOfInt', 'offer_id' => 'arrOfStr']);
+        $query = TypeCaster::castArr($query, [
+            'product_id' => 'arrOfInt',
+            'sku'        => 'arrOfInt',
+            'offer_id'   => 'arrOfStr',
+        ]);
 
         return $this->request('POST', "{$this->path}/info/list", $query);
     }
 
     /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-title_products_info_attributes
+     * @deprecated use V3\ProductService::infoAttributes
+     *
+     * @see        https://cb-api.ozonru.me/apiref/en/#t-title_products_info_attributes
      */
     public function infoAttributes(array $filter, int $page = 1, int $pageSize = 100): array
     {
@@ -121,13 +127,13 @@ class ProductService extends AbstractService
     }
 
     /**
-     * Receive products stocks info.
-     *
      * @param array $pagination ['page', 'page_size']
      *
      * @return array {items: array, total: int}
      *
-     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoPricesV2
+     * Receive products stocks info.
+     *
+     * @see        https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoPricesV2
      */
     public function infoStocks(array $pagination = []): array
     {
@@ -140,13 +146,14 @@ class ProductService extends AbstractService
     }
 
     /**
-     * Receive products prices info.
-     *
-     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoListV2
-     *
      * @param array $pagination [page, page_size]
      *
      * @return array
+     * @deprecated use V4\ProductService::infoPrices
+     *
+     * Receive products prices info.
+     *
+     * @see        https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoListV2
      */
     public function infoPrices(array $pagination = [])
     {
@@ -161,11 +168,12 @@ class ProductService extends AbstractService
     /**
      * Update product stocks.
      *
-     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_ProductsStocksV2
-     *
      * @param $input
      *
      * @return array
+     *
+     * @deprecated use V3\ProductService::infoStocks
+     * @see        https://docs.ozon.ru/api/seller/#operation/ProductAPI_ProductsStocksV2
      */
     public function importStocks(array $input)
     {

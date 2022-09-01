@@ -140,13 +140,15 @@ class ProductService extends AbstractService
     }
 
     /**
-     * Receive product info.
-     *
-     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
-     *
      * @param int $productId Id of product in Ozon system
      *
      * @return array
+     * @deprecated use V2\ProductService::info
+     *
+     * Receive product info.
+     *
+     * @see        http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
+     *
      */
     public function info(int $productId)
     {
@@ -174,14 +176,16 @@ class ProductService extends AbstractService
     }
 
     /**
-     * Receive products stocks info.
-     *
      * @param array $pagination ['page', 'page_size']
      *
      * @return array
      *
+     * @deprecated use V3\ProductService::infoStocks
+     *
+     * Receive products stocks info.
+     *
      * @deprecated
-     * @see https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_stocks
+     * @see        https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_stocks
      */
     public function infoStocks(array $pagination = [])
     {
@@ -194,13 +198,14 @@ class ProductService extends AbstractService
     }
 
     /**
-     * Receive products prices info.
-     *
-     * @see https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_prices
-     *
      * @param array $pagination [page, page_size]
      *
      * @return array
+     * @deprecated use V4\ProductService::infoPrices
+     *
+     * Receive products prices info.
+     *
+     * @see        https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_prices
      */
     public function infoPrices(array $pagination = [])
     {
@@ -213,6 +218,8 @@ class ProductService extends AbstractService
     }
 
     /**
+     * @deprecated use V2\ProductService::list
+     *
      * Receive the list of products.
      *
      * query['filter']
@@ -221,7 +228,7 @@ class ProductService extends AbstractService
      *          [visibility] string
      *      [page] int
      *
-     * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
+     * @see        http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
      */
     public function list(array $query = [], array $pagination = []): array
     {
@@ -311,13 +318,15 @@ class ProductService extends AbstractService
     }
 
     /**
-     * Update product stocks.
-     *
-     * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_stocks
-     *
      * @param $input
      *
      * @return array
+     * @deprecated use V2\ProductService::importStocks
+     *
+     * Update product stocks.
+     *
+     * @see        http://cb-api.ozonru.me/apiref/en/#t-title_post_products_stocks
+     *
      */
     public function importStocks(array $input)
     {
@@ -325,10 +334,10 @@ class ProductService extends AbstractService
             throw new \InvalidArgumentException('Empty stocks data');
         }
 
-        if ($this->isAssoc($input) && !isset($input['stocks'])) {// if it one price
+        if ($this->isAssoc($input) && !isset($input['stocks'])) {// if its one price
             $input = ['stocks' => [$input]];
         } else {
-            if (!$this->isAssoc($input)) {// if it plain array on prices
+            if (!$this->isAssoc($input)) {// if it plain arrays on prices
                 $input = ['stocks' => $input];
             }
         }

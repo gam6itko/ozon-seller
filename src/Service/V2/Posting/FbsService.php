@@ -20,9 +20,10 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     private $path = '/v2/posting/fbs';
 
     /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_list
-     *
      * @param array $filter [since, to, status]
+     *
+     * @deprecated use V3\Posting\FbsService::list
+     * @see        https://cb-api.ozonru.me/apiref/en/#t-fbs_list
      */
     public function list(array $requestData = []): array
     {
@@ -50,7 +51,8 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     }
 
     /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_unfulfilled_list
+     * @deprecated use V3\Posting\FbsService::unfulfilledList
+     * @see        https://cb-api.ozonru.me/apiref/en/#t-fbs_unfulfilled_list
      */
     public function unfulfilledList(array $requestData = []): array
     {
@@ -76,7 +78,8 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     }
 
     /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_get
+     * @deprecated use V3\Posting\FbsService::get
+     * @see        https://cb-api.ozonru.me/apiref/en/#t-fbs_get
      */
     public function get(string $postingNumber, array $options = []): array
     {
@@ -87,9 +90,10 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     }
 
     /**
-     * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_ship
-     *
      * @return array list of postings IDs
+     *
+     * @deprecated use V3\Posting\FbsService::ship
+     * @see        https://cb-api.ozonru.me/apiref/en/#t-fbs_ship
      */
     public function ship(array $packages, string $postingNumber): array
     {

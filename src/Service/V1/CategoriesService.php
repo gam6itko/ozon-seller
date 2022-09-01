@@ -16,6 +16,7 @@ class CategoriesService extends AbstractService
     /**
      * Receive the list of all available item categories.
      *
+     * @deprecated use V2\CategoryService::tree
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_categories_tree
      *
      * @param int    $categoryId
