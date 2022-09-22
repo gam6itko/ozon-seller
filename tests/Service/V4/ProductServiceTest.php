@@ -19,15 +19,14 @@ class ProductServiceTest extends AbstractTestCase
     }
 
     /**
-     * @param array $productsFilter
-     * @param string $expectedJsonString
+     * @covers ::infoPrices
      * @dataProvider dataInfoPrices
      */
     public function testInfoPrices(array $productsFilter, string $expectedJsonString): void
     {
         $this->quickTest(
             'infoPrices',
-            [$productsFilter],
+            $productsFilter,
             [
                 'POST',
                 '/v4/product/info/prices',
@@ -42,7 +41,7 @@ class ProductServiceTest extends AbstractTestCase
             'filter' => [
                 'visibility' => Visibility::ALL
             ],
-            'last_id' => '',
+            'lastId' => '',
             'limit' => 100
         ];
         $offer_ids = [ '3244378', '1107890', 'PRD-1' ];
