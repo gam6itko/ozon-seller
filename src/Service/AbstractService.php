@@ -105,7 +105,7 @@ abstract class AbstractService
 
             // nyholm/psr7
             if ($response->getStatusCode() >= 400) {
-                $this->throwOzonException($responseBody->getContents());
+                $this->throwOzonException($responseBody->getContents() ?: "Error status code: {$response->getStatusCode()}");
             }
 
             if (!$parseResultAsJson) {
@@ -128,8 +128,9 @@ abstract class AbstractService
             return $arr;
         } catch (RequestExceptionInterface $exc) {
             // guzzle
-            $contents = $exc->getResponse()->getBody()->getContents();
-            $this->throwOzonException($contents);
+            $response = $exc->getResponse();
+            $contents = $response->getBody()->getContents();
+            $this->throwOzonException($contents ?: "Error status code: {$response->getStatusCode()}");
         }
     }
 
