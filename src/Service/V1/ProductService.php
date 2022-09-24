@@ -591,4 +591,19 @@ class ProductService extends AbstractService
 
         return $this->request('POST', "/v1/product/rating-by-sku", $query);
     }
+
+    /**
+     * Receive product description.
+     *
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoDescription
+     *
+     * @param array $query ['product_id', 'offer_id']
+     */
+    public function infoDescription(array $query): array
+    {
+        $query = ArrayHelper::pick($query, ['product_id', 'offer_id']);
+        $query = TypeCaster::castArr($query, ['product_id' => 'int', 'offer_id' => 'str']);
+
+        return $this->request('POST', "/v1/product/info/description", $query);
+    }
 }
