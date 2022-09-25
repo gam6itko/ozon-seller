@@ -572,4 +572,38 @@ class ProductService extends AbstractService
             'product_id' => TypeCaster::cast($productId, 'arrOfStr'),
         ]);
     }
+
+    /**
+     * Receive product content rating by sku.
+     *
+     * @see https://seller-edu.ozon.ru/docs/work-with-goods/content-rating.html
+     *
+     * @param array $query
+     *
+     * @return array
+     */
+    public function ratingBySku(array $query): array
+    {
+        $query = ArrayHelper::pick($query, ['skus']);
+        $query = TypeCaster::castArr($query, [
+            'skus' => 'arrOfInt',
+        ]);
+
+        return $this->request('POST', "/v1/product/rating-by-sku", $query);
+    }
+
+    /**
+     * Receive product description.
+     *
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoDescription
+     *
+     * @param array $query ['product_id', 'offer_id']
+     */
+    public function infoDescription(array $query): array
+    {
+        $query = ArrayHelper::pick($query, ['product_id', 'offer_id']);
+        $query = TypeCaster::castArr($query, ['product_id' => 'int', 'offer_id' => 'str']);
+
+        return $this->request('POST', "/v1/product/info/description", $query);
+    }
 }
