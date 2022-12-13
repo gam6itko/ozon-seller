@@ -25,6 +25,9 @@ abstract class AbstractService
 
     /** @var RequestFactoryInterface */
     protected $requestFactory;
+    
+    /** @var StreamFactoryInterface */
+    protected $streamFactory;
 
     public function __construct(array $config, ClientInterface $client, ?RequestFactoryInterface $requestFactory = null, ?StreamFactoryInterface $streamFactory = null)
     {
