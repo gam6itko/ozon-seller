@@ -69,5 +69,12 @@ class ProductServiceTest extends AbstractTestCase
 
             '{"filter":{"offer_id":["3244378","1107890","PRD-1"],"product_id":[243686911],"visibility":"ALL"},"last_id":"","limit":100}'
         ];
+
+        $arguments['filter'] = [];
+        yield [
+            $arguments,
+
+            '{"filter":{},"last_id":"","limit":100}'
+        ];
     }
 }
