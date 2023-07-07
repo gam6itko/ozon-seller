@@ -15,7 +15,7 @@
 ## Установка
 
 ```shell
-composer require gam6itko/ozon-seller
+composer require vasyag07/ozon-seller
 ```
 
 Для взаимодействия библиотеки с Ozon-Api нужно дополнительно установить реализации [PSR-18: HTTP Client](https://packagist.org/providers/psr/http-client-implementation) и [PSR-17: HTTP Factories](https://packagist.org/providers/psr/http-factory-implementation).
