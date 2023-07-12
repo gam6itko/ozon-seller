@@ -24,7 +24,6 @@ class ReturnsService extends AbstractService
         }
 
         $default = [
-            'filter' => [],
             'offset' => 0,
             'limit'  => 10,
         ];
