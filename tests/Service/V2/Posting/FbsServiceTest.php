@@ -78,7 +78,7 @@ class FbsServiceTest extends AbstractTestCase
                     'status' => [
                         Status::AWAITING_APPROVE,
                     ],
-                    'with' => ['barcodes' => true],
+                    'with'   => ['barcodes' => true],
                 ],
             ],
             '{"with":{"barcodes":true},"status":["awaiting_approve"],"sort_by":"updated_at","dir":"asc","offset":0,"limit":10}',
@@ -256,6 +256,31 @@ class FbsServiceTest extends AbstractTestCase
                 '/v2/posting/fbs/cancel-reason/list',
                 '{}',
             ]
+        );
+    }
+
+    /**
+     * @covers ::digitalActGetPdf
+     */
+    public function testDigitalActGetPdf(): void
+    {
+        $this->quickTest(
+            'digitalActGetPdf',
+            [123, 'act_of_acceptance'],
+            [
+                'POST',
+                '/v2/posting/fbs/digital/act/get-pdf',
+                \json_encode([
+                    'id'       => 123,
+                    'doc_type' => 'act_of_acceptance',
+                ]),
+            ],
+            \json_encode([
+                'result' => [
+                    'header' => [],
+                    'rows'   => [],
+                ],
+            ])
         );
     }
 }

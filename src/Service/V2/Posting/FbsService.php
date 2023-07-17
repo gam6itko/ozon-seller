@@ -309,4 +309,17 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     }
 
     // </editor-fold>
+
+    /**
+     * @param 'act_of_acceptance'|'act_of_mismatch'|'act_of_excess' $docType
+     *
+     * @return array{header: array, rows: array}
+     */
+    public function digitalActGetPdf(int $id, string $docType): array
+    {
+        return $this->request('POST', "{$this->path}/digital/act/get-pdf", [
+            'id'      => $id,
+            'doc_type' => $docType,
+        ]);
+    }
 }
