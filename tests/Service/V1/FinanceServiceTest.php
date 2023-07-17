@@ -14,7 +14,7 @@ class FinanceServiceTest extends AbstractTestCase
         return FinanceService::class;
     }
 
-    public function testImportInfo(): void
+    public function testRealization(): void
     {
         $this->quickTest(
             'realization',
@@ -24,7 +24,7 @@ class FinanceServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v1/finance/realization',
-                '{"date":2022-02}',
+                '{"date":"2022-02"}',
             ]
         );
     }
