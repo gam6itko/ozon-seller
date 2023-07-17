@@ -141,7 +141,7 @@ abstract class AbstractService
             // guzzle
             if (method_exists($requestException, 'getResponse')) {
                 $response = $requestException->getResponse();
-                if (method_exists($requestException, 'getBody')) {
+                if (method_exists($response, 'getBody')) {
                     $contents = $response->getBody()->getContents();
                     $this->throwOzonException($contents ?: "Error status code: {$response->getStatusCode()}");
                 }

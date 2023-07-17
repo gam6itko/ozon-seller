@@ -53,6 +53,6 @@
     "scripts": {
         "csfix": "php-cs-fixer fix",
         "psalm": "psalm --no-cache",
-        "tests": "phpunit --display-warnings"
+        "tests": "phpunit"
     }
 }
