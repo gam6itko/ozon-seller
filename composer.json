@@ -33,7 +33,7 @@
     "require-dev": {
         "ext-curl": "*",
         "dg/bypass-finals": "^1.2",
-        "friendsofphp/php-cs-fixer": "^3.13",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "guzzlehttp/psr7": "^1.6",
         "http-interop/http-factory-guzzle": "^1.0",
         "nyholm/psr7": "^1.3",
