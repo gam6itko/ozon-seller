@@ -108,9 +108,9 @@ class ProductServiceTest extends AbstractTestCase
             'list',
             [
                 [
-                    'filter' => ['offer_id' => 'item_6060091', 'product_id' => 7154396, 'visibility' => Visibility::ALL],
+                    'filter'  => ['offer_id' => 'item_6060091', 'product_id' => 7154396, 'visibility' => Visibility::ALL],
                     'last_id' => '100',
-                    'limit' => 100,
+                    'limit'   => 100,
                 ],
             ],
             [
@@ -193,6 +193,7 @@ class ProductServiceTest extends AbstractTestCase
 
     /**
      * @covers ::importStocks
+     *
      * @dataProvider dataImportStocks
      */
     public function testImportStocks(array $stocks): void
@@ -264,6 +265,7 @@ class ProductServiceTest extends AbstractTestCase
 
     /**
      * @covers ::delete
+     *
      * @dataProvider dataDelete
      */
     public function testDelete(array $products, string $expectedJsonString): void

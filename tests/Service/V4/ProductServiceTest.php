@@ -20,6 +20,7 @@ class ProductServiceTest extends AbstractTestCase
 
     /**
      * @covers ::infoPrices
+     *
      * @dataProvider dataInfoPrices
      */
     public function testInfoPrices(array $productsFilter, string $expectedJsonString): void
@@ -30,7 +31,7 @@ class ProductServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v4/product/info/prices',
-                $expectedJsonString
+                $expectedJsonString,
             ]
         );
     }
@@ -39,19 +40,19 @@ class ProductServiceTest extends AbstractTestCase
     {
         $arguments = [
             'filter' => [
-                'visibility' => Visibility::ALL
+                'visibility' => Visibility::ALL,
             ],
             'lastId' => '',
-            'limit' => 100
+            'limit'  => 100,
         ];
-        $offer_ids = [ '3244378', '1107890', 'PRD-1' ];
-        $product_ids = [ 243686911 ];
+        $offer_ids = ['3244378', '1107890', 'PRD-1'];
+        $product_ids = [243686911];
 
         $arguments['filter']['offer_id'] = $offer_ids;
         yield [
             $arguments,
 
-            '{"filter":{"offer_id":["3244378","1107890","PRD-1"],"visibility":"ALL"},"last_id":"","limit":100}'
+            '{"filter":{"offer_id":["3244378","1107890","PRD-1"],"visibility":"ALL"},"last_id":"","limit":100}',
         ];
 
         unset($arguments['filter']['offer_id']);
@@ -59,7 +60,7 @@ class ProductServiceTest extends AbstractTestCase
         yield [
             $arguments,
 
-            '{"filter":{"product_id":[243686911],"visibility":"ALL"},"last_id":"","limit":100}'
+            '{"filter":{"product_id":[243686911],"visibility":"ALL"},"last_id":"","limit":100}',
         ];
 
         $arguments['filter']['offer_id'] = $offer_ids;
@@ -67,14 +68,14 @@ class ProductServiceTest extends AbstractTestCase
         yield [
             $arguments,
 
-            '{"filter":{"offer_id":["3244378","1107890","PRD-1"],"product_id":[243686911],"visibility":"ALL"},"last_id":"","limit":100}'
+            '{"filter":{"offer_id":["3244378","1107890","PRD-1"],"product_id":[243686911],"visibility":"ALL"},"last_id":"","limit":100}',
         ];
 
         $arguments['filter'] = [];
         yield [
             $arguments,
 
-            '{"filter":{},"last_id":"","limit":100}'
+            '{"filter":{},"last_id":"","limit":100}',
         ];
     }
 }

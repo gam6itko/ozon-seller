@@ -19,7 +19,7 @@ class BrandServiceTest extends AbstractTestCase
         $this->quickTest(
             'companyCertificationList',
             [
-                ['page_size' => 50]
+                ['page_size' => 50],
             ],
             [
                 'POST',

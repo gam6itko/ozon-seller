@@ -16,7 +16,6 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
  *      page?: int,
  *      page_size?: int,
  * }
- *
  * @psalm-type THistoryQuery = array{
  *      from_message_id?: int,
  *      limit?: int,

@@ -28,7 +28,7 @@ const MAPPING = [
     '/v1/categories/{category_id}/attributes'        => null,
     '/v1/category/tree'                              => [CategoriesService::class, 'tree'],
     '/v1/category/attribute'                         => [CategoriesService::class, 'attributes'],
-    '/v1/product/info/description'                   => null, //todo
+    '/v1/product/info/description'                   => null, // todo
     '/v1/product/list/price'                         => [V1ProductService::class, 'price'],
     '/v1/product/prepayment/set'                     => [V1ProductService::class, 'setPrepayment'],
     '/v1/products/info/{product_id}'                 => [V1ProductService::class, 'info'],
@@ -69,7 +69,7 @@ foreach ($swagger['paths'] as $path => $confArr) {
 
     echo "$path: ";
 
-    //mark as deprecated
+    // mark as deprecated
     $conf = reset($confArr);
     if (!empty($conf['deprecated']) && isDeprecated($path)) {
         echo "\033[01;33mdeprecated \033[0m";
@@ -78,7 +78,7 @@ foreach ($swagger['paths'] as $path => $confArr) {
     if (empty($classMethod)) {
         echo "\033[01;31mNotRealized\033[0m";
     } else {
-        //show class::method
+        // show class::method
         echo "\033[01;32m".implode('::', $classMethod)."\033[0m";
     }
 

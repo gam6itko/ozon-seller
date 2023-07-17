@@ -13,6 +13,7 @@ use Gam6itko\OzonSeller\Tests\Service\AbstractTestCase;
  * @coversDefaultClass \Gam6itko\OzonSeller\Service\V2\Posting\FboService
  *
  * @author Alexander Strizhak <gam6itko@gmail.com>
+ *
  * @group
  */
 class FboServiceTest extends AbstractTestCase

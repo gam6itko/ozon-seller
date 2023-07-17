@@ -12,7 +12,6 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
  * @author Alexander Strizhak <gam6itko@gmail.com>
  *
  * @psalm-type TAttributeQuery = array{attribute_type?: string, language?: string}
- *
  * @psalm-type TAttributeValuesQuery = array{
  *     category_id?: int,
  *     attribute_id?: int,
@@ -96,7 +95,7 @@ class CategoryService extends AbstractService
     /**
      * @see https://api-seller.ozon.ru/v2/category/tree
      */
-    public function tree(?int $categoryId = null, string $language = 'DEFAULT')
+    public function tree(int $categoryId = null, string $language = 'DEFAULT')
     {
         $body = [
             'language' => $language,

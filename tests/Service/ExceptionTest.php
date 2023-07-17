@@ -16,8 +16,6 @@ use Psr\Http\Client\NetworkExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Symfony\Component\HttpClient\Psr18NetworkException;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class ExceptionTest extends AbstractTestCase
 {

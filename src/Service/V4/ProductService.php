@@ -19,9 +19,9 @@ class ProductService extends AbstractService
         assert($limit > 0 && $limit <= 1000);
 
         $body = [
-            'filter' => ArrayHelper::pick($filter, ['offer_id', 'product_id', 'visibility']) ?: new \stdClass(),
+            'filter'  => ArrayHelper::pick($filter, ['offer_id', 'product_id', 'visibility']) ?: new \stdClass(),
             'last_id' => $lastId ?? '',
-            'limit' => $limit
+            'limit'   => $limit,
         ];
 
         return $this->request('POST', "{$this->path}/info/prices", $body);

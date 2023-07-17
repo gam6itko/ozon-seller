@@ -114,7 +114,7 @@ class CrossborderService extends AbstractService implements HasOrdersInterface, 
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_ship
      *
-     * @return array List of postings IDs.
+     * @return array list of postings IDs
      */
     public function ship(string $postingNumber, string $track, int $shippingProviderId, array $items): array
     {

@@ -105,7 +105,6 @@ class ProductService extends AbstractService
 
     /**
      * @deprecated use V3\ProductService::infoAttributes
-     *
      * @see        https://cb-api.ozonru.me/apiref/en/#t-title_products_info_attributes
      */
     public function infoAttributes(array $filter, int $page = 1, int $pageSize = 100): array
@@ -137,7 +136,7 @@ class ProductService extends AbstractService
      *
      * @return array {items: array, total: int}
      *
-     * Receive products stocks info.
+     * Receive products stocks info
      *
      * @see        https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoPricesV2
      */
@@ -155,10 +154,10 @@ class ProductService extends AbstractService
      * @param array $pagination [page, page_size]
      *
      * @return array
+     *
      * @deprecated use V4\ProductService::infoPrices
      *
-     * Receive products prices info.
-     *
+     * Receive products prices info
      * @see        https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoListV2
      */
     public function infoPrices(array $pagination = [])
@@ -173,8 +172,6 @@ class ProductService extends AbstractService
 
     /**
      * Update product stocks.
-     *
-     * @param $input
      *
      * @return array
      *
@@ -207,10 +204,10 @@ class ProductService extends AbstractService
             $s = TypeCaster::castArr(
                 $s,
                 [
-                    'product_id' => 'int',
-                    'offer_id'   => 'str',
-                    'stock'      => 'int',
-                    'warehouse_id' => 'int'
+                    'product_id'   => 'int',
+                    'offer_id'     => 'str',
+                    'stock'        => 'int',
+                    'warehouse_id' => 'int',
                 ]
             );
         }

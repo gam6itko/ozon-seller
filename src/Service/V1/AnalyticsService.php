@@ -27,13 +27,13 @@ class AnalyticsService extends AbstractService
     ): array {
         $body = [
             'date_from' => $dateFrom->format('Y-m-d'),
-            'date_to' => $dateTo->format('Y-m-d'),
+            'date_to'   => $dateTo->format('Y-m-d'),
             'dimension' => $dimension,
-            'metrics' => $metrics,
-            'offset' => $offset,
-            'limit' => $limit,
-            'filters' => $filters,
-            'sort' => $sort,
+            'metrics'   => $metrics,
+            'offset'    => $offset,
+            'limit'     => $limit,
+            'filters'   => $filters,
+            'sort'      => $sort,
         ];
 
         return $this->request('POST', "{$this->path}/data", $body);
@@ -48,7 +48,7 @@ class AnalyticsService extends AbstractService
     {
         $body = [
             'offset' => $offset,
-            'limit' => $limit,
+            'limit'  => $limit,
         ];
 
         return $this->request(

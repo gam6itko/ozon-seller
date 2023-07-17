@@ -28,7 +28,7 @@ abstract class AbstractTestCase extends TestCase
         );
     }
 
-    protected function quickTest(string $methodName, array $arguments, array $expectedRequest, string $responseJson = '{"result": []}', ?callable $fnPostRequest = null)
+    protected function quickTest(string $methodName, array $arguments, array $expectedRequest, string $responseJson = '{"result": []}', callable $fnPostRequest = null)
     {
         [$method, $path, $expectedOptions] = $expectedRequest;
         $client = $this->createClient($method, $path, $expectedOptions, $responseJson);

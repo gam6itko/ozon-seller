@@ -40,6 +40,7 @@ class ReturnsServiceTest extends AbstractTestCase
 
     /**
      * @covers ::company
+     *
      * @dataProvider dataCompanyWrongScheme
      */
     public function testCompanyWrongScheme(string $postingScheme): void

@@ -8,7 +8,7 @@ return [
     'offer_id' => ['type' => 'string', 'requiredCreate' => true],
 
     'attributes'         => [
-        'type'           => 'array', //todo type attributes array
+        'type'           => 'array', // todo type attributes array
         'requiredCreate' => true,
     ],
     'complex_attributes' => ['type' => 'array', 'requiredCreate' => false],
@@ -36,12 +36,12 @@ return [
     'image_group_id' => ['type' => 'str', 'requiredCreate' => false],
     'images'         => ['type' => 'array', 'requiredCreate' => true],
     'images360'      => [
-        'type'           => 'array', //todo type image360
+        'type'           => 'array', // todo type image360
         'requiredCreate' => false,
     ],
 
     'pdf_list' => [
-        'type'           => 'array', //todo type pdf_list
+        'type'           => 'array', // todo type pdf_list
         'requiredCreate' => false,
     ],
 

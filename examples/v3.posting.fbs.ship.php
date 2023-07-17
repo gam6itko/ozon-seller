@@ -12,18 +12,18 @@ $products = [
     [
         'exemplar_info'  => [
             [
-                'is_gtd_absent' => true
-            ]
+                'is_gtd_absent' => true,
+            ],
         ],
         'quantity'       => 1,
         'product_id'     => 2222222222,
-    ]
+    ],
 ];
 
 $packages = [
     [
-        'products' => $products
-    ]
+        'products' => $products,
+    ],
 ];
 
 $response = $svc->ship($packages, '111111111-2222-3', ['additional_data' => true]);

@@ -54,6 +54,7 @@ class FbsServiceTest extends AbstractTestCase
 
     /**
      * @covers ::unfulfilledList
+     *
      * @dataProvider dataUnfulfilledList
      */
     public function testUnfulfilledList(array $args, string $responseJson): void

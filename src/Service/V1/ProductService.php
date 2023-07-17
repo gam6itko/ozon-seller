@@ -17,7 +17,6 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
  *     sku?: int,
  *     offer_id?: string
  * }
- *
  * @psalm-type TPagination = array{page?: int, page_size?: int}
  */
 class ProductService extends AbstractService
@@ -151,12 +150,11 @@ class ProductService extends AbstractService
      * @param int $productId Id of product in Ozon system
      *
      * @return array
+     *
      * @deprecated use V2\ProductService::info
      *
-     * Receive product info.
-     *
+     * Receive product info
      * @see        http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
-     *
      */
     public function info(int $productId)
     {
@@ -187,10 +185,10 @@ class ProductService extends AbstractService
      * @param TPagination $pagination
      *
      * @return array
+     *
      * @deprecated use V4\ProductService::infoPrices
      *
-     * Receive products prices info.
-     *
+     * Receive products prices info
      * @see        https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_prices
      */
     public function infoPrices(array $pagination = [])
@@ -210,8 +208,7 @@ class ProductService extends AbstractService
      *
      * @deprecated use V3\ProductService::infoStocks
      *
-     * Receive products stocks info.
-     *
+     * Receive products stocks info
      * @deprecated
      * @see        https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_stocks
      */
@@ -235,7 +232,6 @@ class ProductService extends AbstractService
      *          [product_id] string|int|array,
      *          [visibility] string
      *      [page] int
-     *
      * @see        http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
      */
     public function list(array $query = [], array $pagination = []): array
@@ -268,8 +264,6 @@ class ProductService extends AbstractService
      * Update the price for one or multiple products.
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_post_products_prices
-     *
-     * @param $input
      *
      * @return array
      */
@@ -326,15 +320,12 @@ class ProductService extends AbstractService
     }
 
     /**
-     * @param $input
-     *
      * @return array
+     *
      * @deprecated use V2\ProductService::importStocks
      *
-     * Update product stocks.
-     *
+     * Update product stocks
      * @see        http://cb-api.ozonru.me/apiref/en/#t-title_post_products_stocks
-     *
      */
     public function importStocks(array $input)
     {
@@ -571,8 +562,6 @@ class ProductService extends AbstractService
 
     /**
      * @param string[]|string $productId
-     *
-     * @return array
      */
     public function picturesInfo($productId): array
     {
@@ -585,10 +574,6 @@ class ProductService extends AbstractService
      * Receive product content rating by sku.
      *
      * @see https://seller-edu.ozon.ru/docs/work-with-goods/content-rating.html
-     *
-     * @param array $query
-     *
-     * @return array
      */
     public function ratingBySku(array $query): array
     {
@@ -597,7 +582,7 @@ class ProductService extends AbstractService
             'skus' => 'arrOfInt',
         ]);
 
-        return $this->request('POST', "/v1/product/rating-by-sku", $query);
+        return $this->request('POST', '/v1/product/rating-by-sku', $query);
     }
 
     /**
@@ -612,6 +597,6 @@ class ProductService extends AbstractService
         $query = ArrayHelper::pick($query, ['product_id', 'offer_id']);
         $query = TypeCaster::castArr($query, ['product_id' => 'int', 'offer_id' => 'str']);
 
-        return $this->request('POST', "/v1/product/info/description", $query);
+        return $this->request('POST', '/v1/product/info/description', $query);
     }
 }

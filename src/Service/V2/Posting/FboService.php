@@ -12,6 +12,20 @@ use Gam6itko\OzonSeller\Service\HasOrdersInterface;
 use Gam6itko\OzonSeller\Utils\ArrayHelper;
 use Gam6itko\OzonSeller\Utils\WithResolver;
 
+/**
+ * @psalm-type TListFilter = array{
+ *     status?: string,
+ *     since?: string|\DateTimeInterface,
+ *     to?: string|\DateTimeInterface,
+ * }
+ * @psalm-type TListRequestData = array{
+ *     filter?: TListFilter,
+ *     dir: string,
+ *     offset?: int,
+ *     limit?: int,
+ *     with?: array
+ * }
+ */
 class FboService extends AbstractService implements HasOrdersInterface, GetOrderInterface
 {
     private $path = '/v2/posting/fbo';
@@ -19,7 +33,7 @@ class FboService extends AbstractService implements HasOrdersInterface, GetOrder
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbo_list
      *
-     * @param array $filter [since, to, status]
+     * @param TListRequestData $requestData
      */
     public function list(array $requestData = []): array
     {

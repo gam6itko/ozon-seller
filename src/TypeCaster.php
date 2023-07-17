@@ -48,7 +48,8 @@ class TypeCaster
                     return (string) $v;
                 }, (array) $val);
             default:
-                assert(false, 'Unsupported typecast '. $type);
+                assert(false, 'Unsupported typecast '.$type);
+
                 return $val;
         }
     }

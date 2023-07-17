@@ -208,6 +208,7 @@ class ProductServiceTest extends AbstractTestCase
 
     /**
      * @covers ::list
+     *
      * @dataProvider dataList
      */
     public function testList(array $filters, array $pagination, string $json): void
@@ -335,6 +336,7 @@ JSON;
 
     /**
      * @covers ::importPrices
+     *
      * @dataProvider dataImportPrices
      */
     public function testImportPrices(array $prices, string $expectedJson): void
@@ -345,7 +347,7 @@ JSON;
             [
                 'POST',
                 '/v1/product/import/prices',
-                $expectedJson
+                $expectedJson,
             ]
         );
     }
@@ -371,7 +373,7 @@ JSON;
                 'price'         => '10000.10',
                 'old_price'     => '5000.50',
             ],
-            '{"prices":[{"offer_id":"PRD-2","price":"10000.10","old_price":"0"}]}'
+            '{"prices":[{"offer_id":"PRD-2","price":"10000.10","old_price":"0"}]}',
         ];
     }
 

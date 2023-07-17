@@ -15,12 +15,25 @@ use Gam6itko\OzonSeller\TypeCaster;
 use Gam6itko\OzonSeller\Utils\ArrayHelper;
 use Gam6itko\OzonSeller\Utils\WithResolver;
 
+/**
+ * @psalm-type TListFilter = array{
+ *     status?: string,
+ *     since?: string|\DateTimeInterface,
+ *     to?: string|\DateTimeInterface,
+ * }
+ * @psalm-type TListRequestData = array{
+ *     filter?: TListFilter,
+ *     dir: string,
+ *     offset?: int,
+ *     limit?: int,
+ * }
+ */
 class FbsService extends AbstractService implements HasOrdersInterface, HasUnfulfilledOrdersInterface, GetOrderInterface
 {
     private $path = '/v2/posting/fbs';
 
     /**
-     * @param array $filter [since, to, status]
+     * @param TListRequestData $requestData
      *
      * @deprecated use V3\Posting\FbsService::list
      * @see        https://cb-api.ozonru.me/apiref/en/#t-fbs_list
@@ -156,7 +169,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
 
     public function cancelReasons(): array
     {
-        return $this->request('POST', "{$this->path}/cancel-reason/list", '{}'); //todo свериться с исправленной документацией
+        return $this->request('POST', "{$this->path}/cancel-reason/list", '{}'); // todo свериться с исправленной документацией
     }
 
     /**
@@ -184,7 +197,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
         return $this->request('POST', "{$this->path}/get-by-barcode", ['barcode' => $barcode]);
     }
 
-    //<editor-fold desc="/act">
+    // <editor-fold desc="/act">
 
     /**
      * @see https://docs.ozon.ru/api/seller/#operation/PostingAPI_PostingFBSActCreate
@@ -226,9 +239,9 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
         return $this->request('POST', "{$this->path}/act/get-container-labels", ['id' => $id], false);
     }
 
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="/v2/fbs/posting">
+    // <editor-fold desc="/v2/fbs/posting">
 
     /**
      * @param array|string $postingNumber
@@ -295,5 +308,5 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
         return $this->request('POST', '/v2/fbs/posting/tracking-number/set', $body);
     }
 
-    //</editor-fold>
+    // </editor-fold>
 }
