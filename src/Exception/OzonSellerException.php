@@ -15,7 +15,7 @@ class OzonSellerException extends \Exception
         $this->details = $details;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return parent::__toString().PHP_EOL.'Data: '.json_encode($this->details);
     }
