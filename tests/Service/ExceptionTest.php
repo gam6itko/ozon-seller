@@ -10,9 +10,14 @@ use Gam6itko\OzonSeller\Exception\NotFoundException;
 use Gam6itko\OzonSeller\Exception\OzonSellerException;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use Http\Client\Exception\HttpException;
+use Http\Client\Exception\NetworkException;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\NetworkExceptionInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Symfony\Component\HttpClient\Psr18NetworkException;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class ExceptionTest extends AbstractTestCase
 {
@@ -197,6 +202,29 @@ JSON;
             ->expects(self::once())
             ->method('sendRequest')
             ->willReturn($response);
+
+        /** @var FbsService $svc */
+        $svc = $this->createSvc($client, $this->createRequestFactory(), $this->createStreamFactory());
+        $svc->get('');
+    }
+
+    /**
+     * Issue 72 test.
+     */
+    public function testIssueNetworkException(): void
+    {
+        self::expectException(NetworkExceptionInterface::class);
+
+        $client = $this->createMock(ClientInterface::class);
+        $client
+            ->expects(self::once())
+            ->method('sendRequest')
+            ->willThrowException(
+                new NetworkException(
+                    'boom!',
+                    $this->createMock(RequestInterface::class)
+                )
+            );
 
         /** @var FbsService $svc */
         $svc = $this->createSvc($client, $this->createRequestFactory(), $this->createStreamFactory());

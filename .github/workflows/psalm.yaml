@@ -41,13 +41,6 @@ jobs:
       - name: Validate Composer
         run: composer validate
 
-      - name: Restore Composer Cache
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer
-
       - name: Install dependencies with Composer
         uses: ramsey/composer-install@v1
         with:
