@@ -8,6 +8,28 @@ use Gam6itko\OzonSeller\Enum\SortDirection;
 use Gam6itko\OzonSeller\Service\AbstractService;
 use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
+/**
+ * @psalm-type TInfoStocksRequestFilter = array{
+ *     offer_id: list<string>,
+ *     product_id: list<string>,
+ *     visibility: string
+ * }
+ * @psalm-type TInfoStocksResponseStocks = array{
+ *      present: int,
+ *      reserver: int,
+ *      type: string
+ * }
+ * @psalm-type TInfoStocksResponseItem = array{
+ *      offer_id: string,
+ *      product_id: int,
+ *      stocks: list<TInfoStocksResponseStocks>
+ * }
+ * @psalm-type TInfoStocksResponse = array{
+ *      items: list<TInfoStocksResponseItem>,
+ *      last_id: string,
+ *      limit: int
+ * }
+ */
 class ProductService extends AbstractService
 {
     private $path = '/v3/product';
@@ -36,5 +58,21 @@ class ProductService extends AbstractService
         ];
 
         return $this->request('POST', "{$this->path}s/info/attributes", $body);
+    }
+
+    /**
+     * @param TInfoStocksRequestFilter $filter
+     *
+     * @return TInfoStocksResponse
+     */
+    public function infoStocks(array $filter, ?string $lastId = '', int $limit = 100): array
+    {
+        $body = [
+            'filter'  => ArrayHelper::pick($filter, ['offer_id', 'product_id', 'visibility']),
+            'last_id' => $lastId ?? '',
+            'limit'   => $limit,
+        ];
+
+        return $this->request('POST', "{$this->path}/info/stocks", $body);
     }
 }
