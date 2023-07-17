@@ -258,4 +258,23 @@ class FbsServiceTest extends AbstractTestCase
             ]
         );
     }
+
+    /**
+     * @covers ::unfulfilledList
+     */
+    public function testDigitalActGetPdf(): void
+    {
+        $this->quickTest(
+            'digitalActGetPdf',
+            [123, 'act_of_acceptance'],
+            [
+                'POST',
+                '/v2/posting/fbs/digital/act/get-pdf',
+                [
+                    'id'      => 123,
+                    'docType' => 'act_of_acceptance',
+                ],
+            ]
+        );
+    }
 }
