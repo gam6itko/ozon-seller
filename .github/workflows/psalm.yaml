@@ -48,4 +48,4 @@ jobs:
 
       - name: Static Analysis
         run: |
-          vendor/bin/psalm --php-version=${{ matrix.php-version }}
+          vendor/bin/psalm
