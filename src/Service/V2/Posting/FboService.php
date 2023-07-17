@@ -33,7 +33,7 @@ class FboService extends AbstractService implements HasOrdersInterface, GetOrder
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbo_list
      *
-     * @param TListRequestData $requestData
+     * @param TListRequestData|array<array-key, mixed> $requestData
      */
     public function list(array $requestData = []): array
     {

@@ -33,7 +33,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     private $path = '/v2/posting/fbs';
 
     /**
-     * @param TListRequestData $requestData
+     * @param TListRequestData|array<array-key, mixed> $requestData
      *
      * @deprecated use V3\Posting\FbsService::list
      * @see        https://cb-api.ozonru.me/apiref/en/#t-fbs_list
