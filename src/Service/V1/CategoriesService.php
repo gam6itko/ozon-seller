@@ -20,7 +20,7 @@ class CategoriesService extends AbstractService
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_categories_tree
      *
      * @param int    $categoryId
-     * @param string $language   [EN, RU]
+     * @param 'EN'|'RU' $language
      *
      * @return array
      */
@@ -39,7 +39,7 @@ class CategoriesService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_categories_attributes
      *
-     * @param string $language [EN, RU]
+     * @param 'EN'|'RU' $language
      *
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */

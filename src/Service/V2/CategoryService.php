@@ -10,6 +10,16 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
+ *
+ * @psalm-type TAttributeQuery = array{attribute_type?: string, language?: string}
+ *
+ * @psalm-type TAttributeValuesQuery = array{
+ *     category_id?: int,
+ *     attribute_id?: int,
+ *     last_value_id?: int,
+ *     limit?: int,
+ *     language?: string
+ * }
  */
 class CategoryService extends AbstractService
 {
@@ -20,7 +30,7 @@ class CategoryService extends AbstractService
      *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_category_attribute
      *
-     * @param array $query [attribute_type, language]
+     * @param TAttributeQuery $query
      *
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
@@ -42,7 +52,7 @@ class CategoryService extends AbstractService
     /**
      * Check the dictionary for attributes or options by theirs IDs.
      *
-     * @param array $query [last_value_id, limit, language]
+     * @param TAttributeValuesQuery $query
      *
      * @return array [result, has_next]
      */

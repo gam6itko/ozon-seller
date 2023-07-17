@@ -39,14 +39,20 @@
         "php-http/guzzle6-adapter": "^2.0",
         "symfony/http-client": "^4.1||^5.1",
         "nyholm/psr7": "^1.3",
-        "vlucas/phpdotenv": "^5.3"
+        "vlucas/phpdotenv": "^5.3",
+        "vimeo/psalm": "^4.0||^5.13"
     },
     "bin": [
         "bin/is_realized.php"
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "0.5.x-dev"
+            "dev-master": "0.9.x-dev"
         }
+    },
+    "scripts": {
+        "csfix": "php-cs-fixer fix",
+        "psalm": "psalm --no-cache",
+        "tests": "phpunit"
     }
 }

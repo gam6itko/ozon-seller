@@ -11,6 +11,14 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
+ *
+ * @psalm-type TInfoByQuery = array{
+ *     product_id?: int,
+ *     sku?: int,
+ *     offer_id?: string
+ * }
+ *
+ * @psalm-type TPagination = array{page?: int, page_size?: int}
  */
 class ProductService extends AbstractService
 {
@@ -163,7 +171,7 @@ class ProductService extends AbstractService
      *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_info
      *
-     * @param array $query ['product_id', 'sku', 'offer_id']
+     * @param TInfoByQuery $query
      *
      * @return array
      */
@@ -176,7 +184,27 @@ class ProductService extends AbstractService
     }
 
     /**
-     * @param array $pagination ['page', 'page_size']
+     * @param TPagination $pagination
+     *
+     * @return array
+     * @deprecated use V4\ProductService::infoPrices
+     *
+     * Receive products prices info.
+     *
+     * @see        https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_prices
+     */
+    public function infoPrices(array $pagination = [])
+    {
+        $pagination = array_merge(
+            ['page' => 1, 'page_size' => 100],
+            ArrayHelper::pick($pagination, ['page', 'page_size'])
+        );
+
+        return $this->request('POST', '/v1/product/info/prices', $pagination);
+    }
+
+    /**
+     * @param TPagination $pagination
      *
      * @return array
      *
@@ -195,26 +223,6 @@ class ProductService extends AbstractService
         );
 
         return $this->request('POST', '/v1/product/info/stocks', $pagination);
-    }
-
-    /**
-     * @param array $pagination [page, page_size]
-     *
-     * @return array
-     * @deprecated use V4\ProductService::infoPrices
-     *
-     * Receive products prices info.
-     *
-     * @see        https://cb-api.ozonru.me/apiref/en/#t-title_get_product_info_prices
-     */
-    public function infoPrices(array $pagination = [])
-    {
-        $pagination = array_merge(
-            ['page' => 1, 'page_size' => 100],
-            ArrayHelper::pick($pagination, ['page', 'page_size'])
-        );
-
-        return $this->request('POST', '/v1/product/info/prices', $pagination);
     }
 
     /**

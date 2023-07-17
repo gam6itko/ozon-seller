@@ -11,6 +11,12 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
+ *
+ * @psalm-type TInfoQuery = array{
+ *      product_id?: int,
+ *      sku?: int,
+ *      offer_id?: string
+ * }
  */
 class ProductService extends AbstractService
 {

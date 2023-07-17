@@ -14,7 +14,7 @@ class ProductService extends AbstractService
     /**
      * @see https://api-seller.ozon.ru/v4/product/info/prices
      */
-    public function infoPrices(array $filter, string $lastId = '', int $limit = 100)
+    public function infoPrices(array $filter, ?string $lastId = '', int $limit = 100)
     {
         assert($limit > 0 && $limit <= 1000);
 

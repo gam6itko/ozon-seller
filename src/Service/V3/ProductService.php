@@ -12,7 +12,7 @@ class ProductService extends AbstractService
 {
     private $path = '/v3/product';
 
-    public function importStocks(array $filter, string $lastId = '', int $limit = 100)
+    public function importStocks(array $filter, ?string $lastId = '', int $limit = 100)
     {
         assert($limit > 0 && $limit <= 1000);
 
@@ -25,7 +25,7 @@ class ProductService extends AbstractService
         return $this->request('POST', "{$this->path}s/stocks", $body);
     }
 
-    public function infoAttributes(array $filter, string $lastId = '', int $limit = 100, string $sortBy = 'product_id', string $sortDir = SortDirection::DESC)
+    public function infoAttributes(array $filter, ?string $lastId = '', int $limit = 100, string $sortBy = 'product_id', string $sortDir = SortDirection::DESC)
     {
         $body = [
             'filter'   => ArrayHelper::pick($filter, ['offer_id', 'product_id', 'visibility']),

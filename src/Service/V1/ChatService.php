@@ -10,13 +10,24 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
+ *
+ * @psalm-type TListQuery = array{
+ *      chat_id_list?: list<int>,
+ *      page?: int,
+ *      page_size?: int,
+ * }
+ *
+ * @psalm-type THistoryQuery = array{
+ *      from_message_id?: int,
+ *      limit?: int,
+ * }
  */
 class ChatService extends AbstractService
 {
     /**
      * Retrieves a list of chats in which a seller participates.
      *
-     * @param array $query ['chat_id_list', 'page', 'page_size']
+     * @param TListQuery $query
      *
      * @return array
      */
@@ -30,6 +41,8 @@ class ChatService extends AbstractService
 
     /**
      * Retreives message history in a chat.
+     *
+     * @param THistoryQuery $query
      *
      * @return array
      */
