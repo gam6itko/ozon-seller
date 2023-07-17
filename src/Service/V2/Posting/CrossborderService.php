@@ -47,8 +47,6 @@ class CrossborderService extends AbstractService implements HasOrdersInterface, 
     /**
      * @see  https://cb-api.ozonru.me/apiref/en/#t-cb_unfulfilled_list
      *
-     * @return array|string
-     *
      * @todo fix {"error":{"code":"BAD_REQUEST","message":"Invalid request payload","data":[{"name":"status","code":"TOO_FEW_ELEMENTS","value":"[]","message":""}]}}
      */
     public function unfulfilledList(array $requestData = []): array
@@ -116,7 +114,7 @@ class CrossborderService extends AbstractService implements HasOrdersInterface, 
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_ship
      *
-     * @return string list of postings IDs
+     * @return array List of postings IDs.
      */
     public function ship(string $postingNumber, string $track, int $shippingProviderId, array $items): array
     {

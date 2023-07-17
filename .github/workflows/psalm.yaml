@@ -1,0 +1,61 @@
+name: psalm
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  psalm:
+    name: psalm
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+
+    strategy:
+      matrix:
+        experimental: [ false ]
+        php-version:
+          - 7.1
+          - 7.2
+          - 7.3
+          - 7.4
+          - 8.0
+          - 8.1
+        dependencies:
+          - highest
+        include:
+          - php-version: 7.1
+            dependencies: lowest
+            experimental: true
+          - php-version: 8.0
+            dependencies: lowest
+            experimental: true
+
+    steps:
+      - name: Checkout.
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+
+      - name: Validate Composer
+        run: composer validate
+
+      - name: Restore Composer Cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer
+
+      - name: Install dependencies with Composer
+        uses: ramsey/composer-install@v1
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - name: Static Analysis
+        run: |
+          vendor/bin/psalm --no-cache --shepherd --stats --output-format=checkstyle --php-version=${{ matrix.php-version }}

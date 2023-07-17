@@ -21,10 +21,14 @@ jobs:
           - 7.3
           - 7.4
           - 8.0
+          - 8.1
         dependencies:
           - highest
         include:
           - php-version: 7.1
+            dependencies: lowest
+            experimental: true
+          - php-version: 8.0
             dependencies: lowest
             experimental: true
 

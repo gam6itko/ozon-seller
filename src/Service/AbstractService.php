@@ -14,6 +14,14 @@ use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * @author Alexander Strizhak <gam6itko@gmail.com>
+ *
+ * @psalm-type TOzonErrorData = array{
+ *     code?: numeric,
+ *     error?: array{code?: string},
+ *     message?: string,
+ *     details?: array,
+ *     data?: array
+ * }
  */
 abstract class AbstractService
 {
@@ -25,7 +33,7 @@ abstract class AbstractService
 
     /** @var RequestFactoryInterface */
     protected $requestFactory;
-    
+
     /** @var StreamFactoryInterface */
     protected $streamFactory;
 
@@ -129,16 +137,25 @@ abstract class AbstractService
             }
 
             return $arr;
-        } catch (RequestExceptionInterface $exc) {
+        } catch (RequestExceptionInterface $requestException) {
             // guzzle
-            $response = $exc->getResponse();
-            $contents = $response->getBody()->getContents();
-            $this->throwOzonException($contents ?: "Error status code: {$response->getStatusCode()}");
+            if (method_exists($requestException, 'getResponse')) {
+                $response = $requestException->getResponse();
+                if (method_exists($requestException, 'getBody')) {
+                    $contents = $response->getBody()->getContents();
+                    $this->throwOzonException($contents ?: "Error status code: {$response->getStatusCode()}");
+                }
+            }
+            throw $requestException;
         }
     }
 
+    /**
+     * @param string $responseBodyContents
+     */
     protected function throwOzonException(string $responseBodyContents): void
     {
+        /** @var TOzonErrorData $errorData */
         $errorData = json_decode($responseBodyContents, true);
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new OzonSellerException($responseBodyContents);
