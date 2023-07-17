@@ -78,7 +78,7 @@ class FbsServiceTest extends AbstractTestCase
                     'status' => [
                         Status::AWAITING_APPROVE,
                     ],
-                    'with' => ['barcodes' => true],
+                    'with'   => ['barcodes' => true],
                 ],
             ],
             '{"with":{"barcodes":true},"status":["awaiting_approve"],"sort_by":"updated_at","dir":"asc","offset":0,"limit":10}',
@@ -260,7 +260,7 @@ class FbsServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::unfulfilledList
+     * @covers ::digitalActGetPdf
      */
     public function testDigitalActGetPdf(): void
     {
@@ -270,11 +270,17 @@ class FbsServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/posting/fbs/digital/act/get-pdf',
-                [
-                    'id'      => 123,
-                    'docType' => 'act_of_acceptance',
+                \json_encode([
+                    'id'       => 123,
+                    'doc_type' => 'act_of_acceptance',
+                ]),
+            ],
+            \json_encode([
+                'result' => [
+                    'header' => [],
+                    'rows'   => [],
                 ],
-            ]
+            ])
         );
     }
 }
