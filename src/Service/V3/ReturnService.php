@@ -16,18 +16,18 @@ class ReturnService extends AbstractService
      * @see https://api-seller.ozon.ru/v3/returns/company/fbo
      *
      * @param array $filter
-     * @param string|null $lastId
+     * @param int $lastId
      * @param int $limit
      *
      * @return array
      */
-    public function fbo(array $filter, ?string $lastId = '', int $limit = 100): array
+    public function fbo(array $filter, int $lastId = 0, int $limit = 100): array
     {
         assert($limit > 0 && $limit <= 1000);
 
         $body = [
             'filter'  => ArrayHelper::pick($filter, ['posting_number', 'status']),
-            'last_id' => $lastId ?? '',
+            'last_id' => $lastId,
             'limit'   => $limit,
         ];
 
@@ -38,12 +38,12 @@ class ReturnService extends AbstractService
      * @see https://api-seller.ozon.ru/v3/returns/company/fbs
      *
      * @param array $filter
-     * @param string|null $lastId
+     * @param int $lastId
      * @param int $limit
      *
      * @return array
      */
-    public function fbs(array $filter, ?string $lastId = '', int $limit = 100): array
+    public function fbs(array $filter, int $lastId = 0, int $limit = 100): array
     {
         assert($limit > 0 && $limit <= 1000);
 
@@ -52,7 +52,7 @@ class ReturnService extends AbstractService
                 'accepted_from_customer_moment', 'last_free_waiting_day', 'posting_number',
                 'product_name', 'product_offer_id', 'status'
             ]),
-            'last_id' => $lastId ?? '',
+            'last_id' => $lastId,
             'limit'   => $limit,
         ];
 
