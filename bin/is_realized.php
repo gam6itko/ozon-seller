@@ -52,7 +52,7 @@ const MAPPING = [
     // V3 - TODO
 
     // V4
-    '/v4/product/info/prices'                       => [V4ProductService::class, 'infoPrices'],
+    '/v4/product/info/prices'                        => [V4ProductService::class, 'infoPrices'],
 ];
 
 $client = new Client();
@@ -102,10 +102,7 @@ function isDeprecated(string $path): bool
     return false !== strpos($docComment, '@deprecated');
 }
 
-/**
- * @return array|null
- */
-function findMethod(string $path)
+function findMethod(string $path): ?array
 {
     $prefix = 'Gam6itko\\OzonSeller\\Service\\';
     $arr = array_map('ucfirst', array_filter(explode('/', $path)));
