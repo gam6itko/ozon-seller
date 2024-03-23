@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+const SWAGGER_URL = 'https://docs.ozon.ru/api/seller/swagger.json';
+
 $whereIsAutoloader = [
     dirname(__DIR__).'/vendor/autoload.php',
     dirname(__DIR__).'/autoload.php',
@@ -56,7 +58,7 @@ const MAPPING = [
 ];
 
 $client = new Client();
-$response = $client->get('https://api-seller.ozon.ru/swagger.json');
+$response = $client->get(SWAGGER_URL);
 $json = $response->getBody()->getContents();
 $swagger = json_decode($json, true);
 
@@ -93,7 +95,7 @@ function isDeprecated(string $path): bool
 
     [$class, $method] = $arr;
 
-    $refClass = new \ReflectionClass($class);
+    $refClass = new ReflectionClass($class);
     $refMethod = $refClass->getMethod($method);
     if (!$docComment = $refMethod->getDocComment()) {
         return false;

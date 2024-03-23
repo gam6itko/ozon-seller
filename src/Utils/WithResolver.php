@@ -8,6 +8,9 @@ use Gam6itko\OzonSeller\Enum\PostingScheme;
 
 final class WithResolver
 {
+    /**
+     * @psalm-suppress TypeDoesNotContainType
+     */
     public static function getKeys(int $version = 2, string $postingScheme = 'fbs', ?string $method = ''): array
     {
         $arr = array_filter([$version, $postingScheme, $method]);
@@ -17,6 +20,7 @@ final class WithResolver
             case [2, PostingScheme::FBO]:
                 return ['analytics_data', 'financial_data'];
             case [3, PostingScheme::FBS, 'ship']:
+            case [4, PostingScheme::FBS, 'ship']:
                 return ['additional_data'];
             default:
                 return ['analytics_data', 'barcodes', 'financial_data'];
