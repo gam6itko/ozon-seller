@@ -426,7 +426,7 @@ class ProductService extends AbstractService
      *
      * @deprecated
      */
-    public function delete(int $productId, string $offerId = null)
+    public function delete(int $productId, ?string $offerId = null)
     {
         $query = array_filter([
             'product_id' => $productId,

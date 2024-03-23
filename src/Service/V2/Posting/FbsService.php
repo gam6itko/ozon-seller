@@ -155,7 +155,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_cancel_title
      */
-    public function cancel(string $postingNumber, int $cancelReasonId, string $cancelReasonMessage = null): bool
+    public function cancel(string $postingNumber, int $cancelReasonId, ?string $cancelReasonMessage = null): bool
     {
         $body = [
             'posting_number'        => $postingNumber,
@@ -318,7 +318,7 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     public function digitalActGetPdf(int $id, string $docType): array
     {
         return $this->request('POST', "{$this->path}/digital/act/get-pdf", [
-            'id'      => $id,
+            'id'       => $id,
             'doc_type' => $docType,
         ]);
     }

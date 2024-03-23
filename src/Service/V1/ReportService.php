@@ -38,7 +38,7 @@ class ReportService extends AbstractService
      *
      * @return array|string
      */
-    public function info(string $code = null)
+    public function info(?string $code = null)
     {
         $query = array_filter(['code' => $code]);
 
@@ -69,7 +69,7 @@ class ReportService extends AbstractService
      *
      * @return array|string
      */
-    public function transaction(\DateTimeInterface $dateFrom, \DateTimeInterface $dateTo, string $search = null, string $transactionType = TransactionType::ALL)
+    public function transaction(\DateTimeInterface $dateFrom, \DateTimeInterface $dateTo, ?string $search = null, string $transactionType = TransactionType::ALL)
     {
         $query = array_filter([
             'date_from'        => $dateFrom->format('Y-m-d'),

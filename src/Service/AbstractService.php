@@ -37,7 +37,7 @@ abstract class AbstractService
     /** @var StreamFactoryInterface */
     protected $streamFactory;
 
-    public function __construct(array $config, ClientInterface $client, RequestFactoryInterface $requestFactory = null, StreamFactoryInterface $streamFactory = null)
+    public function __construct(array $config, ClientInterface $client, ?RequestFactoryInterface $requestFactory = null, ?StreamFactoryInterface $streamFactory = null)
     {
         $this->parseConfig($config);
         $this->client = $client;
