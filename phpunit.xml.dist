@@ -5,6 +5,10 @@
         </testsuite>
     </testsuites>
 
+    <php>
+        <ini name="zend.assertions" value="1"/>
+    </php>
+
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>

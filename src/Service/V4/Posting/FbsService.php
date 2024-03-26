@@ -39,6 +39,8 @@ use Gam6itko\OzonSeller\Utils\WithResolver;
  *      product_id: int
  *      quantity: int
  *  }
+ *
+ * @psalm-type TShipWith = array{additional_data: bool}
  */
 class FbsService extends AbstractService
 {
@@ -48,19 +50,25 @@ class FbsService extends AbstractService
      * @see https://docs.ozon.ru/api/seller/#operation/PostingAPI_ShipFbsPostingV4
      *
      * @param $packages list<THasProducts>
+     * @param $with TShipWith
      *
      * @return TShipResponse
      */
-    public function ship(array $packages, string $postingNumber, array $options = []): array
+    public function ship(array $packages, string $postingNumber, array $with = []): array
     {
+        \assert([] !== $packages);
+        \assert(!$this->isAssoc($packages));
         foreach ($packages as &$package) {
+            \assert(\array_key_exists('products', $package));
             $package = ArrayHelper::pick($package, ['products']);
+            \assert(!$this->isAssoc($package['products']));
+            \assert(\count($package['products']) > 0);
         }
 
         $body = [
             'packages'       => $packages,
             'posting_number' => $postingNumber,
-            'with'           => WithResolver::resolve($options, 4, PostingScheme::FBS, __FUNCTION__),
+            'with' => WithResolver::resolve($with, 4, PostingScheme::FBS, __FUNCTION__),
         ];
 
         return $this->request('POST', "$this->path/ship", $body);
