@@ -22,6 +22,7 @@ jobs:
           - 7.4
           - 8.0
           - 8.1
+          - 8.2
         dependencies:
           - highest
         include:
@@ -41,7 +42,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: xdebug
-          ini-values: zend.assertions=1
+          ini-values: zend.assertions=1, assert.exception=1
 
       - name: Install dependencies with Composer
         uses: ramsey/composer-install@v1

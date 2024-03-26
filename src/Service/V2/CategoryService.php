@@ -95,7 +95,7 @@ class CategoryService extends AbstractService
     /**
      * @see https://api-seller.ozon.ru/v2/category/tree
      */
-    public function tree(int $categoryId = null, string $language = 'DEFAULT')
+    public function tree(?int $categoryId = null, string $language = 'DEFAULT')
     {
         $body = [
             'language' => $language,

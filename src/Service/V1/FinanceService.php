@@ -18,7 +18,6 @@ class FinanceService extends AbstractService
      */
     public function realization(array $query)
     {
-
         $query = ArrayHelper::pick($query, ['date']);
 
         return $this->request('POST', '/v1/finance/realization', $query);

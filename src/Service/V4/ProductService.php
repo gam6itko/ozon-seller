@@ -26,4 +26,27 @@ class ProductService extends AbstractService
 
         return $this->request('POST', "{$this->path}/info/prices", $body);
     }
+
+    /**
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetUploadQuota
+     *
+     * @psalm-type TQuota = array{
+     *      limit: int,
+     *      reset_at: string,
+     *      usage: int
+     * }
+     *
+     * @return array{
+     *     daily_create: TQuota,
+     *     daily_update: TQuota,
+     *     total: array{
+     *          limit: int,
+     *          usage: int,
+     *     },
+     * }
+     */
+    public function infoLimit(): array
+    {
+        return $this->request('POST', "{$this->path}/info/limit", '{}');
+    }
 }
