@@ -77,9 +77,9 @@ class FbsService extends AbstractService
     /**
      * @see https://docs.ozon.ru/api/seller/#operation/PostingAPI_ShipFbsPostingPackage
      *
-     * @return TShipResponse
+     * @return string PostingNumber
      */
-    public function shipPackage(string $postingNumber, array $products): array
+    public function shipPackage(string $postingNumber, array $products): string
     {
         $body = [
             'posting_number' => $postingNumber,
