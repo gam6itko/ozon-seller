@@ -137,6 +137,20 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
     }
 
     /**
+     * @see https://docs.ozon.ru/api/seller/#operation/PostingAPI_CreateLabelBatchV2
+     *
+     * @param array|string $postingNumber
+     */
+    public function packageLabelCreate($postingNumber): array
+    {
+        if (is_string($postingNumber)) {
+            $postingNumber = [$postingNumber];
+        }
+
+        return $this->request('POST', "{$this->path}/package-label/create", ['posting_number' => $postingNumber]);
+    }
+    
+    /**
      * @see https://cb-api.ozonru.me/apiref/en/#t-fbs_arbitration_title
      *
      * @param array|string $postingNumber
