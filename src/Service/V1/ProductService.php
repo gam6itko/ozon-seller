@@ -622,9 +622,7 @@ class ProductService extends AbstractService
      *
      * @param TStocksQuery $query
      *
-     * @return array{
-     *     result: list<TStocks>
-     * }
+     * @return list<TStocks>
      */
     public function infoStocksByWarehouseFbs(array $query): array
     {
