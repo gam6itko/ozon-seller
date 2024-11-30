@@ -512,4 +512,20 @@ JSON;
             ]
         );
     }
+    public function testInfoStocksByWarehouseFbs(): void
+    {
+        $data = [
+            'sku' => ['123456', '8365532'],
+        ];
+        $this->quickTest(
+            'infoStocksByWarehouseFbs',
+            [$data],
+            [
+                'POST',
+                '/v1/product/info/stocks-by-warehouse/fbs',
+                '{"sku":["123456","8365532"]}',
+            ]
+        );
+    }
+
 }
