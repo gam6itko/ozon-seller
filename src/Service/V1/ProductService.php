@@ -599,4 +599,38 @@ class ProductService extends AbstractService
 
         return $this->request('POST', '/v1/product/info/description', $query);
     }
+
+    /**
+     * Receive stocks in seller's warehouses (FBS и rFBS).
+     * fbs-sku param is deprecated since August 15, 2023.
+     *
+     * @see https://docs.ozon.ru/api/seller/#operation/ProductAPI_ProductStocksByWarehouseFbs
+     *
+     * @psalm-type TStocksQuery = array{
+     *      sku?: int[],
+     *      fbs_sku?: int[],
+     * }
+     * @psalm-type TStocks = array{
+     *      sku: int,
+     *      fbs_sku?: int,
+     *      present: int,
+     *      product_id: int,
+     *      reserved: int,
+     *      warehouse_id: int,
+     *      warehouse_name: string,
+     * }
+     *
+     * @param TStocksQuery $query
+     *
+     * @return array{
+     *     result: list<TStocks>
+     * }
+     */
+    public function infoStocksByWarehouseFbs(array $query): array
+    {
+        $query = ArrayHelper::pick($query, ['sku', 'fbs_sku']);
+        $query = TypeCaster::castArr($query, ['sku' => 'arrayOfString', 'fbs_sku' => 'arrayOfString']);
+
+        return $this->request('POST', '/v1/product/info/stocks-by-warehouse/fbs', $query);
+    }
 }

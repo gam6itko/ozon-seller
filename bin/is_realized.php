@@ -35,6 +35,7 @@ const MAPPING = [
     '/v1/product/list/price'                         => [V1ProductService::class, 'price'],
     '/v1/product/prepayment/set'                     => [V1ProductService::class, 'setPrepayment'],
     '/v1/products/info/{product_id}'                 => [V1ProductService::class, 'info'],
+    '/v1/product/info/stocks-by-warehouse/fbs'       => [V1ProductService::class, 'infoStocksByWarehouseFbs'],
     '/v1/products/list'                              => null,
     '/v1/products/prices'                            => null,
     '/v1/products/stocks'                            => null,
