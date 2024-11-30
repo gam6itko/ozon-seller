@@ -23,6 +23,7 @@ use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use Gam6itko\OzonSeller\Service\V2\ProductService as V2ProductService;
 use Gam6itko\OzonSeller\Service\V2\ReturnsService as V2ReturnsService;
 use Gam6itko\OzonSeller\Service\V4\ProductService as V4ProductService;
+use Gam6itko\OzonSeller\Service\V1\Posting\FbsService as V1FbsService;
 use Gam6itko\OzonSeller\Service\V5\Posting\FbsService as V5FbsService;
 use GuzzleHttp\Client;
 
@@ -40,6 +41,7 @@ const MAPPING = [
     '/v1/products/prices'                            => null,
     '/v1/products/stocks'                            => null,
     '/v1/products/update'                            => null,
+    '/v1/posting/fbs/package-label/get'              => [V1FbsService::class, 'packageLabelGet'],
 
     // V2
     '/v2/fbs/posting/delivered'                      => [FbsService::class.'delivered'],
@@ -52,6 +54,7 @@ const MAPPING = [
     '/v2/products/info/attributes'                   => [V2ProductService::class, 'infoAttributes'],
     '/v2/returns/company/fbo'                        => [V2ReturnsService::class, 'company'],
     '/v2/returns/company/fbs'                        => [V2ReturnsService::class, 'company'],
+    '/v2/posting/fbs/package-label/create'           => [FbsService::class, 'packageLabelCreate'],
 
     // V3 - TODO
 
