@@ -27,6 +27,14 @@ use Gam6itko\OzonSeller\Utils\WithResolver;
  *     offset?: int,
  *     limit?: int,
  * }
+ * @psalm-type TCountry = array{
+ *     name: string,
+ *     country_iso_code: string,
+ * }
+ * @psalm-type TProductCountrySetResponse = array{
+ *     product_id: int,
+ *     is_gtd_needed: bool,
+ * }
  */
 class FbsService extends AbstractService implements HasOrdersInterface, HasUnfulfilledOrdersInterface, GetOrderInterface
 {
@@ -335,5 +343,39 @@ class FbsService extends AbstractService implements HasOrdersInterface, HasUnful
             'id'       => $id,
             'doc_type' => $docType,
         ]);
+    }
+
+    /**
+     * Receive list of manufacturing countries.
+     *
+     * @see https://docs.ozon.ru/api/seller/en/#operation/PostingAPI_ChangeFbsPostingProduct
+     *
+     * @return list<TCountry>
+     */
+    public function productCountryList(string $nameSearch): array
+    {
+        $body = [
+            'name_search' => $nameSearch,
+        ];
+
+        return $this->request('POST', "{$this->path}/product/country/list", $body);
+    }
+
+    /**
+     * Set the manufacturing country.
+     *
+     * @see https://docs.ozon.ru/api/seller/en/#operation/PostingAPI_SetCountryProductFbsPostingV2
+     *
+     * @return TProductCountrySetResponse
+     */
+    public function productCountrySet(string $postingNumber, int $productId, string $countryIsoCode): array
+    {
+        $body = [
+            'posting_number'   => $postingNumber,
+            'product_id'       => $productId,
+            'country_iso_code' => $countryIsoCode,
+        ];
+
+        return $this->request('POST', "{$this->path}/product/country/set", $body);
     }
 }

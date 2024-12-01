@@ -180,7 +180,6 @@ class ProductService extends AbstractService
      *
      * @return array
      *
-     * @deprecated use V3\ProductService::infoStocks
      * @see        https://docs.ozon.ru/api/seller/#operation/ProductAPI_ProductsStocksV2
      */
     public function importStocks(array $input)
