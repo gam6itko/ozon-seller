@@ -17,14 +17,16 @@ foreach ($whereIsAutoloader as $filepath) {
 }
 
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use Gam6itko\OzonSeller\Service\V1\Posting\FbsService as V1FbsService;
 use Gam6itko\OzonSeller\Service\V1\ProductService as V1ProductService;
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use Gam6itko\OzonSeller\Service\V2\ProductService as V2ProductService;
 use Gam6itko\OzonSeller\Service\V2\ReturnsService as V2ReturnsService;
+use Gam6itko\OzonSeller\Service\V3\ProductService as V3ProductService;
 use Gam6itko\OzonSeller\Service\V4\ProductService as V4ProductService;
-use Gam6itko\OzonSeller\Service\V1\Posting\FbsService as V1FbsService;
 use Gam6itko\OzonSeller\Service\V5\Posting\FbsService as V5FbsService;
+use Gam6itko\OzonSeller\Service\V5\ProductService as V5ProductService;
 use GuzzleHttp\Client;
 
 const MAPPING = [
@@ -57,13 +59,17 @@ const MAPPING = [
     '/v2/posting/fbs/package-label/create'           => [FbsService::class, 'packageLabelCreate'],
 
     // V3 - TODO
+    '/v3/product/info/list'                          => [V3ProductService::class, 'infoList'],
+    '/v3/product/list'                               => [V3ProductService::class, 'list'],
 
     // V4
-    '/v4/product/info/prices'                       => [V4ProductService::class, 'infoPrices'],
+    '/v4/product/info/prices'                        => [V4ProductService::class, 'infoPrices'],
+    '/v4/product/info/stocks'                        => [V4ProductService::class, 'infoStocks'],
 
-    //V5
+    // V5
     '/v5/fbs/posting/product/exemplar/create-or-get' => [V5FbsService::class, 'productExemplarCreateOrGet'],
-    '/v5/fbs/posting/product/exemplar/set'          => [V5FbsService::class, 'productExemplarSet'],
+    '/v5/fbs/posting/product/exemplar/set'           => [V5FbsService::class, 'productExemplarSet'],
+    '/v5/product/info/prices'                        => [V5ProductService::class, 'infoPrices'],
 ];
 
 $client = new Client();
