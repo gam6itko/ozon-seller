@@ -51,6 +51,8 @@ class ProductService extends AbstractService
     }
 
     /**
+     * @deprecated use V3\ProductService::list
+     *
      * Receive the list of products.
      *
      * query['filter']
@@ -59,7 +61,6 @@ class ProductService extends AbstractService
      *          [visibility] string
      *      [last_id] str
      *      [limit] int
-     *
      * @see http://cb-api.ozonru.me/apiref/en/#t-title_get_products_list
      */
     public function list(array $query)
@@ -77,8 +78,9 @@ class ProductService extends AbstractService
     }
 
     /**
-     * Receive product info.
+     * @deprecated use V3\ProductService::list
      *
+     * Receive product info
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_products_info
      *
      * @param array $query ['product_id', 'sku', 'offer_id']
@@ -91,6 +93,9 @@ class ProductService extends AbstractService
         return $this->request('POST', "{$this->path}/info", $query);
     }
 
+    /**
+     * @deprecated use V3\ProductService::infoList
+     */
     public function infoList(array $query): array
     {
         $query = ArrayHelper::pick($query, ['product_id', 'sku', 'offer_id']);
