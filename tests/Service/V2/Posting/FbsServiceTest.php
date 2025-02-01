@@ -283,4 +283,126 @@ class FbsServiceTest extends AbstractTestCase
             ])
         );
     }
+
+    /**
+     * @covers ::productCountryList
+     */
+    public function testProductCountryList(): void
+    {
+        $this->quickTest(
+            'productCountryList',
+            [
+                'Китай',
+            ],
+            [
+                'POST',
+                '/v2/posting/fbs/product/country/list',
+                '{"name_search":"Китай"}',
+            ],
+            \json_encode([
+                [
+                    'name'             => 'Китайская Республика',
+                    'country_iso_code' => 'TW',
+                ],
+                [
+                    'name'             => 'Китай (Китайская Народная Республика)',
+                    'country_iso_code' => 'CN',
+                ],
+            ]),
+            static function ($result): void {
+                self::assertCount(2, $result);
+                self::assertArrayHasKey('name', $result[0]);
+                self::assertArrayHasKey('country_iso_code', $result[0]);
+                self::assertEquals('CN', $result[1]['country_iso_code']);
+            }
+        );
+    }
+
+    /**
+     * @covers ::productCountrySet
+     */
+    public function testProductCountrySet(): void
+    {
+        $this->quickTest(
+            'productCountrySet',
+            [
+                '57195475-0050-3',
+                180550365,
+                'NO',
+            ],
+            [
+                'POST',
+                '/v2/posting/fbs/product/country/set',
+                '{"posting_number":"57195475-0050-3","product_id":180550365,"country_iso_code":"NO"}',
+            ],
+            \json_encode([
+                'product_id'    => 180550365,
+                'is_gtd_needed' => true,
+            ]),
+            static function ($result): void {
+                self::assertCount(2, $result);
+                self::assertArrayHasKey('product_id', $result);
+                self::assertArrayHasKey('is_gtd_needed', $result);
+                self::assertEquals(180550365, $result['product_id']);
+                self::assertTrue($result['is_gtd_needed']);
+            }
+        );
+    }
+
+    /**
+     * @covers ::setTrackingNumber
+     *
+     * @dataProvider dataSetTrackingNumber
+     */
+    public function testSetTrackingNumber(array $productsFilter, string $expectedJsonString): void
+    {
+        $this->quickTest(
+            'setTrackingNumber',
+            $productsFilter,
+            [
+                'POST',
+                '/v2/fbs/posting/tracking-number/set',
+                $expectedJsonString,
+            ]
+        );
+    }
+
+    public function dataSetTrackingNumber(): iterable
+    {
+        $arguments = [
+            'trackingNumbers' => [
+                [
+                    'posting_number'  => '48173252-0033-2',
+                    'tracking_number' => '123123123',
+                ],
+                [
+                    'posting_number'  => '48173251-0021-1',
+                    'tracking_number' => '3214567-Fa',
+                ],
+            ],
+        ];
+        yield [
+            $arguments,
+            '{"tracking_numbers":[{"posting_number":"48173252-0033-2","tracking_number":"123123123"},{"posting_number":"48173251-0021-1","tracking_number":"3214567-Fa"}]}',
+        ];
+
+        $arguments['trackingNumbers'][1]['extra_data'] = 'useless value';
+        yield [
+            $arguments,
+            '{"tracking_numbers":[{"posting_number":"48173252-0033-2","tracking_number":"123123123"},{"posting_number":"48173251-0021-1","tracking_number":"3214567-Fa"}]}',
+        ];
+
+        $arguments = [
+            'trackingNumbers' => [
+                'posting_number'  => '48173252-0033-2',
+                'tracking_number' => '123123123',
+            ],
+        ];
+        yield [
+            $arguments,
+            '{"tracking_numbers":[{"posting_number":"48173252-0033-2","tracking_number":"123123123"}]}',
+        ];
+
+    }
+
 }
