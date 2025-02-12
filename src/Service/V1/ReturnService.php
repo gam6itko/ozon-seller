@@ -7,6 +7,30 @@ namespace Gam6itko\OzonSeller\Service\V1;
 use Gam6itko\OzonSeller\Service\AbstractService;
 use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
+/**
+ * @psalm-type TReturnListRequestFilter = array{
+ *      logistic_return_date?: object<string>,
+ *      storage_tariffication_start_date?: object<string>,
+ *      visual_status_change_moment?: object<string>,
+ *      order_id?: int,
+ *      posting_numbers?: list<string>,
+ *      product_name?: string,
+ *      offer_id?: string,
+ *      visual_status_name?: string,
+ *      warehouse_id?: int,
+ *      barcode?: string,
+ *      return_schema?: string
+ * }
+ *
+ * @psalm-type TReturnListRequestLimit = int
+ *
+ * @psalm-type TReturnListRequestLastId = int
+ *
+ * @psalm-type TReturnListRequestResponse = array{
+ *       returns: array<object>,
+ *       has_next: bool
+ * }
+ */
 class ReturnService extends AbstractService
 {
     private $path = '/v1/returns';
@@ -14,11 +38,11 @@ class ReturnService extends AbstractService
     /**
      * @see https://docs.ozon.ru/api/seller/#operation/returnsList
      *
-     * @param array $filter
-     * @param int $lastId
-     * @param int $limit
+     * @param TReturnListRequestFilter $filter
+     * @param TReturnListRequestLastId $lastId
+     * @param TReturnListRequestLimit $limit
      *
-     * @return array
+     * @return TReturnListRequestResponse
      */
     public function list(array $filter, int $lastId = 0, int $limit = 100): array
     {
