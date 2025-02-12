@@ -8,10 +8,12 @@ use Gam6itko\OzonSeller\Service\AbstractService;
 use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
+ * @psalm-type TTimeRange = array{time_from: string, time_to: string}
+ *
  * @psalm-type TReturnListRequestFilter = array{
- *      logistic_return_date?: object<string>,
- *      storage_tariffication_start_date?: object<string>,
- *      visual_status_change_moment?: object<string>,
+ *      logistic_return_date?: TTimeRange,
+ *      storage_tariffication_start_date?: TTimeRange,
+ *      visual_status_change_moment?: TTimeRange,
  *      order_id?: int,
  *      posting_numbers?: list<string>,
  *      product_name?: string,
