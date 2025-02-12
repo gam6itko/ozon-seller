@@ -13,6 +13,8 @@ class ReturnService extends AbstractService
     private $path = '/v3/returns/company';
 
     /**
+     * @deprecated use V1\ReturnService::list
+     *
      * @see https://api-seller.ozon.ru/v3/returns/company/fbo
      *
      * @param array $filter
@@ -35,6 +37,8 @@ class ReturnService extends AbstractService
     }
 
     /**
+     * @deprecated use V1\ReturnService::list
+     *
      * @see https://api-seller.ozon.ru/v3/returns/company/fbs
      *
      * @param array $filter
