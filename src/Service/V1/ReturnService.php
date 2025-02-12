@@ -27,7 +27,7 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
  * @psalm-type TReturnListRequestLastId = int
  *
  * @psalm-type TReturnListRequestResponse = array{
- *       returns: array<object>,
+ *       returns: array<array>,
  *       has_next: bool
  * }
  */
