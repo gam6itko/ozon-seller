@@ -34,7 +34,7 @@ class FbsService extends AbstractService
 
         foreach ($exemplarData['products'] as &$product) {
             foreach ($product['exemplars'] as &$exemplar) {
-                $exemplar = ArrayHelper::pick($exemplar, ['exemplar_id', 'is_gtd_absent', 'is_rnpt_absent']);
+                $exemplar = ArrayHelper::pick($exemplar, ['exemplar_id', 'is_gtd_absent', 'is_rnpt_absent', 'mandatory_mark']);
             }
         }
 
