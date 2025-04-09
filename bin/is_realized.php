@@ -16,11 +16,11 @@ foreach ($whereIsAutoloader as $filepath) {
 
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
 use Gam6itko\OzonSeller\Service\V1\ProductService as V1ProductService;
+use Gam6itko\OzonSeller\Service\V1\ReturnsService as V1ReturnsService;
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
 use Gam6itko\OzonSeller\Service\V2\Posting\FbsService;
 use Gam6itko\OzonSeller\Service\V2\ProductService as V2ProductService;
 use Gam6itko\OzonSeller\Service\V2\ReturnsService as V2ReturnsService;
-use Gam6itko\OzonSeller\Service\V3\ReturnsService as V3ReturnsService;
 use Gam6itko\OzonSeller\Service\V4\ProductService as V4ProductService;
 use GuzzleHttp\Client;
 
@@ -37,6 +37,7 @@ const MAPPING = [
     '/v1/products/prices'                            => null,
     '/v1/products/stocks'                            => null,
     '/v1/products/update'                            => null,
+    '/v1/returns/list'                               => [V1ReturnsService::class, 'list'],
 
     // V2
     '/v2/fbs/posting/delivered'                      => [FbsService::class.'delivered'],
@@ -51,7 +52,6 @@ const MAPPING = [
     '/v2/returns/company/fbs'                        => [V2ReturnsService::class, 'company'],
 
     // V3 - TODO
-    '/v3/returns/company/fbs'                        => [V3ReturnsService::class, 'company'],
 
     // V4
     '/v4/product/info/prices'                       => [V4ProductService::class, 'infoPrices'],
