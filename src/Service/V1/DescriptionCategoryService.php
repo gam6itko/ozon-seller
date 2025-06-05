@@ -11,11 +11,12 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
 
 /**
  * @psalm-type TLanguage = Language::*
+ * @psalm-type TCategoryNodeChildSameAsParent = array
  * @psalm-type TCategoryNode = array{
  *     description_category_id: positive-int,
  *     category_name: string,
  *     disabled: bool,
- *     children: list<TCategoryNode>,
+ *     children: list<TCategoryNodeChildSameAsParent>,
  *     type_id?: positive-int,
  *     type_name?: string
  * }
@@ -70,6 +71,7 @@ class DescriptionCategoryService extends AbstractService
      * @see https://docs.ozon.ru/api/seller/#operation/DescriptionCategoryAPI_GetTree
      *
      * @param TQuery $query
+     *
      * @return TTreeResponse
      */
     public function getCategoryTree(array $query = [])
