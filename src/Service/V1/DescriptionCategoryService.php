@@ -71,7 +71,6 @@ class DescriptionCategoryService extends AbstractService
      * @see https://docs.ozon.ru/api/seller/#operation/DescriptionCategoryAPI_GetTree
      *
      * @param TQuery $query
-     *
      * @return TTreeResponse
      */
     public function getCategoryTree(array $query = [])
