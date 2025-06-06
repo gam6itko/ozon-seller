@@ -17,6 +17,7 @@ foreach ($whereIsAutoloader as $filepath) {
 }
 
 use Gam6itko\OzonSeller\Service\V1\CategoriesService;
+use Gam6itko\OzonSeller\Service\V1\DescriptionCategoryService;
 use Gam6itko\OzonSeller\Service\V1\Posting\FbsService as V1FbsService;
 use Gam6itko\OzonSeller\Service\V1\ProductService as V1ProductService;
 use Gam6itko\OzonSeller\Service\V2\Posting\CrossborderService;
@@ -30,6 +31,11 @@ use Gam6itko\OzonSeller\Service\V5\ProductService as V5ProductService;
 use GuzzleHttp\Client;
 
 const MAPPING = [
+    // V1
+    '/v1/description-category/tree'                    => [DescriptionCategoryService::class, 'getCategoryTree'],
+    '/v1/description-category/attribute'               => [DescriptionCategoryService::class, 'getCategoryAttributes'],
+    '/v1/description-category/attribute/values'        => [DescriptionCategoryService::class, 'getAttributeValues'],
+    '/v1/description-category/attribute/values/search' => [DescriptionCategoryService::class, 'searchAttributeValues'],
     '/v1/categories/tree/{category_id}'              => null,
     '/v1/categories/{category_id}/attributes'        => null,
     '/v1/category/tree'                              => [CategoriesService::class, 'tree'],
