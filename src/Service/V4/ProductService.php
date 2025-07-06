@@ -35,6 +35,52 @@ use Gam6itko\OzonSeller\Utils\ArrayHelper;
  *      cursor: string,
  *      total: int
  * }
+ * @psalm-type TInfoAttributesResponseItem = array{
+ *      id: int,
+ *      barcode: string,
+ *      barcodes: list<string>,
+ *      name: string,
+ *      offer_id: string,
+ *      type_id: int,
+ *      height: int,
+ *      depth: int,
+ *      width: int,
+ *      dimension_unit: string,
+ *      weight: int,
+ *      weight_unit: string,
+ *      primary_image: string,
+ *      sku: int,
+ *      model_info: array{
+ *          model_id: int,
+ *          count: int
+ *      },
+ *      images: list<string>,
+ *      pdf_list: list<array>,
+ *      attributes: list<array{
+ *          id: int,
+ *          complex_id: int,
+ *          values: list<array{
+ *              dictionary_value_id: int,
+ *              value: string
+ *          }>
+ *      }>,
+ *      attributes_with_defaults: list<int>,
+ *      complex_attributes: list<array>,
+ *      color_image: string,
+ *      description_category_id: int
+ *  }
+ *
+ * @psalm-type TInfoAttributesRequestFilter = array{
+ *      offer_id?: list<string>,
+ *      product_id?: list<numeric-string>,
+ *      sku?: list<numeric-string>,
+ *      visibility?: string,
+ *  }
+ * @psalm-type TInfoAttributesResponse = array{
+ *      result: list<TInfoAttributesResponseItem>,
+ *      last_id: string,
+ *      total: numeric-string
+ *  }
  */
 class ProductService extends AbstractService
 {
@@ -100,5 +146,41 @@ class ProductService extends AbstractService
         ];
 
         return $this->request('POST', "{$this->path}/info/stocks", $body);
+    }
+
+    /**
+     * Returns a product characteristics description by product identifier or visibility.
+     *
+     * @see https://docs.ozon.ru/api/seller/en/#operation/ProductAPI_GetProductAttributesV4
+     *
+     * @param TInfoAttributesRequestFilter $filter
+     *
+     * @return TInfoAttributesResponse
+     */
+    public function infoAttributes(
+        array $filter = [],
+        ?string $lastId = null,
+        int $limit = 100,
+        ?string $sortBy = null,
+        ?string $sortDir = null
+    ) {
+        $body = [
+            'filter' => ArrayHelper::pick($filter, ['offer_id', 'product_id', 'sku', 'visibility']) ?: new \stdClass(),
+            'limit' => $limit,
+        ];
+
+        if ($lastId) {
+            $body['last_id'] = $lastId;
+        }
+
+        if ($sortBy) {
+            $body['sort_by'] = $sortBy;
+        }
+
+        if ($sortDir) {
+            $body['sort_dir'] = $sortDir;
+        }
+
+        return $this->request('POST', "{$this->path}/info/attributes", $body, true, false);
     }
 }
