@@ -69,6 +69,7 @@ const MAPPING = [
     // V3 - TODO
     '/v3/product/info/list'                          => [V3ProductService::class, 'infoList'],
     '/v3/product/list'                               => [V3ProductService::class, 'list'],
+    '/v3/product/import'                             => [V3ProductService::class, 'import'],
 
     // V4
     '/v4/product/info/prices'                        => [V4ProductService::class, 'infoPrices'],
