@@ -23,6 +23,8 @@ class ProductService extends AbstractService
     private $path = '/v2/product';
 
     /**
+     * @deprecated use V3\ProductService::import
+     *
      * Creates product page in our system.
      *
      * @see https://cb-api.ozonru.me/apiref/en/#t-title_product_import
