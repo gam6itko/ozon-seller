@@ -74,6 +74,7 @@ const MAPPING = [
     // V4
     '/v4/product/info/prices'                        => [V4ProductService::class, 'infoPrices'],
     '/v4/product/info/stocks'                        => [V4ProductService::class, 'infoStocks'],
+    '/v4/product/info/attributes'                    => [V4ProductService::class, 'infoAttributes'],
 
     // V5
     '/v5/fbs/posting/product/exemplar/create-or-get' => [V5FbsService::class, 'productExemplarCreateOrGet'],

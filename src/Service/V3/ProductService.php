@@ -108,6 +108,9 @@ class ProductService extends AbstractService
         return $this->request('POST', "{$this->path}s/stocks", $body);
     }
 
+    /**
+     * @deprecated use V4\ProductService::infoAttributes
+     */
     public function infoAttributes(array $filter, ?string $lastId = '', int $limit = 100, string $sortBy = 'product_id', string $sortDir = SortDirection::DESC)
     {
         $body = [
