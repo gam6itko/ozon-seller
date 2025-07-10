@@ -32,7 +32,7 @@ class ProductValidator
         }
 
         if (!in_array($version, [1, 2])) {
-            throw new \LogicException('Version must be in [1, 2]');
+            throw new \LogicException('Version must be in [1, 2, 3]');
         }
 
         if (!file_exists($configFile = __DIR__."/config/product_validator_v{$version}.php")) {
