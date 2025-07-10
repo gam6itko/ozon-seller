@@ -107,7 +107,7 @@ return [
 
     'vat' => [
         'type' => 'string',
-        'requiredCreate' => true,
+        'requiredCreate' => false,
         'options' => ['0', '0.05', '0.07', '0.1', '0.2'],
     ],
 
