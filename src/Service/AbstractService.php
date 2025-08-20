@@ -8,6 +8,7 @@ use Gam6itko\OzonSeller\Exception\OzonSellerException;
 use Gam6itko\OzonSeller\Utils\ArrayHelper;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\RequestExceptionInterface;
+use Psr\Http\Client\NetworkExceptionInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -137,7 +138,7 @@ abstract class AbstractService
             }
 
             return $arr;
-        } catch (RequestExceptionInterface $requestException) {
+        } catch (RequestExceptionInterface | NetworkExceptionInterface $requestException) {
             // guzzle
             if (method_exists($requestException, 'getResponse')) {
                 $response = $requestException->getResponse();
