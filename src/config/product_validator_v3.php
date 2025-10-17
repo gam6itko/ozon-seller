@@ -121,4 +121,9 @@ return [
         'type' => 'arrayOfString',
         'requiredCreate' => false,
     ],
+
+    'promotions' => [
+        'type' => 'array',
+        'requiredCreate' => false,
+    ],
 ];
