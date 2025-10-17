@@ -19,6 +19,60 @@ final class ProductServiceTest extends AbstractTestCase
         return ProductService::class;
     }
 
+    public function testImport(array $item): void
+    {
+        $this->quickTest(
+            'import',
+            [$item],
+            [
+                'POST',
+                '/v3/product/import',
+                '{"items":[{"offer_id":"test_offer","description_category_id":17028922,"name":"Test Product","price":"1000","old_price":"1100","currency_code":"RUB","vat":"0.1","depth":10,"width":150,"height":250,"dimension_unit":"mm","weight":100,"weight_unit":"g","barcode":"112772873170","attributes":[{"complex_id":0,"id":5076,"values":[{"dictionary_value_id":971082156,"value":"Test Attribute"}]}],"images":[],"images360":[],"primary_image":"","color_image":"","complex_attributes":[],"pdf_list":[],"promotions":[]}]}',
+            ]
+        );
+    }
+
+    public function dataImport()
+    {
+        $correctItem = [
+            'offer_id' => 'test_offer',
+            'description_category_id' => 17028922,
+            'name' => 'Test Product',
+            'price' => '1000',
+            'old_price' => '1100',
+            'currency_code' => 'RUB',
+            'vat' => '0.1',
+            'depth' => 10,
+            'width' => 150,
+            'height' => 250,
+            'dimension_unit' => 'mm',
+            'weight' => 100,
+            'weight_unit' => 'g',
+            'barcode' => '112772873170',
+            'attributes' => [
+                [
+                    'complex_id' => 0,
+                    'id' => 5076,
+                    'values' => [
+                        [
+                            'dictionary_value_id' => 971082156,
+                            'value' => 'Test Attribute'
+                        ]
+                    ]
+                ]
+            ],
+            'images' => [],
+            'images360' => [],
+            'primary_image' => '',
+            'color_image' => '',
+            'complex_attributes' => [],
+            'pdf_list' => [],
+            'promotions' => []
+        ];
+
+        yield [$correctItem];
+    }
+
     /**
      * @covers ::infoStocks
      */
