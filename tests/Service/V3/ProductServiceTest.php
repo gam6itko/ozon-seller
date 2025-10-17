@@ -19,6 +19,9 @@ final class ProductServiceTest extends AbstractTestCase
         return ProductService::class;
     }
 
+    /**
+     * @dataProvider dataImport
+     */
     public function testImport(array $item): void
     {
         $this->quickTest(
