@@ -64,7 +64,13 @@ class ProductValidator
             if (!array_key_exists($key, $item)) {
                 throw new ProductValidatorException("Required property not defined: $key", 0, $item);
             }
-            if ('string' === TypeCaster::normalizeType($this->config[$key]['type']) && '' === $item[$key]) {
+            $normalizedType = TypeCaster::normalizeType($this->config[$key]['type']);
+            $value = $item[$key] ?? null;
+
+            if (
+                ($normalizedType === 'string' && ($value === '' || $value === null)) ||
+                ($normalizedType === 'integer' && empty($value))
+            ) {
                 throw new ProductValidatorException("Empty value for property: $key", 0, $item);
             }
         }

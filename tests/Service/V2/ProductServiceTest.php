@@ -30,7 +30,7 @@ class ProductServiceTest extends AbstractTestCase
             [
                 'POST',
                 '/v2/product/import',
-                '{"items":[{"barcode":"string","category_id":0,"depth":0,"dimension_unit":"cm","height":0,"image_group_id":"string","images":["string"],"images360":["string"],"name":"string","offer_id":"string","old_price":"string","pdf_list":[{"index":0,"name":"string","src_url":"string"}],"premium_price":"string","price":"string","vat":"string","weight":0,"weight_unit":"g","width":0,"attributes":[{"complex_id":0,"id":0,"values":[{"dictionary_value_id":0,"value":"string"}]}],"complex_attributes":[{"attributes":[{"complex_id":0,"id":0,"values":[{"dictionary_value_id":0,"value":"string"}]}]}]}]}',
+                '{"items":[{"barcode":"string","category_id":1,"depth":1,"dimension_unit":"cm","height":1,"image_group_id":"string","images":["string"],"images360":["string"],"name":"string","offer_id":"string","old_price":"string","pdf_list":[{"index":0,"name":"string","src_url":"string"}],"premium_price":"string","price":"string","vat":"string","weight":1,"weight_unit":"g","width":1,"attributes":[{"complex_id":0,"id":0,"values":[{"dictionary_value_id":0,"value":"string"}]}],"complex_attributes":[{"attributes":[{"complex_id":0,"id":0,"values":[{"dictionary_value_id":0,"value":"string"}]}]}]}]}',
             ]
         );
     }
@@ -40,10 +40,10 @@ class ProductServiceTest extends AbstractTestCase
         $item = [
             'description'        => 'text of description',
             'barcode'            => 'string',
-            'category_id'        => 0,
-            'depth'              => 0,
+            'category_id'        => 1,
+            'depth'              => 1,
             'dimension_unit'     => 'cm',
-            'height'             => 0,
+            'height'             => 1,
             'image_group_id'     => 'string',
             'images'             => [
                 'string',
@@ -64,9 +64,9 @@ class ProductServiceTest extends AbstractTestCase
             'premium_price'      => 'string',
             'price'              => 'string',
             'vat'                => 'string',
-            'weight'             => 0,
+            'weight'             => 1,
             'weight_unit'        => 'g',
-            'width'              => 0,
+            'width'              => 1,
             'attributes'         => [
                 [
                     'complex_id' => 0,
