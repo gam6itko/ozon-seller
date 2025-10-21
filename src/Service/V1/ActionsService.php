@@ -72,7 +72,7 @@ class ActionsService extends AbstractService
     {
         $products = $this->ensureCollection($products);
         foreach ($products as &$p) {
-            $p = ArrayHelper::pick($p, ['product_id', 'action_price']);
+            $p = ArrayHelper::pick($p, ['product_id', 'action_price', 'stock']);
         }
         unset($p);
 
