@@ -12,6 +12,7 @@ class FbsService extends AbstractService
     private $path = '/v5/fbs/posting';
 
     /**
+     * @deprecated use V6\Posting\FbsService::productExemplarCreateOrGet
      * @see https://docs.ozon.ru/api/seller/#operation/PostingAPI_FbsPostingProductExemplarCreateOrGet
      */
     public function productExemplarCreateOrGet(string $postingNumber): array
@@ -23,6 +24,7 @@ class FbsService extends AbstractService
     }
     
     /**
+     * @deprecated use V6\Posting\FbsService::productExemplarSet
      * @see https://docs.ozon.ru/api/seller/#operation/PostingAPI_FbsPostingProductExemplarSet
      */
     public function productExemplarSet(int $multiBoxQty, string $postingNumber, array $products): bool

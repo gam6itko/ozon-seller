@@ -28,6 +28,7 @@ use Gam6itko\OzonSeller\Service\V3\ProductService as V3ProductService;
 use Gam6itko\OzonSeller\Service\V4\ProductService as V4ProductService;
 use Gam6itko\OzonSeller\Service\V5\Posting\FbsService as V5FbsService;
 use Gam6itko\OzonSeller\Service\V5\ProductService as V5ProductService;
+use Gam6itko\OzonSeller\Service\V6\Posting\FbsService as V6FbsService;
 use GuzzleHttp\Client;
 
 const MAPPING = [
@@ -80,6 +81,11 @@ const MAPPING = [
     '/v5/fbs/posting/product/exemplar/create-or-get' => [V5FbsService::class, 'productExemplarCreateOrGet'],
     '/v5/fbs/posting/product/exemplar/set'           => [V5FbsService::class, 'productExemplarSet'],
     '/v5/product/info/prices'                        => [V5ProductService::class, 'infoPrices'],
+
+    // V6
+    '/v6/fbs/posting/product/exemplar/create-or-get' => [V6FbsService::class, 'productExemplarCreateOrGet'],
+    '/v6/fbs/posting/product/exemplar/set'           => [V6FbsService::class, 'productExemplarSet'],
+
 ];
 
 $client = new Client();
