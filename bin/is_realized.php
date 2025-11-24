@@ -51,6 +51,7 @@ const MAPPING = [
     '/v1/products/stocks'                            => null,
     '/v1/products/update'                            => null,
     '/v1/posting/fbs/package-label/get'              => [V1FbsService::class, 'packageLabelGet'],
+    '/v1/posting/fbs/cancel-reason'                  => [V1FbsService::class, 'cancelReason'],
 
     // V2
     '/v2/fbs/posting/delivered'                      => [FbsService::class.'delivered'],
