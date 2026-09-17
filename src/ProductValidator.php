@@ -62,7 +62,7 @@ class ProductValidator
 
         foreach ($this->requiredKeys as $key) {
             if (!array_key_exists($key, $item)) {
-                throw new ProductValidatorException("Required property not defined: $key", 0, $item);
+                throw new ProductValidatorException("Required property not defined: $key", ProductValidatorException::CODE_REQUIRED_NOT_DEFINED, $item, $key);
             }
             $normalizedType = TypeCaster::normalizeType($this->config[$key]['type']);
             $value = $item[$key] ?? null;
@@ -71,13 +71,13 @@ class ProductValidator
                 ($normalizedType === 'string' && ($value === '' || $value === null)) ||
                 ($normalizedType === 'integer' && empty($value))
             ) {
-                throw new ProductValidatorException("Empty value for property: $key", 0, $item);
+                throw new ProductValidatorException("Empty value for property: $key", ProductValidatorException::CODE_EMPTY_VALUE, $item, $key, $value);
             }
         }
 
         foreach ($this->optProps as $key => $options) {
             if (isset($item[$key]) && !in_array($item[$key], $options)) {
-                throw new ProductValidatorException("Incorrect property value '{$item[$key]}' for `$key` key");
+                throw new ProductValidatorException("Incorrect property value '{$item[$key]}' for `$key` key", ProductValidatorException::CODE_INCORRECT_VALUE, $item, $key, $item[$key]);
             }
         }
 
